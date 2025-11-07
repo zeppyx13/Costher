@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from '../assets/styles/styles';
 import BrandComponent from '../components/BrandComponent';
@@ -25,6 +25,11 @@ const HomeScreen = () => {
                         <NavbarComponent icon="call-outline" text="Profile" target="Contact" />
                     </View>
 
+                    {/* Content */}
+                    <View style={styles.content as any}>
+                        <Text style={styles.contentTitle}>Welcome to the App</Text>
+                        <Text style={styles.contentText}>This is a sample application using React Native.</Text>
+                    </View>
                 </ScrollView>
             </SafeAreaView>
         </SafeAreaProvider>

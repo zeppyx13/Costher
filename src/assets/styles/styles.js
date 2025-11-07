@@ -108,6 +108,26 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 8,
   },
+  brandName: {
+    fontSize: 11,
+    color: '#ffffffff',
+    fontFamily: 'Poppins/Poppins-Black',
+  },
+  content: {
+    fontSize: 11,
+    color: '#ffffffff',
+    fontFamily: 'Poppins/Poppins-Regular',
+  },
+  contentTitle: {
+    fontSize: 68,
+    color: '#ffffffff',
+    fontFamily: 'Poppins-Bold',
+  },
+  contentText: {
+    fontSize: 20,
+    color: '#ffffffff',
+    fontFamily: 'Inter_18pt-Bold',
+  },
 });
 
 export default styles;
