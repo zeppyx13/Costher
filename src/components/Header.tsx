@@ -8,23 +8,20 @@ const Header = () => {
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginBottom: 20, // sedikit lebih rapat dari 20
+                marginBottom: 13,
             }}
         >
-            {/* Logo */}
             <Image
                 source={require('../assets/images/costher.png')}
                 style={{
                     width: 72,
                     height: 72,
-                    borderRadius: 36, // biar bulat sempurna
-                    marginRight: 14, // jarak antar logo dan teks rapat elegan
+                    borderRadius: 36,
+                    marginRight: 12,
                 }}
                 resizeMode="cover"
             />
-
-            {/* Brand Text */}
-            <View style={{ justifyContent: 'center' }}>
+            <View>
                 <Text
                     style={{
                         fontFamily: 'Poppins-Bold',
@@ -35,6 +32,7 @@ const Header = () => {
                 >
                     Coasther
                 </Text>
+
                 <Text
                     style={{
                         fontFamily: 'Inter-Regular',

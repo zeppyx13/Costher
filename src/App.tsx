@@ -1,19 +1,38 @@
 import React from "react";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
-const stack = createNativeStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+// Screens
 import HomeScreen from "./screen/HomeScreen";
-import RoomsScreen from './screen/RoomScreen';
-import LoginScreen from './screen/LoginScreen';
+import RoomsScreen from "./screen/RoomScreen";
+import LoginScreen from "./screen/LoginScreen";
+
+const Stack = createNativeStackNavigator();
+
 const App = () => {
   return (
-    <NavigationContainer>
-      <stack.Navigator>
-        <stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
-        <stack.Screen options={{ headerShown: false }} name="Room" component={RoomsScreen} />
-        <stack.Screen options={{ headerShown: true }} name="Login" component={LoginScreen} />
-      </stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Room"
+            component={RoomsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: true }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

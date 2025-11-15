@@ -3,6 +3,8 @@ import { View, Text, Image, FlatList, TouchableOpacity, ScrollView } from 'react
 import colors from '../styles/colors';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 interface Room {
     id: string;
     image: any;
@@ -48,8 +50,6 @@ const rooms: Room[] = [
 ];
 
 const RoomsScreen = () => {
-    const [sortOption, setSortOption] = useState('Semua');
-
     const renderRoom = ({ item }: { item: Room }) => (
         <View
             style={{
@@ -57,31 +57,38 @@ const RoomsScreen = () => {
                 borderRadius: 12,
                 marginBottom: 16,
                 overflow: 'hidden',
-            }}>
+                marginTop: 16,
+            }}
+        >
             <Image
                 source={item.image}
                 style={{ width: '100%', height: 180 }}
                 resizeMode="cover"
             />
+
             <View style={{ padding: 12 }}>
                 <Text
                     style={{
                         fontFamily: 'Poppins-SemiBold',
                         fontSize: 16,
                         color: colors.darkCharcoal,
-                    }}>
+                    }}
+                >
                     {item.number}
                 </Text>
+
                 <Text
                     style={{
                         fontFamily: 'Poppins-Bold',
                         fontSize: 15,
                         color: colors.deepMaroon,
                         marginTop: 4,
-                    }}>
+                    }}
+                >
                     {item.price}
                 </Text>
 
+                {/* Facilities */}
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
                     {item.facilities.map((f, i) => (
                         <View
@@ -93,13 +100,15 @@ const RoomsScreen = () => {
                                 paddingHorizontal: 8,
                                 marginRight: 6,
                                 marginBottom: 6,
-                            }}>
+                            }}
+                        >
                             <Text
                                 style={{
                                     fontFamily: 'Inter-Medium',
                                     fontSize: 12,
                                     color: colors.darkCharcoal,
-                                }}>
+                                }}
+                            >
                                 {f}
                             </Text>
                         </View>
@@ -112,10 +121,12 @@ const RoomsScreen = () => {
                         fontSize: 13,
                         marginTop: 4,
                         color: item.available ? 'green' : 'gray',
-                    }}>
+                    }}
+                >
                     {item.available ? 'Tersedia' : 'Sudah Terisi'}
                 </Text>
 
+                {/* Booking Button */}
                 <TouchableOpacity
                     disabled={!item.available}
                     style={{
@@ -126,12 +137,14 @@ const RoomsScreen = () => {
                         borderRadius: 8,
                         alignItems: 'center',
                         marginTop: 10,
-                    }}>
+                    }}
+                >
                     <Text
                         style={{
                             color: item.available ? colors.elegantGold : '#aaa',
                             fontFamily: 'Poppins-SemiBold',
-                        }}>
+                        }}
+                    >
                         {item.available ? 'Booking Sekarang' : 'Tidak Tersedia'}
                     </Text>
                 </TouchableOpacity>
@@ -140,25 +153,35 @@ const RoomsScreen = () => {
     );
 
     return (
-        <View
+        <SafeAreaView
             style={{
                 flex: 1,
                 backgroundColor: colors.appBackground,
                 paddingHorizontal: 16,
-                paddingTop: 20,
-                marginTop: 30,
-            }}>
+                paddingTop: 10,
+            }}
+            edges={['top', 'left', 'right']}
+        >
             <Header />
-            {/* ======== Filter Section ======== */}
+
+            {/* FILTER BAR */}
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={{ marginBottom: 16 }}>
+                contentContainerStyle={{
+                    paddingRight: 10,
+                    paddingLeft: 4,
+                }}
+                style={{
+                    marginTop: 4,        // FIX TERPENTING
+                    marginBottom: 4,
+                }}
+            >
                 {[
-                    { label: 'Urutkan', icon: 'arrow-up-down-outline' },
-                    { label: 'Filter', icon: 'filter-outline' },
-                    { label: 'Harga per Bulan', icon: 'chevron-down-outline' },
-                    { label: 'Fasilitas', icon: 'options-outline' },
+                    { label: 'Urutkan' },
+                    { label: 'Filter' },
+                    { label: 'Harga per Bulan' },
+                    { label: 'Fasilitas' },
                 ].map((item, index) => (
                     <TouchableOpacity
                         key={index}
@@ -168,35 +191,41 @@ const RoomsScreen = () => {
                             borderWidth: 1,
                             borderColor: '#D1D5DB',
                             borderRadius: 30,
-                            paddingHorizontal: 14,
-                            paddingVertical: 8,
+                            paddingHorizontal: 16,
+                            paddingVertical: 6,
+                            height: 36,
+                            justifyContent: 'center',
                             marginRight: 10,
                             backgroundColor: colors.appBackground,
-                            elevation: 1,
-                        }}>
+                        }}
+                    >
                         <Text
                             style={{
                                 fontFamily: 'Inter-Medium',
                                 color: colors.darkCharcoal,
-                                marginRight: 6,
                                 fontSize: 13,
-                            }}>
+                                lineHeight: 18,
+                            }}
+                        >
                             {item.label}
                         </Text>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
 
-            {/* ======== List Kamar ======== */}
+            {/* ROOM LIST */}
             <FlatList
                 data={rooms}
                 renderItem={renderRoom}
                 keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: 140,
+                }}
             />
 
             <Navbar />
-        </View>
+        </SafeAreaView>
     );
 };
 
