@@ -1,18 +1,21 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import HomeRecommendationCard from "./HomeRecommendationCard";
+import rooms from "../../data/rooms";
 
 const HomeRecommendationList = ({ navigation }: any) => {
+    const recommendedRooms = rooms.filter(r => r.available).slice(0, 3);
+
     return (
         <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             style={{ marginBottom: 10 }}
         >
-            {[1, 2, 3].map((item) => (
+            {recommendedRooms.map((room) => (
                 <HomeRecommendationCard
-                    key={item}
-                    item={item}
+                    key={room.id}
+                    room={room}
                     navigation={navigation}
                 />
             ))}
