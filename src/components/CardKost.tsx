@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import colors from '../styles/colors';
-import typography from '../styles/typograpy';
+import typography from '../styles/typography';
 
 interface KostProps {
     title: string;

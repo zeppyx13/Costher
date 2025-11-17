@@ -1,25 +1,15 @@
 import React from "react";
 import { TouchableOpacity, Text } from "react-native";
-import colors from "../../styles/colors";
+import loginStyles from "../../styles/login";
 
 const LoginButton = ({ onPress }: any) => {
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={{
-                backgroundColor: colors.deepMaroon,
-                paddingVertical: 14,
-                borderRadius: 12,
-                alignItems: "center",
-                marginTop: 28,
-            }}
+            style={loginStyles.ButtonStyle}
         >
             <Text
-                style={{
-                    fontFamily: "Poppins-SemiBold",
-                    color: colors.elegantGold,
-                    fontSize: 16,
-                }}
+                style={loginStyles.buttonText}
             >
                 Masuk
             </Text>

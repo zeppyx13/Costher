@@ -1,36 +1,22 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-import colors from "../../styles/colors";
-
+import loginStyles from "../../styles/login";
 const LoginLogo = () => {
     return (
-        <View style={{ alignItems: "center", marginBottom: 40 }}>
+        <View style={loginStyles.ContainerLogo}>
             <Image
                 source={require("../../assets/images/costher.png")}
-                style={{
-                    width: 90,
-                    height: 90,
-                    borderRadius: 45,
-                    marginBottom: 12,
-                }}
+                style={loginStyles.LogoImage}
                 resizeMode="cover"
             />
             <Text
-                style={{
-                    fontFamily: "Poppins-Bold",
-                    fontSize: 22,
-                    color: colors.deepMaroon,
-                }}
+                style={loginStyles.TitleText}
             >
                 Coasther
             </Text>
 
             <Text
-                style={{
-                    fontFamily: "Inter-Regular",
-                    fontSize: 13,
-                    color: colors.darkCharcoal,
-                }}
+                style={loginStyles.SubtitleText}
             >
                 Small Cost, Big Comfort
             </Text>
