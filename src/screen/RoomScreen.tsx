@@ -1,157 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
-import colors from '../styles/colors';
-import Navbar from '../components/Navbar';
-import Header from '../components/Header';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-interface Room {
-    id: string;
-    image: any;
-    price: string;
-    facilities: string[];
-    number: string;
-    available: boolean;
-}
-
-const rooms: Room[] = [
-    {
-        id: '1',
-        image: require('../assets/images/costher.png'),
-        price: 'Rp 2.200.000 / bulan',
-        facilities: ['AC', 'WiFi', 'Kamar Mandi Dalam', 'Lantai 1', 'Fully Furnished'],
-        number: 'Kamar 01',
-        available: true,
-    },
-    {
-        id: '2',
-        image: require('../assets/images/costher.png'),
-        price: 'Rp 1.200.000 / bulan',
-        facilities: ['Kipas Angin', 'WiFi', 'Kamar Mandi Luar', 'Lantai 1', 'Semi Furnished'],
-        number: 'Kamar 02',
-        available: false,
-    },
-    {
-        id: '3',
-        image: require('../assets/images/costher.png'),
-        price: 'Rp 2.200.000 / bulan',
-        facilities: ['AC', 'Meja Belajar', 'Kamar Mandi Dalam', 'Lantai 1', 'Fully Furnished'],
-        number: 'Kamar 03',
-        available: true,
-    },
-    {
-        id: '4',
-        image: require('../assets/images/costher.png'),
-        price: 'Rp 2.200.000 / bulan',
-        facilities: ['AC', 'Meja Belajar', 'Kamar Mandi Dalam', 'Lantai 1', 'Fully Furnished'],
-        number: 'Kamar 04',
-        available: true,
-    },
-];
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../components/Header";
+import Navbar from "../components/Navbar";
+import RoomList from "../components/Room/RoomList";
+import RoomFilterBar from "../components/Room/RoomFilterBar";
+import colors from "../styles/colors";
+import rooms from "../data/rooms";
 
 const RoomsScreen = () => {
-    const renderRoom = ({ item }: { item: Room }) => (
-        <View
-            style={{
-                backgroundColor: colors.lightGrey,
-                borderRadius: 12,
-                marginBottom: 16,
-                overflow: 'hidden',
-                marginTop: 16,
-            }}
-        >
-            <Image
-                source={item.image}
-                style={{ width: '100%', height: 180 }}
-                resizeMode="cover"
-            />
-
-            <View style={{ padding: 12 }}>
-                <Text
-                    style={{
-                        fontFamily: 'Poppins-SemiBold',
-                        fontSize: 16,
-                        color: colors.darkCharcoal,
-                    }}
-                >
-                    {item.number}
-                </Text>
-
-                <Text
-                    style={{
-                        fontFamily: 'Poppins-Bold',
-                        fontSize: 15,
-                        color: colors.deepMaroon,
-                        marginTop: 4,
-                    }}
-                >
-                    {item.price}
-                </Text>
-
-                {/* Facilities */}
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 }}>
-                    {item.facilities.map((f, i) => (
-                        <View
-                            key={i}
-                            style={{
-                                backgroundColor: colors.appBackground,
-                                borderRadius: 6,
-                                paddingVertical: 4,
-                                paddingHorizontal: 8,
-                                marginRight: 6,
-                                marginBottom: 6,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontFamily: 'Inter-Medium',
-                                    fontSize: 12,
-                                    color: colors.darkCharcoal,
-                                }}
-                            >
-                                {f}
-                            </Text>
-                        </View>
-                    ))}
-                </View>
-
-                <Text
-                    style={{
-                        fontFamily: 'Inter-Medium',
-                        fontSize: 13,
-                        marginTop: 4,
-                        color: item.available ? 'green' : 'gray',
-                    }}
-                >
-                    {item.available ? 'Tersedia' : 'Sudah Terisi'}
-                </Text>
-
-                {/* Booking Button */}
-                <TouchableOpacity
-                    disabled={!item.available}
-                    style={{
-                        backgroundColor: item.available
-                            ? colors.deepMaroon
-                            : colors.lightGrey,
-                        paddingVertical: 10,
-                        borderRadius: 8,
-                        alignItems: 'center',
-                        marginTop: 10,
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: item.available ? colors.elegantGold : '#aaa',
-                            fontFamily: 'Poppins-SemiBold',
-                        }}
-                    >
-                        {item.available ? 'Booking Sekarang' : 'Tidak Tersedia'}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-
     return (
         <SafeAreaView
             style={{
@@ -160,69 +16,13 @@ const RoomsScreen = () => {
                 paddingHorizontal: 16,
                 paddingTop: 10,
             }}
-            edges={['top', 'left', 'right']}
+            edges={["top", "left", "right"]}
         >
             <Header />
 
-            {/* FILTER BAR */}
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingRight: 10,
-                    paddingLeft: 4,
-                }}
-                style={{
-                    marginTop: 4,        // FIX TERPENTING
-                    marginBottom: 4,
-                }}
-            >
-                {[
-                    { label: 'Urutkan' },
-                    { label: 'Filter' },
-                    { label: 'Harga per Bulan' },
-                    { label: 'Fasilitas' },
-                ].map((item, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderWidth: 1,
-                            borderColor: '#D1D5DB',
-                            borderRadius: 30,
-                            paddingHorizontal: 16,
-                            paddingVertical: 6,
-                            height: 36,
-                            justifyContent: 'center',
-                            marginRight: 10,
-                            backgroundColor: colors.appBackground,
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: 'Inter-Medium',
-                                color: colors.darkCharcoal,
-                                fontSize: 13,
-                                lineHeight: 18,
-                            }}
-                        >
-                            {item.label}
-                        </Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+            <RoomFilterBar />
 
-            {/* ROOM LIST */}
-            <FlatList
-                data={rooms}
-                renderItem={renderRoom}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingBottom: 140,
-                }}
-            />
+            <RoomList data={rooms} />
 
             <Navbar />
         </SafeAreaView>
