@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import loginStyles from "../../styles/login";
 
-const LoginButton = ({ onPress }: any) => {
+const LoginButton = ({ onPress, title = "Masuk" }: any) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -11,7 +11,7 @@ const LoginButton = ({ onPress }: any) => {
             <Text
                 style={loginStyles.buttonText}
             >
-                Masuk
+                {title}
             </Text>
         </TouchableOpacity>
     );

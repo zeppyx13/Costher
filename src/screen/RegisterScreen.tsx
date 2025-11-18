@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    Image,
-    Platform,
-} from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";;
-import registerStyles from "../styles/register";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import colors from "../styles/colors";
+import loginStyles from "../styles/login";
+
+import LoginLogo from "../components/Login/LoginLogo";
+import LoginTitle from "../components/Login/LoginTitle";
+import LoginInput from "../components/Login/LoginInput";
+import LoginButton from "../components/Login/LoginButton";
 
 const RegisterScreen = ({ navigation }: any) => {
     const [name, setName] = useState("");
@@ -18,107 +18,59 @@ const RegisterScreen = ({ navigation }: any) => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", paddingBottom: 20 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.appBackground }}>
             <KeyboardAwareScrollView
-                contentContainerStyle={registerStyles.container}
+                contentContainerStyle={loginStyles.Container}
                 enableOnAndroid={true}
                 extraScrollHeight={Platform.OS === "ios" ? 20 : 80}
                 keyboardOpeningTime={0}
             >
-                {/* === LOGO & BRAND === */}
-                <View style={registerStyles.logoContainer}>
-                    <Image
-                        source={require("../assets/images/costher.png")}
-                        style={registerStyles.logoImage}
+                <LoginLogo />
+                <LoginTitle
+                    Title="Daftar Akun Baru"
+                    Subtitle="Buat akun untuk melanjutkan"
+                />
+                <View style={{ gap: 16 }}>
+
+                    <LoginInput
+                        label="Nama Lengkap"
+                        value={name}
+                        onChange={setName}
                     />
 
-                    <Text style={registerStyles.logoTitle}>Coasther</Text>
-                    <Text style={registerStyles.logoSubtitle}>
-                        Small Cost, Big Comfort
-                    </Text>
+                    <LoginInput
+                        label="Email"
+                        value={email}
+                        onChange={setEmail}
+                        keyboardType="email-address"
+                    />
+
+                    <LoginInput
+                        label="Password"
+                        value={password}
+                        onChange={setPassword}
+                        secure
+                    />
+
+                    <LoginInput
+                        label="Konfirmasi Password"
+                        value={confirmPassword}
+                        onChange={setConfirmPassword}
+                        secure
+                    />
                 </View>
-
-                {/* === TITLE === */}
-                <View style={registerStyles.titleContainer}>
-                    <Text style={registerStyles.registerTitle}>Daftar Akun</Text>
-
-                    <Text style={registerStyles.registerSubtitle}>
-                        Buat akun baru untuk melanjutkan
-                    </Text>
-                </View>
-
-                {/* === FORM === */}
-                <View style={{ gap: 16 }}>
-                    {/* Name */}
-                    <View>
-                        <Text style={registerStyles.inputLabel}>Nama Lengkap</Text>
-                        <TextInput
-                            placeholder="Masukkan nama Anda"
-                            placeholderTextColor="#9CA3AF"
-                            value={name}
-                            onChangeText={setName}
-                            style={registerStyles.inputField}
-                        />
-                    </View>
-
-                    {/* Email */}
-                    <View>
-                        <Text style={registerStyles.inputLabel}>Email</Text>
-                        <TextInput
-                            placeholder="Masukkan email Anda"
-                            placeholderTextColor="#9CA3AF"
-                            value={email}
-                            onChangeText={setEmail}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            style={registerStyles.inputField}
-                        />
-                    </View>
-
-                    {/* Password */}
-                    <View>
-                        <Text style={registerStyles.inputLabel}>Password</Text>
-                        <TextInput
-                            placeholder="Buat password"
-                            placeholderTextColor="#9CA3AF"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry
-                            style={registerStyles.inputField}
-                        />
-                    </View>
-
-                    {/* Confirm Password */}
-                    <View>
-                        <Text style={registerStyles.inputLabel}>
-                            Konfirmasi Password
-                        </Text>
-                        <TextInput
-                            placeholder="Ulangi password"
-                            placeholderTextColor="#9CA3AF"
-                            value={confirmPassword}
-                            onChangeText={setConfirmPassword}
-                            secureTextEntry
-                            style={registerStyles.inputField}
-                        />
-                    </View>
-                </View>
-
-                {/* === REGISTER BUTTON === */}
-                <TouchableOpacity style={registerStyles.buttonStyle}>
-                    <Text style={registerStyles.buttonText}>Daftar</Text>
-                </TouchableOpacity>
-
-                {/* === LOGIN LINK === */}
-                <View style={registerStyles.bottomRow}>
-                    <Text style={registerStyles.bottomText}>
-                        Sudah punya akun?{" "}
-                    </Text>
+                <LoginButton
+                    title="Daftar"
+                    onPress={() => console.log("Register pressed")}
+                />
+                <View style={loginStyles.registerContainer}>
+                    <Text style={loginStyles.registerText}>Sudah punya akun?</Text>
 
                     <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                        <Text style={registerStyles.bottomLink}>Masuk</Text>
+                        <Text style={loginStyles.registerLink}>Masuk</Text>
                     </TouchableOpacity>
                 </View>
+
             </KeyboardAwareScrollView>
         </SafeAreaView>
     );
