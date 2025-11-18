@@ -129,6 +129,57 @@ const homeStyles = StyleSheet.create({
         color: "green",
         fontSize: 12,
     },
+    mapCard: {
+        width: "100%",
+        height: 200,
+        borderRadius: 16,
+        overflow: "hidden",
+        marginBottom: 20,
+        backgroundColor: "#fff",
+
+        // shadow
+        elevation: 4,
+        shadowColor: "#000",
+        shadowOpacity: 0.12,
+        shadowOffset: { width: 0, height: 3 },
+        shadowRadius: 6,
+    },
+
+    mapButton: {
+        position: "absolute",
+        bottom: 12,
+        right: 12,
+        backgroundColor: "#7B1113",
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 10,
+    },
+
+    mapButtonText: {
+        color: "#C6A971",
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 12,
+    },
+
+    calloutBox: {
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 10,
+        elevation: 4,
+    },
+
+    calloutTitle: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 14,
+        color: "#7B1113",
+    },
+
+    calloutSubtitle: {
+        fontFamily: "Inter-Regular",
+        fontSize: 12,
+        color: "#555",
+    },
+
 });
 
 export default homeStyles;

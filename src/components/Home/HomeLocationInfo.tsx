@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, Linking } from "react-native";
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import homeStyles from "../../styles/home";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 
 const INIT_REGION = {
-    latitude: -8.669258,     // contoh koordinat di Tukad Badung
+    latitude: -8.669258,
     longitude: 115.216705,
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
@@ -19,34 +19,46 @@ const HomeLocationInfo = () => {
                 Jl. Tukad Badung No. 21, Denpasar Selatan
             </Text>
 
-            <View style={homeStyles.mapWrapper}>
+            <View style={homeStyles.mapCard}>
+                {/* MAP */}
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={homeStyles.map}
                     initialRegion={INIT_REGION}
-                    showsUserLocation={true}
-                    showsMyLocationButton={true}
-                    zoomEnabled={true}
-                    scrollEnabled={true}
+                    showsUserLocation
+                    showsPointsOfInterests
+                    showsCompass={false}
+                    toolbarEnabled={false}
                 >
-
-                    {/* Marker Lokasi Coasther */}
                     <Marker
                         coordinate={INIT_REGION}
                         pinColor="#7B1113"   // warna deep maroon brand Coasther
                         title="Coasther Kost"
                         description="Small Cost, Big Comfort"
                     >
-                        {/* Bubble Info */}
-                        <Callout>
-                            <View style={{ padding: 8 }}>
-                                <Text style={{ fontWeight: "bold" }}>Coasther Kost</Text>
-                                <Text>Small Cost, Big Comfort</Text>
+                        <Callout tooltip>
+                            <View style={homeStyles.calloutBox}>
+                                <Text style={homeStyles.calloutTitle}>Coasther Kost</Text>
+                                <Text style={homeStyles.calloutSubtitle}>
+                                    Small Cost, Big Comfort
+                                </Text>
                             </View>
                         </Callout>
                     </Marker>
-
                 </MapView>
+
+                {/* Overlay Button */}
+                <TouchableOpacity
+                    style={homeStyles.mapButton}
+                    onPress={() => {
+                        const lat = -8.669258;
+                        const lng = 115.216705;
+                        Linking.openURL(`geo:${lat},${lng}?q=${lat},${lng}(Coasther)`);
+                    }}
+                >
+                    <Text style={homeStyles.mapButtonText}>Buka di Google Maps</Text>
+                </TouchableOpacity>
+
             </View>
         </>
     );
