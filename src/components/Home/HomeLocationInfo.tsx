@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
+import Ionicons from '@react-native-vector-icons/ionicons';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
+import advantages from "../../data/advantage";
 import homeStyles from "../../styles/home";
 
 const INIT_REGION = {
@@ -9,7 +11,6 @@ const INIT_REGION = {
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
 };
-
 const HomeLocationInfo = () => {
     return (
         <>
@@ -27,6 +28,7 @@ const HomeLocationInfo = () => {
                     initialRegion={INIT_REGION}
                     showsUserLocation
                     showsPointsOfInterests
+                    showsMyLocationButton
                     showsCompass={false}
                     toolbarEnabled={false}
                 >
@@ -59,6 +61,23 @@ const HomeLocationInfo = () => {
                     <Text style={homeStyles.mapButtonText}>Buka di Google Maps</Text>
                 </TouchableOpacity>
 
+            </View>
+            {/* ADVANTAGE SECTION */}
+            <Text style={homeStyles.sectionTitle}>Keunggulan Lokasi</Text>
+
+            <View style={homeStyles.advantageContainer}>
+                {advantages.map((item, index) => (
+                    <View key={index} style={homeStyles.advantageItem}>
+                        <Ionicons
+                            name={item.icon}
+                            size={20}
+                            color="#7B1113"
+                        />
+                        <Text style={homeStyles.advantageText}>
+                            {item.text}
+                        </Text>
+                    </View>
+                ))}
             </View>
         </>
     );
