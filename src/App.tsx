@@ -8,7 +8,7 @@ import HomeScreen from "./screen/HomeScreen";
 import RoomsScreen from "./screen/RoomScreen";
 import LoginScreen from "./screen/LoginScreen";
 import RegisterScreen from "./screen/RegisterScreen";
-
+import ForgotPasswordScreen from "./screen/ForgotScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -34,6 +34,11 @@ const App = () => {
           <Stack.Screen
             name="Register"
             component={RegisterScreen}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>

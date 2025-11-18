@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }: any) => {
                         secure
                     />
                 </View>
-                <TouchableOpacity style={loginStyles.forgotContainer}>
+                <TouchableOpacity style={loginStyles.forgotContainer} onPress={() => navigation.navigate("ForgotPassword")}>
                     <Text
                         style={loginStyles.ForgotText}
                     >
@@ -53,6 +53,7 @@ const LoginScreen = ({ navigation }: any) => {
                 <View
                     style={loginStyles.registerContainer}
                 >
+
                     <Text
                         style={loginStyles.registerText}
                     >
