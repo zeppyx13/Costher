@@ -2,19 +2,19 @@ import React from "react";
 import { View, Text } from "react-native";
 import loginStyles from "../../styles/login";
 
-const LoginTitle = () => {
+const LoginTitle = ({ Title, Subtitle }: any) => {
     return (
         <View style={{ marginBottom: 30 }}>
             <Text
                 style={loginStyles.LoginTitle}
             >
-                Masuk ke Akun Anda
+                {Title}
             </Text>
 
             <Text
                 style={loginStyles.LoginSubtitle}
             >
-                Silakan login untuk melanjutkan
+                {Subtitle}
             </Text>
         </View>
     );

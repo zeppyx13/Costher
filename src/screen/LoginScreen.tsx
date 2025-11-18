@@ -4,11 +4,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import colors from "../styles/colors";
-
+import loginStyles from "../styles/login";
 import LoginLogo from "../components/Login/LoginLogo";
 import LoginTitle from "../components/Login/LoginTitle";
 import LoginInput from "../components/Login/LoginInput";
 import LoginButton from "../components/Login/LoginButton";
+import login from "../styles/login";
 
 const LoginScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState("");
@@ -17,23 +18,16 @@ const LoginScreen = ({ navigation }: any) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.appBackground }}>
             <KeyboardAwareScrollView
-                contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: "center",
-                    paddingHorizontal: 24,
-                    paddingVertical: 40,
-                }}
+                contentContainerStyle={loginStyles.Container}
                 enableOnAndroid={true}
                 extraScrollHeight={Platform.OS === "ios" ? 20 : 80}
                 keyboardOpeningTime={0}
             >
-                {/* === LOGO === */}
                 <LoginLogo />
-
-                {/* === TITLE === */}
-                <LoginTitle />
-
-                {/* === INPUT FORM === */}
+                <LoginTitle
+                    Title="Masuk ke Akun Anda"
+                    Subtitle="Silakan login untuk melanjutkan"
+                />
                 <View style={{ gap: 16 }}>
                     <LoginInput
                         label="Email"
@@ -48,56 +42,34 @@ const LoginScreen = ({ navigation }: any) => {
                         secure
                     />
                 </View>
-
-                {/* === LUPA PASSWORD === */}
-                <TouchableOpacity style={{ alignSelf: "flex-end", marginTop: 10 }}>
+                <TouchableOpacity style={loginStyles.forgotContainer}>
                     <Text
-                        style={{
-                            fontFamily: "Inter-Medium",
-                            fontSize: 13,
-                            color: colors.deepMaroon,
-                        }}
+                        style={loginStyles.ForgotText}
                     >
                         Lupa Password?
                     </Text>
                 </TouchableOpacity>
-
-                {/* === BUTTON LOGIN === */}
                 <LoginButton onPress={() => console.log("Login pressed")} />
 
-                {/* === REGISTER LINK === */}
                 <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        marginTop: 20,
-                    }}
+                    style={loginStyles.registerContainer}
                 >
                     <Text
-                        style={{
-                            fontFamily: "Inter-Regular",
-                            fontSize: 13,
-                            color: colors.darkCharcoal,
-                        }}
+                        style={loginStyles.registerText}
                     >
                         Belum punya akun?
                     </Text>
 
                     <TouchableOpacity onPress={() => navigation.navigate("Register")}>
                         <Text
-                            style={{
-                                fontFamily: "Inter-Medium",
-                                fontSize: 13,
-                                color: colors.deepMaroon,
-                                marginLeft: 4,
-                            }}
+                            style={loginStyles.registerLink}
                         >
                             Daftar Sekarang
                         </Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 };
 

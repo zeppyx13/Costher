@@ -4,6 +4,12 @@ import { Button, Text } from "@react-navigation/elements";
 
 const login = StyleSheet.create({
     // Logo styles
+    Container: {
+        flexGrow: 1,
+        justifyContent: "center",
+        paddingHorizontal: 24,
+        paddingVertical: 40,
+    },
     ContainerLogo: {
         alignItems: "center",
         marginBottom: 40,
@@ -66,6 +72,33 @@ const login = StyleSheet.create({
         alignItems: "center",
         marginTop: 28,
     },
+    // forgot password
+    forgotContainer: {
+        alignSelf: "flex-end",
+        marginTop: 10,
+    },
+    ForgotText: {
+        fontFamily: "Inter-Medium",
+        fontSize: 13,
+        color: colors.deepMaroon,
+    },
+    // link register
+    registerContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 20,
+    },
+    registerText: {
+        fontFamily: "Inter-Regular",
+        fontSize: 13,
+        color: colors.darkCharcoal,
+    },
+    registerLink: {
+        fontFamily: "Inter-Medium",
+        fontSize: 13,
+        color: colors.deepMaroon,
+        marginLeft: 4,
+    }
 });
 
 export default login;
