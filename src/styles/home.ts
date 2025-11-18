@@ -51,18 +51,26 @@ const homeStyles = StyleSheet.create({
     facilityScroll: {
         marginBottom: 20,
     },
-    facilityBadge: {
+    facilityBadgeEnhanced: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "rgba(198, 169, 113, 0.20)", // soft elegant gold
         paddingHorizontal: 14,
         paddingVertical: 10,
-        backgroundColor: colors.lightGrey,
         borderRadius: 20,
         marginRight: 10,
-    },
-    facilityText: {
-        fontFamily: "Inter-Medium",
-        color: colors.darkCharcoal,
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 3,
+        shadowOffset: { width: 0, height: 1 },
+        elevation: 2,
     },
 
+    facilityTextEnhanced: {
+        fontFamily: "Inter-Medium",
+        fontSize: 13,
+        color: "#2F2F2F",
+    },
     /* RECOMMENDATIONS */
     HeaderText: {
         fontFamily: "Poppins-SemiBold",
