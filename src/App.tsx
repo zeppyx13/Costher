@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import HomeScreen from "./screen/HomeScreen";
 import RoomsScreen from "./screen/RoomScreen";
 import LoginScreen from "./screen/LoginScreen";
+import RegisterScreen from "./screen/RegisterScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,11 @@ const App = () => {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>

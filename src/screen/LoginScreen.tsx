@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Platform } from "react-native";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import colors from "../styles/colors";
 
 import LoginLogo from "../components/Login/LoginLogo";
 import LoginTitle from "../components/Login/LoginTitle";
 import LoginInput from "../components/Login/LoginInput";
 import LoginButton from "../components/Login/LoginButton";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     return (
-        <SafeAreaView >
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.appBackground }}>
             <KeyboardAwareScrollView
                 contentContainerStyle={{
                     flexGrow: 1,
@@ -27,11 +27,20 @@ const LoginScreen = () => {
                 extraScrollHeight={Platform.OS === "ios" ? 20 : 80}
                 keyboardOpeningTime={0}
             >
+                {/* === LOGO === */}
                 <LoginLogo />
+
+                {/* === TITLE === */}
                 <LoginTitle />
 
+                {/* === INPUT FORM === */}
                 <View style={{ gap: 16 }}>
-                    <LoginInput label="Email" value={email} onChange={setEmail} />
+                    <LoginInput
+                        label="Email"
+                        value={email}
+                        onChange={setEmail}
+                    />
+
                     <LoginInput
                         label="Password"
                         value={password}
@@ -40,6 +49,7 @@ const LoginScreen = () => {
                     />
                 </View>
 
+                {/* === LUPA PASSWORD === */}
                 <TouchableOpacity style={{ alignSelf: "flex-end", marginTop: 10 }}>
                     <Text
                         style={{
@@ -52,8 +62,10 @@ const LoginScreen = () => {
                     </Text>
                 </TouchableOpacity>
 
+                {/* === BUTTON LOGIN === */}
                 <LoginButton onPress={() => console.log("Login pressed")} />
 
+                {/* === REGISTER LINK === */}
                 <View
                     style={{
                         flexDirection: "row",
@@ -71,7 +83,7 @@ const LoginScreen = () => {
                         Belum punya akun?
                     </Text>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Register")}>
                         <Text
                             style={{
                                 fontFamily: "Inter-Medium",
@@ -84,7 +96,7 @@ const LoginScreen = () => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAwareScrollView >
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     );
 };
