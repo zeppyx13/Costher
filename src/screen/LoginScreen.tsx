@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation }: any) => {
                         Lupa Password?
                     </Text>
                 </TouchableOpacity>
-                <LoginButton onPress={() => console.log("Login pressed")} />
+                <LoginButton onPress={() => navigation.navigate("Dashboard")} />
 
                 <View
                     style={loginStyles.registerContainer}

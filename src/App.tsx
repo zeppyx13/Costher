@@ -9,6 +9,7 @@ import RoomsScreen from "./screen/RoomScreen";
 import LoginScreen from "./screen/LoginScreen";
 import RegisterScreen from "./screen/RegisterScreen";
 import ForgotPasswordScreen from "./screen/ForgotScreen";
+import DashboardScreen from "./screen/dashboard/DashboardScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -40,6 +41,11 @@ const App = () => {
             name="ForgotPassword"
             component={ForgotPasswordScreen}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="Dashboard"
+            component={DashboardScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
