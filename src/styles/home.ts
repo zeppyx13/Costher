@@ -46,7 +46,20 @@ const homeStyles = StyleSheet.create({
         color: "#6B7280",
         fontFamily: "Inter-Regular",
     },
+    mapWrapper: {
+        width: "100%",
+        height: 180,
+        backgroundColor: "#E5E7EB",
+        borderRadius: 16,
+        overflow: "hidden",
+        marginTop: 10,
+        marginBottom: 20,
+    },
 
+    map: {
+        width: "100%",
+        height: "100%",
+    },
     /* FACILITIES */
     facilityScroll: {
         marginBottom: 20,
