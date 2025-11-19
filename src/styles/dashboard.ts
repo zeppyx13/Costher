@@ -199,16 +199,50 @@ const dashboard = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
     },
+    announcementBox: {
+        backgroundColor: "#FFF",
+        padding: 18,
+        borderRadius: 16,
+        marginTop: 20,
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+    },
+
+    announcementRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 10,
+    },
+
+    iconNotice: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: "#F8F0F0",
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 12,
+    },
+
     announcementTitle: {
         fontFamily: "Poppins-SemiBold",
-        fontSize: 14,
+        fontSize: 15,
         color: colors.darkCharcoal,
     },
+
     announcementDesc: {
         fontFamily: "Inter-Regular",
         fontSize: 13,
-        color: "#6B7280",
         marginTop: 2,
+        color: "#6B7280",
+    },
+
+    divider: {
+        height: 1,
+        backgroundColor: "#E5E7EB",
+        marginVertical: 8,
     },
 
     /* ============================
