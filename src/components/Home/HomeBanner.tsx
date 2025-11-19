@@ -1,15 +1,34 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import homeStyles from "../../styles/home";
 
-const HomeBanner = () => {
+const HomeBanner = ({ navigation }: any) => {
     return (
-        <View style={homeStyles.bannerContainer}>
+        <View style={homeStyles.bannerWrapper}>
+            {/* Gambar Banner */}
             <Image
                 source={require("../../assets/images/costher.png")}
                 style={homeStyles.bannerImage}
                 resizeMode="cover"
             />
+
+            {/* Overlay Gelap Transparan */}
+            <View style={homeStyles.bannerOverlay} />
+
+            {/* Konten Text di Atas Banner */}
+            <View style={homeStyles.bannerContent}>
+                <Text style={homeStyles.bannerTitle}>Selamat Datang di Coasther</Text>
+                <Text style={homeStyles.bannerSubtitle}>
+                    Kost nyaman, aman, dan penuh fasilitas lengkap
+                </Text>
+
+                <TouchableOpacity
+                    style={homeStyles.bannerButton}
+                    onPress={() => navigation?.navigate("Room")}
+                >
+                    <Text style={homeStyles.bannerButtonText}>Lihat Kamar</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };

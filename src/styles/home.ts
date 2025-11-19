@@ -20,6 +20,54 @@ const homeStyles = StyleSheet.create({
         width: "100%",
         height: "100%",
     },
+    bannerWrapper: {
+        width: "100%",
+        height: 180,
+        borderRadius: 16,
+        overflow: "hidden",
+        marginBottom: 20,
+        position: "relative",
+    },
+    bannerOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: "rgba(0,0,0,0.35)",
+    },
+
+    bannerContent: {
+        position: "absolute",
+        bottom: 20,
+        left: 20,
+        right: 20,
+    },
+
+    bannerTitle: {
+        fontFamily: "Poppins-Bold",
+        fontSize: 20,
+        color: "#FFFFFF",
+        marginBottom: 4,
+    },
+
+    bannerSubtitle: {
+        fontFamily: "Inter-Regular",
+        fontSize: 13,
+        color: "#F0F0F0",
+        marginBottom: 12,
+    },
+
+    bannerButton: {
+        backgroundColor: "#FFFFFF",
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        alignSelf: "flex-start",
+        borderRadius: 10,
+    },
+
+    bannerButtonText: {
+        fontFamily: "Poppins-SemiBold",
+        color: "#7B1113", // deep maroon
+        fontSize: 13,
+    },
+
     // LOCATION INFO
     sectionTitle: {
         fontFamily: "Poppins-SemiBold",
