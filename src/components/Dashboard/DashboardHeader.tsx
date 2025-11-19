@@ -11,7 +11,7 @@ const DashboardHeader = () => {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={dashboardStyles.headerName}>Gung Nanda</Text>
+                <Text style={dashboardStyles.headerName}>Dewa Dharma</Text>
                 <Text style={dashboardStyles.headerRoom}>Kamar 03 — Lantai 1</Text>
             </View>
 

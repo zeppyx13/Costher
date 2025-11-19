@@ -10,6 +10,7 @@ import LoginScreen from "./screen/LoginScreen";
 import RegisterScreen from "./screen/RegisterScreen";
 import ForgotPasswordScreen from "./screen/ForgotScreen";
 import DashboardScreen from "./screen/dashboard/DashboardScreen";
+import PaymentScreen from "./screen/dashboard/PaymentScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -45,6 +46,11 @@ const App = () => {
           <Stack.Screen
             name="Dashboard"
             component={DashboardScreen}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="Payment"
+            component={PaymentScreen}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>

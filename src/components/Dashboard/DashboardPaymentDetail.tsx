@@ -49,7 +49,7 @@ const DashboardPaymentDetail = ({ onPayPress }: any) => {
                 style={dashboardStyles.payButton}
                 onPress={onPayPress}
             >
-                <Text style={dashboardStyles.payButtonText}>Bayar Sekarang</Text>
+                <Text style={dashboardStyles.payButtonText}>Detail Pembayaran</Text>
             </TouchableOpacity>
         </View>
     );
