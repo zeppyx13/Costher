@@ -2,7 +2,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 const advantages: { icon: React.ComponentProps<typeof Ionicons>['name']; text: string }[] = [
     {
         icon: "school-outline",
-        text: "Dekat Kampus STIKOM Bali (±5 menit)",
+        text: "Dekat Kampus STIKOM Bali dan Udayana (±7 menit)",
     },
     {
         icon: "navigate-outline",
