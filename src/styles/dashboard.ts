@@ -244,6 +244,82 @@ const dashboard = StyleSheet.create({
         fontSize: 14,
         color: colors.darkCharcoal,
     },
+    /* === PAYMENT BOX === */
+    paymentBox: {
+        backgroundColor: "#FFF",
+        padding: 20,
+        borderRadius: 16,
+        marginTop: 20,
+        marginBottom: 20,
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+    },
+    paymentRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 14,
+    },
+
+    iconCircle: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#F5F5F5",
+        marginRight: 12,
+    },
+
+    paymentLabel: {
+        flex: 1,
+        fontFamily: "Inter-Medium",
+        fontSize: 14,
+        color: colors.darkCharcoal,
+    },
+
+    paymentValue: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 15,
+        color: colors.deepMaroon,
+    },
+
+    /* === TOTAL === */
+    paymentTotalRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
+        paddingTop: 12,
+        borderTopWidth: 1,
+        borderColor: "#E5E7EB",
+        marginBottom: 20,
+    },
+
+    totalLabel: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 15,
+        color: colors.darkCharcoal,
+    },
+    totalValue: {
+        fontFamily: "Poppins-Bold",
+        fontSize: 18,
+        color: colors.deepMaroon,
+    },
+
+    /* === BUTTON === */
+    payButton: {
+        backgroundColor: colors.deepMaroon,
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+
+    payButtonText: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 16,
+        color: colors.elegantGold,
+    },
 });
 
 export default dashboard;

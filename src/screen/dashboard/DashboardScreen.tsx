@@ -9,9 +9,9 @@ import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import DashboardSummary from "../../components/Dashboard/DashboardSummary";
 import DashboardAnnouncement from "../../components/Dashboard/DashboardAnnouncement";
 import DashboardPaymentHistory from "../../components/Dashboard/DashboardPaymentHistory";
-import DashboardQuickActions from "../../components/Dashboard/DashboardQuickActions";  // FIXED & CONSISTENT
-
-const DashboardScreen = () => {
+import DashboardQuickActions from "../../components/Dashboard/DashboardQuickActions";
+import DashboardPaymentDetail from "../../components/Dashboard/DashboardPaymentDetail";
+const DashboardScreen = ({ navigation }: any) => {
     return (
         <SafeAreaView style={dashboardStyles.container}>
             <ScrollView
@@ -20,6 +20,7 @@ const DashboardScreen = () => {
             >
                 <DashboardHeader />
                 <DashboardSummary />
+                <DashboardPaymentDetail onPayPress={() => navigation.navigate("Payment")} />
                 <DashboardPaymentHistory />
                 <DashboardAnnouncement />
                 <DashboardQuickActions />
