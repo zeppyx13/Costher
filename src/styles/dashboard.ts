@@ -208,6 +208,7 @@ const dashboard = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.08,
         shadowRadius: 4,
+        marginBottom: 20,
     },
 
     announcementRow: {
@@ -262,7 +263,39 @@ const dashboard = StyleSheet.create({
         fontFamily: "Inter-Medium",
         fontSize: 13,
     },
+    paymentIcon: {
+        width: 40,
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 12,
+        borderRadius: 20,
+        backgroundColor: "#F5F5F5",
+    },
 
+    paymentMonth: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 15,
+        color: colors.darkCharcoal,
+    },
+
+    paymentAmount: {
+        fontFamily: "Inter-Regular",
+        fontSize: 13,
+        marginTop: 3,
+        color: "#6B7280",
+    },
+
+    paymentBadge: {
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 12,
+    },
+
+    paymentBadgeText: {
+        fontFamily: "Poppins-Medium",
+        fontSize: 12,
+    },
     /* ============================
        🔹 QUICK ACTIONS
     ============================ */

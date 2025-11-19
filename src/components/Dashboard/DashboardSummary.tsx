@@ -6,7 +6,6 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 const DashboardSummary = () => {
     return (
         <View style={dashboardStyles.summaryWrapper}>
-            {/* ====== ROW 1: AIR & LISTRIK ====== */}
             <View style={dashboardStyles.row}>
                 {/* Air */}
                 <View style={dashboardStyles.cardSmall}>
@@ -15,7 +14,6 @@ const DashboardSummary = () => {
                     <Text style={dashboardStyles.cardValue}>55 m³</Text>
                 </View>
 
-                {/* Listrik */}
                 <View style={dashboardStyles.cardSmall}>
                     <Ionicons name="flash" size={28} color="#7B1113" />
                     <Text style={dashboardStyles.cardLabel}>Listrik</Text>
@@ -23,11 +21,10 @@ const DashboardSummary = () => {
                 </View>
             </View>
 
-            {/* ====== ROW 2: TAGIHAN ====== */}
             <View style={dashboardStyles.cardLarge}>
                 <Ionicons name="wallet" size={32} color="#7B1113" />
                 <Text style={dashboardStyles.cardLabelLarge}>Total Tagihan Bulan Ini</Text>
-                <Text style={dashboardStyles.cardValueLarge}>Rp 2.450.000</Text>
+                <Text style={dashboardStyles.cardValueLarge}>Rp 2.320.000</Text>
             </View>
         </View>
     );
