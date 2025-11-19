@@ -21,7 +21,6 @@ const HomeLocationInfo = () => {
             </Text>
 
             <View style={homeStyles.mapCard}>
-                {/* MAP */}
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={homeStyles.map}
@@ -34,7 +33,7 @@ const HomeLocationInfo = () => {
                 >
                     <Marker
                         coordinate={INIT_REGION}
-                        pinColor="#7B1113"   // warna deep maroon brand Coasther
+                        pinColor="#7B1113"
                         title="Coasther Kost"
                         description="Small Cost, Big Comfort"
                     >
@@ -49,7 +48,6 @@ const HomeLocationInfo = () => {
                     </Marker>
                 </MapView>
 
-                {/* Overlay Button */}
                 <TouchableOpacity
                     style={homeStyles.mapButton}
                     onPress={() => {
@@ -62,7 +60,7 @@ const HomeLocationInfo = () => {
                 </TouchableOpacity>
 
             </View>
-            {/* ADVANTAGE SECTION */}
+
             <Text style={homeStyles.sectionTitle}>Keunggulan Lokasi</Text>
 
             <View style={homeStyles.advantageContainer}>

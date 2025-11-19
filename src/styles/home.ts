@@ -43,7 +43,7 @@ const homeStyles = StyleSheet.create({
     bannerTitle: {
         fontFamily: "Poppins-Bold",
         fontSize: 20,
-        color: "#FFFFFF",
+        color: colors.appBackground,
         marginBottom: 4,
     },
 
@@ -55,7 +55,7 @@ const homeStyles = StyleSheet.create({
     },
 
     bannerButton: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.appBackground,
         paddingVertical: 8,
         paddingHorizontal: 16,
         alignSelf: "flex-start",
@@ -64,7 +64,7 @@ const homeStyles = StyleSheet.create({
 
     bannerButtonText: {
         fontFamily: "Poppins-SemiBold",
-        color: "#7B1113", // deep maroon
+        color: colors.deepMaroon, // deep maroon
         fontSize: 13,
     },
 
@@ -114,7 +114,7 @@ const homeStyles = StyleSheet.create({
 
         // shadow
         elevation: 4,
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOpacity: 0.12,
         shadowOffset: { width: 0, height: 3 },
         shadowRadius: 6,
@@ -124,7 +124,7 @@ const homeStyles = StyleSheet.create({
         position: "absolute",
         bottom: 12,
         right: 12,
-        backgroundColor: "#7B1113",
+        backgroundColor: colors.deepMaroon,
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 10,
@@ -146,7 +146,7 @@ const homeStyles = StyleSheet.create({
     calloutTitle: {
         fontFamily: "Poppins-SemiBold",
         fontSize: 14,
-        color: "#7B1113",
+        color: colors.deepMaroon,
     },
 
     calloutSubtitle: {
@@ -186,12 +186,12 @@ const homeStyles = StyleSheet.create({
     facilityBadgeEnhanced: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "rgba(198, 169, 113, 0.20)", // soft elegant gold
+        backgroundColor: "rgba(198, 169, 113, 0.20)",
         paddingHorizontal: 14,
         paddingVertical: 10,
         borderRadius: 20,
         marginRight: 10,
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOpacity: 0.08,
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 1 },

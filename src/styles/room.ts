@@ -62,10 +62,24 @@ const roomStyles = StyleSheet.create({
         marginTop: 6,
         marginBottom: 6,
     },
+    filterText: {
+        fontFamily: "Inter-Medium",
+        color: colors.darkCharcoal,
+        fontSize: 13,
+        lineHeight: 18,
+    },
+    filterWrapper: {
+        marginTop: 4,
+        marginBottom: 8,
+    },
+
     filterContainer: {
         paddingRight: 10,
         paddingLeft: 4,
+        flexDirection: "row",
+        alignItems: "center",
     },
+
     filterChip: {
         flexDirection: "row",
         alignItems: "center",
@@ -73,18 +87,21 @@ const roomStyles = StyleSheet.create({
         borderColor: "#D1D5DB",
         borderRadius: 30,
         paddingHorizontal: 16,
-        paddingVertical: 6,
-        height: 36,
-        justifyContent: "center",
+        paddingVertical: 8,
         marginRight: 10,
         backgroundColor: colors.appBackground,
+        elevation: 1,
     },
-    filterText: {
-        fontFamily: "Inter-Medium",
-        color: colors.darkCharcoal,
-        fontSize: 13,
-        lineHeight: 18,
+
+    filterChipActive: {
+        backgroundColor: colors.deepMaroon,
+        borderColor: colors.deepMaroon,
     },
+
+    filterTextActive: {
+        color: colors.appBackground,
+    },
+
 });
 
 export default roomStyles;

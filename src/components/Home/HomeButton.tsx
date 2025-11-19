@@ -6,8 +6,8 @@ import {
 import colors from "../../styles/colors";
 
 interface HomeButtonProps {
-    label?: string;        // opsional, default: "Lihat Semua Kamar"
-    onPress: () => void;   // fungsi handler
+    label?: string;
+    onPress: () => void
 }
 
 const HomeButton: React.FC<HomeButtonProps> = ({ label = "Lihat Semua Kamar", onPress }) => {

@@ -17,7 +17,6 @@ const RoomCard = ({ item }: any) => {
 
                 <Text style={roomStyles.roomPrice}>{item.price}</Text>
 
-                {/* Facilities */}
                 <View style={roomStyles.facilityContainer}>
                     {item.facilities.map((f: string, i: number) => (
                         <View key={i} style={roomStyles.facilityBadge}>

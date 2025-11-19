@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowOffset: { width: 0, height: -2 },
         shadowRadius: 6,
-        elevation: 6, // Android shadow
+        elevation: 6,
     },
     navItem: {
         alignItems: 'center',

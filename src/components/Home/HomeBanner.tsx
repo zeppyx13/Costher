@@ -5,17 +5,14 @@ import homeStyles from "../../styles/home";
 const HomeBanner = ({ navigation }: any) => {
     return (
         <View style={homeStyles.bannerWrapper}>
-            {/* Gambar Banner */}
             <Image
                 source={require("../../assets/images/costher.png")}
                 style={homeStyles.bannerImage}
                 resizeMode="cover"
             />
 
-            {/* Overlay Gelap Transparan */}
             <View style={homeStyles.bannerOverlay} />
 
-            {/* Konten Text di Atas Banner */}
             <View style={homeStyles.bannerContent}>
                 <Text style={homeStyles.bannerTitle}>Selamat Datang di Coasther</Text>
                 <Text style={homeStyles.bannerSubtitle}>

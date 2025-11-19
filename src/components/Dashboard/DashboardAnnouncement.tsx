@@ -10,7 +10,6 @@ const DashboardAnnouncement = () => {
 
             <Text style={dashboardStyles.sectionTitle}>Pengumuman Kost</Text>
 
-            {/* ITEM 1 */}
             <View style={dashboardStyles.announcementRow}>
                 <View style={dashboardStyles.iconNotice}>
                     <Ionicons name="warning" size={20} color={colors.deepMaroon} />
@@ -28,7 +27,6 @@ const DashboardAnnouncement = () => {
 
             <View style={dashboardStyles.divider} />
 
-            {/* ITEM 2 */}
             <View style={dashboardStyles.announcementRow}>
                 <View style={dashboardStyles.iconNotice}>
                     <Ionicons name="calendar" size={20} color={colors.deepMaroon} />
