@@ -161,35 +161,6 @@ const dashboard = StyleSheet.create({
         color: colors.deepMaroon,
         marginBottom: 12,
     },
-
-    /* ============================
-       🔹 ROOM INFO
-    ============================ */
-    roomLabel: {
-        fontFamily: "Poppins-SemiBold",
-        fontSize: 15,
-        color: colors.darkCharcoal,
-    },
-    roomDetail: {
-        fontFamily: "Inter-Regular",
-        fontSize: 13,
-        color: "#6B7280",
-        marginTop: 4,
-        lineHeight: 18,
-    },
-    detailButton: {
-        backgroundColor: colors.deepMaroon,
-        paddingVertical: 12,
-        borderRadius: 10,
-        alignItems: "center",
-        marginTop: 14,
-    },
-    detailButtonText: {
-        fontFamily: "Poppins-SemiBold",
-        fontSize: 14,
-        color: colors.elegantGold,
-    },
-
     /* ============================
        🔹 ANNOUNCEMENT
     ============================ */
@@ -299,25 +270,50 @@ const dashboard = StyleSheet.create({
     /* ============================
        🔹 QUICK ACTIONS
     ============================ */
-    quickItem: {
-        backgroundColor: colors.lightGrey,
-        paddingVertical: 14,
-        paddingHorizontal: 14,
-        borderRadius: 12,
-        marginBottom: 10,
+    quickBox: {
+        backgroundColor: "#FFF",
+        padding: 18,
+        borderRadius: 16,
+        marginTop: 10,
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
     },
+
+    quickGrid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        marginTop: 14,
+    },
+
+    quickCard: {
+        width: "48%",
+        backgroundColor: "#F9F9F9",
+        paddingVertical: 18,
+        borderRadius: 14,
+        marginBottom: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
+    },
+
     quickText: {
         fontFamily: "Inter-Medium",
-        fontSize: 14,
+        fontSize: 13,
         color: colors.darkCharcoal,
+        textAlign: "center",
     },
+
     /* === PAYMENT BOX === */
     paymentBox: {
         backgroundColor: "#FFF",
         padding: 20,
         borderRadius: 16,
         marginTop: 20,
-        marginBottom: 20,
+        marginBottom: 10,
         elevation: 3,
         shadowColor: "#000",
         shadowOpacity: 0.08,
