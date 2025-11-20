@@ -229,6 +229,33 @@ const homeStyles = StyleSheet.create({
         fontSize: 15,
         color: colors.darkCharcoal,
     },
+    // / Rating Row
+    recommendRatingRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 6,
+        paddingHorizontal: 3,
+        paddingVertical: 4,
+        borderRadius: 8,
+        alignSelf: "flex-start",
+    },
+    recommendStar: {
+        marginRight: 6,
+        marginTop: 5,
+    },
+    recommendRatingText: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 13.5,
+        color: colors.deepMaroon,
+        marginRight: 6,
+        marginLeft: 4,
+        marginTop: 5,
+    },
+    recommendReviewCount: {
+        fontFamily: "Inter-Regular",
+        fontSize: 12,
+        color: "#666",
+    },
     recommendPrice: {
         fontFamily: "Poppins-Bold",
         fontSize: 14,
