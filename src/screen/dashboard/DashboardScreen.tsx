@@ -1,10 +1,9 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import dashboardStyles from "../../styles/dashboard";
 
-// === COMPONENTS ===
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import DashboardSummary from "../../components/Dashboard/DashboardSummary";
 import DashboardAnnouncement from "../../components/Dashboard/DashboardAnnouncement";

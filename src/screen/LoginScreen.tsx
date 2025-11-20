@@ -9,7 +9,6 @@ import LoginLogo from "../components/Login/LoginLogo";
 import LoginTitle from "../components/Login/LoginTitle";
 import LoginInput from "../components/Login/LoginInput";
 import LoginButton from "../components/Login/LoginButton";
-
 const LoginScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
