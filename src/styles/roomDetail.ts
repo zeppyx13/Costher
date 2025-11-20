@@ -22,11 +22,10 @@ export default StyleSheet.create({
 
     headerTitle: {
         flex: 1,
-        textAlign: "center",
         fontFamily: "Poppins-SemiBold",
         fontSize: 16,
         color: colors.deepMaroon,
-        marginRight: 36,
+        marginLeft: 8,
     },
 
     roomImage: {

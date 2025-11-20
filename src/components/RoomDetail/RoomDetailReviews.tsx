@@ -3,21 +3,11 @@ import { View, Text } from "react-native";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import colors from "../../styles/colors";
 import roomDetailStyles from "../../styles/roomDetail";
+import reviews from "../../data/reviews";
 
-const reviews = [
-    {
-        name: "Bagus Pratama",
-        review: "Kamar nyaman, lokasi dekat kampus dan fasilitas lengkap.",
-        rating: 5,
-    },
-    {
-        name: "Sinta Lestari",
-        review: "Pengelola ramah, area bersih, suasana tenang.",
-        rating: 4,
-    },
-];
+const RoomDetailReviews = ({ id }: any) => {
+    const filteredReviews = reviews.filter(review => review.kamar === id);
 
-const RoomDetailReviews = () => {
     return (
         <View style={roomDetailStyles.section}>
             <Text style={roomDetailStyles.sectionTitle}>Ulasan Penghuni</Text>
@@ -28,7 +18,7 @@ const RoomDetailReviews = () => {
                 <Text style={roomDetailStyles.reviewTotal}>(28 ulasan)</Text>
             </View>
 
-            {reviews.map((item, index) => (
+            {filteredReviews.map((item, index) => (
                 <View key={index} style={roomDetailStyles.reviewItem}>
                     <View style={roomDetailStyles.reviewHeader}>
                         <Ionicons
