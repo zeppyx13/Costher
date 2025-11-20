@@ -7,15 +7,15 @@ import reviews from "../../data/reviews";
 
 const RoomDetailReviews = ({ id }: any) => {
     const filteredReviews = reviews.filter(review => review.kamar === id);
-
+    const averageRating = filteredReviews.reduce((acc, review) => acc + review.rating, 0) / filteredReviews.length || 0;
     return (
         <View style={roomDetailStyles.section}>
             <Text style={roomDetailStyles.sectionTitle}>Ulasan Penghuni</Text>
 
             <View style={roomDetailStyles.reviewSummary}>
                 <Ionicons name="star" size={20} color="#E8B400" />
-                <Text style={roomDetailStyles.reviewScore}>4.6</Text>
-                <Text style={roomDetailStyles.reviewTotal}>(28 ulasan)</Text>
+                <Text style={roomDetailStyles.reviewScore}>{averageRating.toFixed(1)}</Text>
+                <Text style={roomDetailStyles.reviewTotal}>({filteredReviews.length} ulasan)</Text>
             </View>
 
             {filteredReviews.map((item, index) => (
