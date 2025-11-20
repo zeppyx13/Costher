@@ -14,7 +14,7 @@ const RoomCard = ({ item }: any) => {
             />
 
             <View style={roomStyles.cardContent}>
-                <Text style={roomStyles.roomNumber}>{item.number}</Text>
+                <Text style={roomStyles.roomNumber}>Kamar {item.number}</Text>
 
                 <Text style={roomStyles.roomPrice}>{item.price}</Text>
 

@@ -5,7 +5,7 @@ import roomDetailStyles from "../../styles/roomDetail";
 const RoomDetailInfo = ({ room }: any) => {
     return (
         <View style={roomDetailStyles.infoSection}>
-            <Text style={roomDetailStyles.roomName}>{room.number}</Text>
+            <Text style={roomDetailStyles.roomName}>Kamar {room.number}</Text>
             <Text style={roomDetailStyles.price}>{room.price}</Text>
         </View>
     );
