@@ -258,7 +258,7 @@ const homeStyles = StyleSheet.create({
     },
     recommendPrice: {
         fontFamily: "Poppins-Bold",
-        fontSize: 14,
+        fontSize: 16,
         color: colors.deepMaroon,
         marginTop: 4,
     },
