@@ -248,6 +248,34 @@ const homeStyles = StyleSheet.create({
         color: "green",
         fontSize: 12,
     },
+    // Review Section
+    reviewCard: {
+        width: 250,
+        padding: 16,
+        marginRight: 14,
+        backgroundColor: colors.appBackground,
+        borderRadius: 12,
+
+        elevation: 3,
+        shadowColor: "#9c9898ff",
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+    },
+
+    reviewName: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 14,
+        color: "#2F2F2F",
+    },
+
+    reviewText: {
+        fontFamily: "Inter-Regular",
+        fontSize: 13,
+        color: "#555",
+        marginTop: 10,
+        lineHeight: 18,
+    },
+
 
 });
 
