@@ -11,6 +11,7 @@ import RegisterScreen from "./screen/RegisterScreen";
 import ForgotPasswordScreen from "./screen/ForgotScreen";
 import DashboardScreen from "./screen/dashboard/DashboardScreen";
 import PaymentScreen from "./screen/dashboard/PaymentScreen";
+import DetailRoomScreen from "./screen/DetailRoomScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -52,6 +53,11 @@ const App = () => {
             name="Payment"
             component={PaymentScreen}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="DetailRoom"
+            component={DetailRoomScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

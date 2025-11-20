@@ -7,6 +7,7 @@ const rooms = [
         number: 'Kamar 01',
         waterUsage: '48',
         electricityUsage: '130',
+        description: 'Kamar nyaman dengan fasilitas lengkap dan pemandangan indah.',
         available: true,
     },
     {
@@ -17,6 +18,7 @@ const rooms = [
         number: 'Kamar 02',
         waterUsage: '42',
         electricityUsage: '110',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: false,
     },
     {
@@ -27,6 +29,7 @@ const rooms = [
         number: 'Kamar 03',
         waterUsage: '55',
         electricityUsage: '125',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
     {
@@ -37,6 +40,7 @@ const rooms = [
         number: 'Kamar 04',
         waterUsage: '53',
         electricityUsage: '128',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
     {
@@ -47,6 +51,7 @@ const rooms = [
         number: 'Kamar 05',
         waterUsage: '50',
         electricityUsage: '132',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: false,
     },
     {
@@ -57,6 +62,7 @@ const rooms = [
         number: 'Kamar 06',
         waterUsage: '47',
         electricityUsage: '118',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
     {
@@ -67,6 +73,7 @@ const rooms = [
         number: 'Kamar 07',
         waterUsage: '52',
         electricityUsage: '124',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
     {
@@ -87,6 +94,7 @@ const rooms = [
         number: 'Kamar 09',
         waterUsage: '57',
         electricityUsage: '135',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
     {
@@ -97,6 +105,7 @@ const rooms = [
         number: 'Kamar 10',
         waterUsage: '60',
         electricityUsage: '140',
+        description: 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.',
         available: true,
     },
 ];

@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import roomStyles from "../../styles/room";
-
+import { useNavigation } from "@react-navigation/native";
 const RoomCard = ({ item }: any) => {
+    const navigation = useNavigation() as any;
     return (
         <View style={roomStyles.cardContainer}>
             <Image
@@ -40,6 +41,11 @@ const RoomCard = ({ item }: any) => {
                         roomStyles.bookingButton,
                         { backgroundColor: item.available ? colors.deepMaroon : colors.lightGrey },
                     ]}
+                    onPress={() => {
+                        if (item.available) {
+                            navigation.navigate("DetailRoom", { room: item });
+                        }
+                    }}
                 >
                     <Text
                         style={{
@@ -50,6 +56,7 @@ const RoomCard = ({ item }: any) => {
                         {item.available ? "Booking Sekarang" : "Tidak Tersedia"}
                     </Text>
                 </TouchableOpacity>
+
             </View>
         </View>
     );
