@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import profileStyles from "../../styles/profile";
-import colors from "../../styles/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileCard = ({ data }: any) => {
+    const navigation = useNavigation() as any;
     return (
         <View style={profileStyles.cardContainer}>
             <Image
@@ -15,7 +16,7 @@ const ProfileCard = ({ data }: any) => {
 
             <Text style={profileStyles.cardEmail}>{data.email}</Text>
 
-            <TouchableOpacity style={profileStyles.editButton}>
+            <TouchableOpacity style={profileStyles.editButton} onPress={() => navigation.navigate("EditProfile", { data })}>
                 <Text style={profileStyles.editButtonText}>Edit Profil</Text>
             </TouchableOpacity>
         </View>

@@ -13,6 +13,8 @@ import DashboardScreen from "./screen/dashboard/DashboardScreen";
 import PaymentScreen from "./screen/dashboard/PaymentScreen";
 import DetailRoomScreen from "./screen/DetailRoomScreen";
 import UserProfileScreen from "./screen/dashboard/ProfileScreen";
+import EditProfileScreen from "./screen/EditProfileScreen";
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -63,6 +65,11 @@ const App = () => {
           <Stack.Screen
             name="Profile"
             component={UserProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
