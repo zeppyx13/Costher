@@ -61,7 +61,7 @@ const RegisterScreen = ({ navigation }: any) => {
                 </View>
                 <LoginButton
                     title="Daftar"
-                    onPress={() => console.log("Register pressed")}
+                    onPress={navigation.goBack}
                 />
                 <View style={loginStyles.registerContainer}>
                     <Text style={loginStyles.registerText}>Sudah punya akun?</Text>

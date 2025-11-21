@@ -2,17 +2,18 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import colors from "../../styles/colors";
-import profileStyles from "../../styles/profile"; // <= IMPORT STYLE BARU
+import profileStyles from "../../styles/profile";
 import { useNavigation } from "@react-navigation/native";
 const ProfileActions = () => {
     const navigation = useNavigation() as any;
     return (
         <View style={profileStyles.actionContainer}>
             {[
-                { label: "Ubah Password", icon: "lock-closed" as const },
-                { label: "Riwayat Pembayaran", icon: "receipt-outline" as const },
+                { label: "Ubah Password", icon: "lock-closed" as const, target: "ForgotPassword" },
+                { label: "Riwayat Pembayaran", icon: "receipt-outline" as const, target: "Dashboard" },
             ].map((item, index) => (
                 <TouchableOpacity
+                    onPress={() => navigation.navigate(item.target)}
                     key={index}
                     style={[
                         profileStyles.actionItem,

@@ -15,14 +15,6 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
 
-    const handleSendOtp = () => {
-        console.log("OTP dikirim ke:", email);
-    };
-
-    const handleResetPassword = () => {
-        console.log("Reset password dengan OTP:", otp);
-    };
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.appBackground }}>
             <KeyboardAwareScrollView
@@ -45,7 +37,7 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
                 />
                 <LoginButton
                     title="Kirim OTP"
-                    onPress={handleSendOtp}
+                    onPress={navigation.goBack}
                 />
                 <View style={{ marginTop: 30 }}>
                     <LoginInput
@@ -57,7 +49,7 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
                 </View>
                 <LoginButton
                     title="Reset Password"
-                    onPress={handleResetPassword}
+                    onPress={navigation.goBack}
                 />
                 <View style={loginStyles.registerContainer}>
                     <Text style={loginStyles.registerText}>
