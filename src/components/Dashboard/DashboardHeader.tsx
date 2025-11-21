@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import dashboardStyles from "../../styles/dashboard";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({ item }: any) => {
     return (
         <View style={dashboardStyles.header}>
             <Image
@@ -11,8 +11,8 @@ const DashboardHeader = () => {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={dashboardStyles.headerName}>Dewa Dharma</Text>
-                <Text style={dashboardStyles.headerRoom}>Kamar 03 — Lantai 1</Text>
+                <Text style={dashboardStyles.headerName}>{item.name}</Text>
+                <Text style={dashboardStyles.headerRoom}>Kamar {item.number} — Lantai {item.floor}</Text>
             </View>
 
             <TouchableOpacity>
