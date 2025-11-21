@@ -3,19 +3,14 @@ import { View, Text } from "react-native";
 import Ionicons from '@react-native-vector-icons/ionicons';
 import dashboardStyles from "../../styles/dashboard";
 import colors from "../../styles/colors";
-
+import paymentHistory from "../../data/paymentHistory";
 const DashboardPaymentHistory = () => {
-    const data = [
-        { month: "November 2025", amount: "2.320.000", status: "Belum Lunas" },
-        { month: "Oktober 2025", amount: "2.234.000", status: "Lunas" },
-        { month: "September 2025", amount: "2.244.000", status: "Lunas" }
-    ];
 
     return (
         <View style={dashboardStyles.paymentBox}>
             <Text style={dashboardStyles.sectionTitle}>Riwayat Pembayaran</Text>
 
-            {data.map((item, index) => (
+            {paymentHistory.map((item, index) => (
                 <View key={index}>
                     <View style={dashboardStyles.paymentRow}>
                         <View style={dashboardStyles.paymentIcon}>
@@ -54,7 +49,7 @@ const DashboardPaymentHistory = () => {
                         </View>
                     </View>
 
-                    {index !== data.length - 1 && (
+                    {index !== paymentHistory.length - 1 && (
                         <View style={dashboardStyles.divider} />
                     )}
                 </View>
