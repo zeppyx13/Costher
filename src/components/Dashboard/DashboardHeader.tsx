@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import dashboardStyles from "../../styles/dashboard";
-
+import { useNavigation } from "@react-navigation/native";
 const DashboardHeader = ({ item }: any) => {
+    const navigation = useNavigation() as any;
     return (
         <View style={dashboardStyles.header}>
             <Image
@@ -15,7 +16,7 @@ const DashboardHeader = ({ item }: any) => {
                 <Text style={dashboardStyles.headerRoom}>Kamar {item.number} — Lantai {item.floor}</Text>
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
                 <Text style={dashboardStyles.headerLink}>Profil</Text>
             </TouchableOpacity>
         </View>

@@ -12,6 +12,7 @@ import ForgotPasswordScreen from "./screen/ForgotScreen";
 import DashboardScreen from "./screen/dashboard/DashboardScreen";
 import PaymentScreen from "./screen/dashboard/PaymentScreen";
 import DetailRoomScreen from "./screen/DetailRoomScreen";
+import UserProfileScreen from "./screen/dashboard/ProfileScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -57,6 +58,11 @@ const App = () => {
           <Stack.Screen
             name="DetailRoom"
             component={DetailRoomScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={UserProfileScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
