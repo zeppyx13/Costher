@@ -23,7 +23,7 @@ const roomStyles = StyleSheet.create({
     },
     roomPrice: {
         fontFamily: "Poppins-Bold",
-        fontSize: 15,
+        fontSize: 16,
         color: colors.deepMaroon,
         marginTop: 4,
     },
@@ -101,7 +101,30 @@ const roomStyles = StyleSheet.create({
     filterTextActive: {
         color: colors.appBackground,
     },
+    // rating
+    ratingRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 6,
+        paddingHorizontal: 3,
+        paddingVertical: 4,
+        borderRadius: 8,
+        alignSelf: "flex-start",
+    },
 
+    ratingStar: {
+        marginRight: 4,
+        marginTop: 1,
+    },
+
+    ratingNumber: {
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 13,
+        color: colors.deepMaroon,
+        marginRight: 6,
+        marginLeft: 1,
+        marginTop: 5,
+    },
 });
 
 export default roomStyles;
