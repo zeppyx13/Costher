@@ -1,7 +1,7 @@
 const rooms = [
     {
         id: '1',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room1.jpg'),
         price: 'Rp 2.300.000 / bulan',
         facilities: ['AC', 'WiFi', 'Meja Belajar', 'Kamar Mandi Dalam', 'Lantai 1', 'Fully Furnished'],
         number: '01',
@@ -12,7 +12,7 @@ const rooms = [
     },
     {
         id: '2',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room2.jpg'),
         price: 'Rp 2.100.000 / bulan',
         facilities: ['AC', 'WiFi', 'Kamar Mandi Luar', 'Lantai 1', 'Semi Furnished'],
         number: '02',
@@ -23,7 +23,7 @@ const rooms = [
     },
     {
         id: '3',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room3.jpg'),
         price: 'Rp 2.400.000 / bulan',
         facilities: ['AC', 'Meja Belajar', 'WiFi', 'Kamar Mandi Dalam', 'Lantai 2', 'Fully Furnished'],
         number: '03',
@@ -34,7 +34,7 @@ const rooms = [
     },
     {
         id: '4',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room4.jpg'),
         price: 'Rp 2.300.000 / bulan',
         facilities: ['AC', 'WiFi', 'Lemari Besar', 'Kamar Mandi Dalam', 'Fully Furnished'],
         number: '04',
@@ -45,7 +45,7 @@ const rooms = [
     },
     {
         id: '5',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room5.jpg'),
         price: 'Rp 2.250.000 / bulan',
         facilities: ['AC', 'WiFi 100Mbps', 'Meja Belajar', 'Kamar Mandi Dalam', 'Lantai 2', 'Fully Furnished'],
         number: '05',
@@ -56,7 +56,7 @@ const rooms = [
     },
     {
         id: '6',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room6.jpg'),
         price: 'Rp 2.350.000 / bulan',
         facilities: ['AC', 'WiFi', 'CCTV', 'Kamar Mandi Dalam', 'Lantai 1', 'Fully Furnished'],
         number: '06',
@@ -67,7 +67,7 @@ const rooms = [
     },
     {
         id: '7',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room7.jpg'),
         price: 'Rp 2.300.000 / bulan',
         facilities: ['AC', 'Meja Belajar', 'WiFi', 'Kamar Mandi Dalam', 'Fully Furnished'],
         number: '07',
@@ -78,7 +78,7 @@ const rooms = [
     },
     {
         id: '8',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room8.jpg'),
         price: 'Rp 1.900.000 / bulan',
         facilities: ['Kipas Angin', 'WiFi', 'Kamar Mandi Luar', 'Semi Furnished'],
         number: '08',
@@ -88,7 +88,7 @@ const rooms = [
     },
     {
         id: '9',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room9.jpg'),
         price: 'Rp 2.450.000 / bulan',
         facilities: ['AC', 'WiFi', 'Lemari Besar', 'Kamar Mandi Dalam', 'Lantai 2', 'Fully Furnished'],
         number: '09',
@@ -99,7 +99,7 @@ const rooms = [
     },
     {
         id: '10',
-        image: require('../assets/images/costher.png'),
+        image: require('../assets/images/Room/tinified/Room10.jpeg'),
         price: 'Rp 2.500.000 / bulan',
         facilities: ['AC', 'WiFi 100Mbps', 'Meja Belajar', 'Kamar Mandi Dalam', 'Fully Furnished'],
         number: '10',

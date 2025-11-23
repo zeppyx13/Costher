@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import homeStyles from "../../styles/home";
-
-const HomeBanner = ({ navigation }: any) => {
+import { useNavigation } from "@react-navigation/native";
+const HomeBanner = () => {
+    const navigation = useNavigation() as any;
     return (
         <View style={homeStyles.bannerWrapper}>
             <Image
-                source={require("../../assets/images/costher.png")}
+                source={require("../../assets/images/kost.jpeg")}
                 style={homeStyles.bannerImage}
                 resizeMode="cover"
             />
@@ -21,7 +22,7 @@ const HomeBanner = ({ navigation }: any) => {
 
                 <TouchableOpacity
                     style={homeStyles.bannerButton}
-                    onPress={() => navigation?.navigate("Room")}
+                    onPress={() => navigation.navigate("Room")}
                 >
                     <Text style={homeStyles.bannerButtonText}>Lihat Kamar</Text>
                 </TouchableOpacity>
