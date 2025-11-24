@@ -7,7 +7,7 @@ const DashboardHeader = ({ item }: any) => {
     return (
         <View style={dashboardStyles.header}>
             <Image
-                source={require("../../assets/images/costher.png")}
+                source={item.avatar}
                 style={dashboardStyles.headerAvatar}
             />
 

@@ -8,7 +8,7 @@ const ProfileCard = ({ data }: any) => {
     return (
         <View style={profileStyles.cardContainer}>
             <Image
-                source={require("../../assets/images/costher.png")}
+                source={data.profilePicture}
                 style={profileStyles.cardAvatar}
             />
 

@@ -16,7 +16,7 @@ const dashboardData = [
     },
     {
         id: '2',
-        image: require('../assets/images/costher.png'),
+        avatar: require('../assets/images/costher.png'),
         name: 'Dewa Dharma',
         price: '2200000',
         facilities: ['AC', 'WiFi', 'Kamar Mandi Luar', 'Lantai 1', 'Semi Furnished'],
