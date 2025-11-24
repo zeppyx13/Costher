@@ -17,7 +17,8 @@ const PaymentScreen = ({ navigation }: any) => {
     const monthlyRent = data ? parseInt(data.price) : 0;
     const waterUsage = data ? parseInt(data.waterUsage) : 0;
     const electricityUsage = data ? parseInt(data.electricityUsage) : 0;
-
+    const fine = data ? parseInt(data.fine) : 0;
+    const discount = data ? parseInt(data.discount) : 0;
     // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
     // Air: batas 40 m3
     // Listrik: batas 20 kWh
@@ -25,9 +26,10 @@ const PaymentScreen = ({ navigation }: any) => {
     const electricityUsageBill = electricityUsage >= 20 ? electricityUsage - 20 : 0;
 
     // Hitung biaya
+    const discountAmount = (monthlyRent + (waterUsageBill * waterRate) + (electricityUsageBill * electricityRate)) * (discount / 100);
     const waterCost = waterUsageBill * waterRate;
     const electricityCost = electricityUsageBill * electricityRate;
-    const totalCost = monthlyRent + waterCost + electricityCost;
+    const totalCost = monthlyRent + waterCost + electricityCost - discountAmount + fine;
 
     // Formatter Rupiah
     const formatter = new Intl.NumberFormat('id-ID', {
@@ -41,6 +43,8 @@ const PaymentScreen = ({ navigation }: any) => {
     const formattedMonthlyRent = formatter.format(monthlyRent);
     const formattedElectricityCost = formatter.format(electricityCost);
     const formattedWaterCost = formatter.format(waterCost);
+    const formattedFine = formatter.format(fine);
+    const formattedDiscountAmount = formatter.format(discountAmount);
 
     return (
         <SafeAreaView style={paymentStyles.container}>
@@ -70,33 +74,53 @@ const PaymentScreen = ({ navigation }: any) => {
                     <View style={paymentStyles.separator} />
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Sewa Bulanan</Text>
-                        <Text style={paymentStyles.value}>
-                            {formattedMonthlyRent}
-                        </Text>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="home-outline" size={20} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.label}>Sewa Bulanan</Text>
+                        </View>
+                        <Text style={paymentStyles.value}>{formattedMonthlyRent}</Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Air  ( {waterUsageBill} m³)</Text>
-                        <Text style={paymentStyles.value}>
-                            {formattedWaterCost}
-                        </Text>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="water-outline" size={20} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.label}>Air ({waterUsageBill} m³)</Text>
+                        </View>
+                        <Text style={paymentStyles.value}>{formattedWaterCost}</Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Listrik ({electricityUsageBill} kWh)</Text>
-                        <Text style={paymentStyles.value}>
-                            {formattedElectricityCost}
-                        </Text>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="flash-outline" size={20} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.label}>Listrik ({electricityUsageBill} kWh)</Text>
+                        </View>
+                        <Text style={paymentStyles.value}>{formattedElectricityCost}</Text>
+                    </View>
+                    <View style={paymentStyles.separator} />
+                    <View style={paymentStyles.rowBetween}>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="pricetag-outline" size={20} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.label}>Diskon {discount}%</Text>
+                        </View>
+                        <Text style={paymentStyles.value}>{formattedDiscountAmount}</Text>
+                    </View>
+
+                    <View style={paymentStyles.rowBetween}>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="alert-circle-outline" size={20} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.label}>Denda</Text>
+                        </View>
+                        <Text style={paymentStyles.value}>{formattedFine}</Text>
                     </View>
 
                     <View style={paymentStyles.separator} />
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.totalLabel}>Total Tagihan</Text>
-                        <Text style={paymentStyles.totalValue}>
-                            {formattedTotalCost}
-                        </Text>
+                        <View style={paymentStyles.rowLeft}>
+                            <Ionicons name="cash-outline" size={24} color={colors.deepMaroon} />
+                            <Text style={paymentStyles.totalLabel}>Total Tagihan</Text>
+                        </View>
+                        <Text style={paymentStyles.totalValue}>{formattedTotalCost}</Text>
                     </View>
                 </View>
                 {/* PAYMENT METHOD */}

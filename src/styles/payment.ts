@@ -51,7 +51,11 @@ export default StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 10,
     },
-
+    rowLeft: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
     label: {
         fontFamily: "Inter-Regular",
         fontSize: 14,

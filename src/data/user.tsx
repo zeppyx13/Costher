@@ -5,7 +5,9 @@ const user = [
         room: "Kamar 01",
         status: "Aktif",
         nextPayment: "Rp 2.300.000",
+        fine: "Rp 0",
         dueDate: "20 Des 2025",
+        discount: "10%",
         profilePicture: require("../assets/images/costher.png"),
     },
 ]
