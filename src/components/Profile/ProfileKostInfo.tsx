@@ -6,7 +6,7 @@ const ProfileKostInfo = ({ data }: any) => {
     const rows = [
         { label: "Nomor Kamar", value: data.room },
         { label: "Status Sewa", value: data.status },
-        { label: "Tagihan Berikutnya", value: data.nextPayment },
+        { label: "Tagihan Dasar Berikutnya", value: data.nextPayment },
         { label: "Jatuh Tempo", value: data.dueDate },
     ];
 

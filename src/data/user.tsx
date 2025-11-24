@@ -4,7 +4,7 @@ const user = [
         email: "gungnanda@example.com",
         room: "Kamar 01",
         status: "Aktif",
-        nextPayment: "Rp 2.300.000",
+        nextPayment: "Rp 2.500.000",
         fine: "Rp 0",
         dueDate: "20 Des 2025",
         discount: "10%",
