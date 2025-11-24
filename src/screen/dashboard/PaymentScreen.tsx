@@ -12,7 +12,8 @@ const PaymentScreen = ({ navigation }: any) => {
     // Tarif perhitungan
     const waterRate = 5500;      // per m³
     const electricityRate = 1699; // per kWh
-
+    const Waterfairusage = 40;
+    const Electricityfairusage = 20;
     // Ambil nilai dasar (fallback ke 0 kalau data tidak ada)
     const monthlyRent = data ? parseInt(data.price) : 0;
     const waterUsage = data ? parseInt(data.waterUsage) : 0;
@@ -22,8 +23,8 @@ const PaymentScreen = ({ navigation }: any) => {
     // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
     // Air: batas 40 m3
     // Listrik: batas 20 kWh
-    const waterUsageBill = waterUsage >= 40 ? waterUsage - 40 : 0;
-    const electricityUsageBill = electricityUsage >= 20 ? electricityUsage - 20 : 0;
+    const waterUsageBill = waterUsage >= Waterfairusage ? waterUsage - Waterfairusage : 0;
+    const electricityUsageBill = electricityUsage >= Electricityfairusage ? electricityUsage - Electricityfairusage : 0;
 
     // Hitung biaya
     const discountAmount = (monthlyRent + (waterUsageBill * waterRate) + (electricityUsageBill * electricityRate)) * (discount / 100);

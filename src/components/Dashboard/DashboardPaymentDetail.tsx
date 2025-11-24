@@ -8,16 +8,23 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
     // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
     // Air: batas 40 m3
     // Listrik: batas 20 kWh
+    const waterRate = 5500;      // per m³
+    const electricityRate = 1699; // per kWh
+    const Waterfairusage = 40;
+    const Electricityfairusage = 20;
+    // ambil nilai dasar
+    const fine = parseInt(item.fine);
+    const discount = parseInt(item.discount);
+    const monthlyRent = parseInt(item.price);
 
     // Hitung kelebihan pemakaian
-    item.waterUsageBill = item.waterUsage >= 40 ? item.waterUsage - 40 : 0;
-    item.electricityUsageBill = item.electricityUsage >= 20 ? item.electricityUsage - 20 : 0;
+    item.waterUsageBill = item.waterUsage >= Waterfairusage ? item.waterUsage - Waterfairusage : 0;
+    item.electricityUsageBill = item.electricityUsage >= Electricityfairusage ? item.electricityUsage - Electricityfairusage : 0;
 
     // Hitung total tagihan
-    const waterbill = item.waterUsageBill * 5500;
-    const electricitybill = item.electricityUsageBill * 1699;
-    const monthlyrent = parseInt(item.price);
-
+    const discountAmount = (monthlyRent + (item.waterUsageBill * waterRate) + (item.electricityUsageBill * electricityRate)) * (discount / 100);
+    const waterbill = item.waterUsageBill * waterRate;
+    const electricitybill = item.electricityUsageBill * electricityRate;
     //Format Rupiah
     const formatter = new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -27,10 +34,11 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
 
     const formattedWaterbill = formatter.format(waterbill);
     const formattedElectricitybill = formatter.format(electricitybill);
-    const formattedMonthlyrent = formatter.format(monthlyrent);
-
+    const formattedMonthlyrent = formatter.format(monthlyRent);
+    const formattedDiscountAmount = formatter.format(discountAmount);
+    const formattedFine = formatter.format(fine);
     // Total keseluruhan
-    const totalpayment = waterbill + electricitybill + monthlyrent;
+    const totalpayment = waterbill + electricitybill + monthlyRent - discountAmount + fine;
     const formattedTotalpayment = formatter.format(totalpayment);
 
     return (
@@ -57,7 +65,6 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
 
                 <Text style={dashboardStyles.paymentValue}>{formattedElectricitybill}</Text>
             </View>
-
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="home" size={22} color={colors.deepMaroon} />
@@ -66,6 +73,26 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
                 <Text style={dashboardStyles.paymentLabel}>Kost Bulanan</Text>
 
                 <Text style={dashboardStyles.paymentValue}>{formattedMonthlyrent}</Text>
+            </View>
+
+            <View style={dashboardStyles.paymentRow}>
+                <View style={dashboardStyles.iconCircle}>
+                    <Ionicons name="pricetag" size={22} color={colors.deepMaroon} />
+                </View>
+
+                <Text style={dashboardStyles.paymentLabel}>Diskon {discount}%</Text>
+
+                <Text style={dashboardStyles.paymentValue}>{formattedDiscountAmount}</Text>
+            </View>
+
+            <View style={dashboardStyles.paymentRow}>
+                <View style={dashboardStyles.iconCircle}>
+                    <Ionicons name="alert" size={22} color={colors.deepMaroon} />
+                </View>
+
+                <Text style={dashboardStyles.paymentLabel}>Denda</Text>
+
+                <Text style={dashboardStyles.paymentValue}>{formattedFine}</Text>
             </View>
 
             <View style={dashboardStyles.paymentTotalRow}>
