@@ -5,14 +5,34 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import colors from "../../styles/colors";
 
 const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
-    const waterbill = item.waterUsage * 5500;
-    const formattedWaterbill = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(waterbill);
-    const electricitybill = item.electricityUsage * 1699;
-    const formattedElectricitybill = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(electricitybill);
+    // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
+    // Air: batas 40 m3
+    // Listrik: batas 20 kWh
+
+    // Hitung kelebihan pemakaian
+    item.waterUsageBill = item.waterUsage >= 40 ? item.waterUsage - 40 : 0;
+    item.electricityUsageBill = item.electricityUsage >= 20 ? item.electricityUsage - 20 : 0;
+
+    // Hitung total tagihan
+    const waterbill = item.waterUsageBill * 5500;
+    const electricitybill = item.electricityUsageBill * 1699;
     const monthlyrent = parseInt(item.price);
-    const formattedMonthlyrent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(monthlyrent);
+
+    //Format Rupiah
+    const formatter = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    });
+
+    const formattedWaterbill = formatter.format(waterbill);
+    const formattedElectricitybill = formatter.format(electricitybill);
+    const formattedMonthlyrent = formatter.format(monthlyrent);
+
+    // Total keseluruhan
     const totalpayment = waterbill + electricitybill + monthlyrent;
-    const formattedTotalpayment = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalpayment);
+    const formattedTotalpayment = formatter.format(totalpayment);
+
     return (
         <View style={dashboardStyles.paymentBox}>
 
@@ -23,7 +43,7 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
                     <Ionicons name="water" size={22} color={colors.deepMaroon} />
                 </View>
 
-                <Text style={dashboardStyles.paymentLabel}>Tagihan Air</Text>
+                <Text style={dashboardStyles.paymentLabel}>Tagihan Air {item.waterUsageBill} m³</Text>
 
                 <Text style={dashboardStyles.paymentValue}>{formattedWaterbill}</Text>
             </View>
@@ -33,7 +53,7 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
                     <Ionicons name="flash" size={22} color={colors.deepMaroon} />
                 </View>
 
-                <Text style={dashboardStyles.paymentLabel}>Tagihan Listrik</Text>
+                <Text style={dashboardStyles.paymentLabel}>Tagihan Listrik {item.electricityUsageBill} kWh</Text>
 
                 <Text style={dashboardStyles.paymentValue}>{formattedElectricitybill}</Text>
             </View>

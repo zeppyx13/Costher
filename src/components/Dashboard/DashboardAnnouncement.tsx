@@ -20,7 +20,7 @@ const DashboardAnnouncement = () => {
                         Tarif Listrik dan Air
                     </Text>
                     <Text style={dashboardStyles.announcementDesc}>
-                        tarif Listrik akan di hitung mulai lebih dari 50kwh/bulan dan air 20m³/bulan sesuai tarif PLN dan PDAM
+                        tarif Listrik akan di hitung mulai lebih dari 20kwh/bulan dan air 40m³/bulan sesuai tarif PLN dan PDAM
                     </Text>
                 </View>
             </View>

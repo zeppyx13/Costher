@@ -6,24 +6,41 @@ import colors from "../../styles/colors";
 import paymentStyles from "../../styles/payment";
 import dashboardData from "../../data/dashboardData";
 const PaymentScreen = ({ navigation }: any) => {
-    // ambil data dengan id berapa aja pakek contoh aja karena statis
+    // Ambil data statis berdasarkan ID tertentu
     const data = dashboardData.find(item => item.id === '2');
-    // perkiraan harga tagihan
-    const waterRate = 5500; // per m³
+
+    // Tarif perhitungan
+    const waterRate = 5500;      // per m³
     const electricityRate = 1699; // per kWh
-    // hitung total biaya
+
+    // Ambil nilai dasar (fallback ke 0 kalau data tidak ada)
     const monthlyRent = data ? parseInt(data.price) : 0;
     const waterUsage = data ? parseInt(data.waterUsage) : 0;
     const electricityUsage = data ? parseInt(data.electricityUsage) : 0;
-    const waterCost = waterUsage * waterRate;
-    const electricityCost = electricityUsage * electricityRate;
+
+    // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
+    // Air: batas 40 m3
+    // Listrik: batas 20 kWh
+    const waterUsageBill = waterUsage >= 40 ? waterUsage - 40 : 0;
+    const electricityUsageBill = electricityUsage >= 20 ? electricityUsage - 20 : 0;
+
+    // Hitung biaya
+    const waterCost = waterUsageBill * waterRate;
+    const electricityCost = electricityUsageBill * electricityRate;
     const totalCost = monthlyRent + waterCost + electricityCost;
 
-    // formatted prices
-    const formattedTotalCost = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalCost);
-    const formattedMonthlyRent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(monthlyRent);
-    const formattedElectricityCost = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(electricityCost);
-    const formattedWaterCost = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(waterCost);
+    // Formatter Rupiah
+    const formatter = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    });
+
+    // Harga dalam format Rupiah
+    const formattedTotalCost = formatter.format(totalCost);
+    const formattedMonthlyRent = formatter.format(monthlyRent);
+    const formattedElectricityCost = formatter.format(electricityCost);
+    const formattedWaterCost = formatter.format(waterCost);
 
     return (
         <SafeAreaView style={paymentStyles.container}>
@@ -60,14 +77,14 @@ const PaymentScreen = ({ navigation }: any) => {
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Air  ( {waterUsage} m³)</Text>
+                        <Text style={paymentStyles.label}>Air  ( {waterUsageBill} m³)</Text>
                         <Text style={paymentStyles.value}>
                             {formattedWaterCost}
                         </Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Listrik ({electricityUsage} kWh)</Text>
+                        <Text style={paymentStyles.label}>Listrik ({electricityUsageBill} kWh)</Text>
                         <Text style={paymentStyles.value}>
                             {formattedElectricityCost}
                         </Text>
