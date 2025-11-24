@@ -9,18 +9,35 @@ const DashboardAnnouncement = () => {
         <View style={dashboardStyles.announcementBox}>
 
             <Text style={dashboardStyles.sectionTitle}>Pengumuman Kost</Text>
+            <View style={dashboardStyles.announcementRow}>
+
+                <View style={dashboardStyles.iconNotice}>
+                    <Ionicons name="receipt" size={20} color={colors.deepMaroon} />
+                </View>
+                <View style={dashboardStyles.divider} />
+                <View style={{ flex: 1 }}>
+                    <Text style={dashboardStyles.announcementTitle}>
+                        Tarif Listrik dan Air
+                    </Text>
+                    <Text style={dashboardStyles.announcementDesc}>
+                        tarif Listrik akan di hitung mulai lebih dari 50kwh/bulan dan air 20m³/bulan sesuai tarif PLN dan PDAM
+                    </Text>
+                </View>
+            </View>
+
+            <View style={dashboardStyles.divider} />
 
             <View style={dashboardStyles.announcementRow}>
                 <View style={dashboardStyles.iconNotice}>
                     <Ionicons name="warning" size={20} color={colors.deepMaroon} />
                 </View>
-
+                <View style={dashboardStyles.divider} />
                 <View style={{ flex: 1 }}>
                     <Text style={dashboardStyles.announcementTitle}>
-                        Pemadaman Listrik
+                        kenaikan Tarif Listrik dan Air
                     </Text>
                     <Text style={dashboardStyles.announcementDesc}>
-                        24 Januari 2025 • 10:00 - 12:00
+                        Akan ada kenaikan tarif listrik sesuai ketentuan dari PLN dan PDAM mulai bulan depan menjadi Rp 1.699/kwh dan air Rp 5.500/m³
                     </Text>
                 </View>
             </View>
