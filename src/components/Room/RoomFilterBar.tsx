@@ -1,22 +1,25 @@
+// components/Room/RoomFilterBar.tsx
 import React, { useState } from "react";
 import { ScrollView, TouchableOpacity, Text, View } from "react-native";
 import roomStyles from "../../styles/room";
 import Ionicons from '@react-native-vector-icons/ionicons';
 
-const filterItems: { label: any, icon: any, type: any }[] = [
-    { label: "Urutkan", icon: "swap-vertical-outline", type: "sort" },
-    { label: "Filter", icon: "options-outline", type: "filter" },
-    { label: "Harga per Bulan", icon: "pricetag-outline", type: "price" },
-    { label: "Fasilitas", icon: "list-outline", type: "facility" },
+const filterItems: { label: any; icon: any; type: any }[] = [
+    { label: "Urutkan", icon: "swap-vertical-outline", type: "name" },
+    { label: "Urustkan Harga", icon: "swap-vertical-outline", type: "sort" },
+    { label: "Harga terendah", icon: "pricetag-outline", type: "price" },
+    { label: "IoT", icon: "list-outline", type: "facility" },
 ];
 
-const RoomFilterBar = ({ onSortPress, onFilterPress }: any) => {
+const RoomFilterBar = ({ nameSort, onSort, onPriceFilter, onFacilityFilter }: any) => {
     const [active, setActive] = useState<string | null>(null);
 
     const handlePress = (type: string) => {
         setActive(type);
-        if (type === "sort" && onSortPress) onSortPress();
-        if (type === "filter" && onFilterPress) onFilterPress();
+        if (type === "name") nameSort();
+        if (type === "sort") onSort();
+        if (type === "price") onPriceFilter();
+        if (type === "facility") onFacilityFilter();
     };
 
     return (
