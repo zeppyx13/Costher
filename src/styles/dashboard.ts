@@ -113,6 +113,7 @@ const dashboard = StyleSheet.create({
         shadowColor: colors.black,
         shadowOpacity: 0.12,
         shadowRadius: 8,
+        marginBottom: 4,
     },
 
     cardLabel: {
@@ -142,6 +143,19 @@ const dashboard = StyleSheet.create({
         fontSize: 22,
         color: colors.deepMaroon,
     },
+    indicatorWrapper: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 6,
+    },
+    indicatorDot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: "#ccc",
+        marginHorizontal: 4,
+    },
+
     /* ============================
        🔹 SECTION BOX (Reusable)
     ============================ */
