@@ -1,4 +1,3 @@
-// components/Room/RoomFilterBar.tsx
 import React, { useState } from "react";
 import { ScrollView, TouchableOpacity, Text, View } from "react-native";
 import roomStyles from "../../styles/room";
