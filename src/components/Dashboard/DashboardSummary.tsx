@@ -13,7 +13,7 @@ const DashboardSummary = ({ item }: any) => {
     useEffect(() => {
         const fetchWeather = async () => {
             try {
-                const API_KEY = "YOUR_OPENWEATHERMAP_API_KEY";
+                const API_KEY = "your_openweathermap_api_key_here";
                 const response = await fetch(
                     `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&units=metric&lang=id&q=Denpasar`
                 );

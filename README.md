@@ -1,4 +1,4 @@
-# RestFull API
+#Coasther
 
 Coasther adalah sebuah aplikasi mobile kost-kostan berbasis React Native CLI, dikembangkan dengan konsep desain minimalis–elegan untuk mempermudah proses pencarian, pengelolaan, dan pembayaran kost. Aplikasi ini berfungsi sebagai platform digital bagi pemilik dan penghuni kost, menyediakan akses cepat terhadap informasi kamar, fasilitas, penggunaan listrik & air, hingga riwayat pembayaran.
 
