@@ -19,11 +19,11 @@ import DashboardPaymentDetail from "../../components/Dashboard/DashboardPaymentD
 
 import { getDashboardApi } from "../../api/dashboard.api";
 import { meApi } from "../../api/auth.api";
-
+import { getMyInvoicesApi } from "../../api/invoice.api";
 const DashboardScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-
+    const [invoices, setInvoices] = useState<any[]>([]);
     const [dashboard, setDashboard] = useState<any>(null);
     const [me, setMe] = useState<any>(null);
     const [error, setError] = useState("");
@@ -31,10 +31,11 @@ const DashboardScreen = ({ navigation }: any) => {
     const load = useCallback(async () => {
         try {
             setError("");
-            const [dashJson, meJson] = await Promise.all([getDashboardApi(), meApi()]);
+            const [dashJson, meJson, invjson] = await Promise.all([getDashboardApi(), meApi(), getMyInvoicesApi({ page: 1, limit: 5 })]);
 
             setDashboard(dashJson?.data ?? null);
             setMe(meJson?.data?.user ?? meJson?.data ?? null);
+            setInvoices(invjson?.data?.invoices ?? []);
         } catch (e: any) {
             setError(
                 e?.response?.data?.message || e?.message || "Gagal memuat dashboard",
@@ -129,8 +130,7 @@ const DashboardScreen = ({ navigation }: any) => {
                         })
                     }
                 />
-
-                <DashboardPaymentHistory />
+                <DashboardPaymentHistory items={invoices} />
                 <DashboardAnnouncement />
                 <DashboardQuickActions />
             </ScrollView>

@@ -1,59 +1,91 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
-import Ionicons from '@react-native-vector-icons/ionicons';
+import Ionicons from "@react-native-vector-icons/ionicons";
+
 import dashboardStyles from "../../styles/dashboard";
 import colors from "../../styles/colors";
-import paymentHistory from "../../data/paymentHistory";
-const DashboardPaymentHistory = () => {
+
+function formatRupiah(n: number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(Number(n || 0));
+}
+
+function mapStatus(status: string) {
+    if (status === "paid") {
+        return { label: "Lunas", icon: "checkmark-circle", ok: true };
+    }
+    if (status === "overdue") {
+        return { label: "Jatuh Tempo", icon: "alert-circle", ok: false };
+    }
+    if (status === "cancelled") {
+        return { label: "Dibatalkan", icon: "alert-circle", ok: false };
+    }
+    return { label: "Belum Lunas", icon: "alert-circle", ok: false };
+}
+
+const DashboardPaymentHistory = ({ items = [] }: any) => {
+    const data = useMemo(() => {
+        const arr = Array.isArray(items) ? items : [];
+        return [...arr].sort((a, b) => String(b.month).localeCompare(String(a.month))).slice(0, 5);
+    }, [items]);
 
     return (
         <View style={dashboardStyles.paymentBox}>
             <Text style={dashboardStyles.sectionTitle}>Riwayat Pembayaran</Text>
 
-            {paymentHistory.map((item, index) => (
-                <View key={index}>
-                    <View style={dashboardStyles.paymentRow}>
-                        <View style={dashboardStyles.paymentIcon}>
-                            <Ionicons
-                                name={item.status === "Lunas" ? "checkmark-circle" : "alert-circle"}
-                                size={22}
-                                color={item.status === "Lunas"
-                                    ? "#2ecc71"
-                                    : colors.deepMaroon}
-                            />
-                        </View>
+            {data.length === 0 ? (
+                <Text style={{ marginTop: 8, color: "#666" }}>
+                    Belum ada riwayat tagihan.
+                </Text>
+            ) : (
+                data.map((inv: any, index: number) => {
+                    const meta = mapStatus(inv?.status);
+                    const amount = Number(inv?.total_amount ?? 0);
+                    const monthText = inv?.month || "-";
 
-                        <View style={{ flex: 1 }}>
-                            <Text style={dashboardStyles.paymentMonth}>{item.month}</Text>
-                            <Text style={dashboardStyles.paymentAmount}>Rp {item.amount}</Text>
-                        </View>
+                    return (
+                        <View key={inv?.id ?? index}>
+                            <View style={dashboardStyles.paymentRow}>
+                                <View style={dashboardStyles.paymentIcon}>
+                                    <Ionicons
+                                        name={meta.icon as any}
+                                        size={22}
+                                        color={meta.ok ? "#2ecc71" : colors.deepMaroon}
+                                    />
+                                </View>
 
-                        <View
-                            style={[
-                                dashboardStyles.paymentBadge,
-                                item.status === "Lunas"
-                                    ? { backgroundColor: "#E8F8EF" }
-                                    : { backgroundColor: "#FDECEA" }
-                            ]}
-                        >
-                            <Text
-                                style={[
-                                    dashboardStyles.paymentBadgeText,
-                                    item.status === "Lunas"
-                                        ? { color: "#2ecc71" }
-                                        : { color: colors.deepMaroon }
-                                ]}
-                            >
-                                {item.status}
-                            </Text>
-                        </View>
-                    </View>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={dashboardStyles.paymentMonth}>{monthText}</Text>
+                                    <Text style={dashboardStyles.paymentAmount}>
+                                        {formatRupiah(amount)}
+                                    </Text>
+                                </View>
 
-                    {index !== paymentHistory.length - 1 && (
-                        <View style={dashboardStyles.divider} />
-                    )}
-                </View>
-            ))}
+                                <View
+                                    style={[
+                                        dashboardStyles.paymentBadge,
+                                        meta.ok ? { backgroundColor: "#E8F8EF" } : { backgroundColor: "#FDECEA" },
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            dashboardStyles.paymentBadgeText,
+                                            meta.ok ? { color: "#2ecc71" } : { color: colors.deepMaroon },
+                                        ]}
+                                    >
+                                        {meta.label}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            {index !== data.length - 1 && <View style={dashboardStyles.divider} />}
+                        </View>
+                    );
+                })
+            )}
         </View>
     );
 };
