@@ -20,10 +20,15 @@ import DashboardPaymentDetail from "../../components/Dashboard/DashboardPaymentD
 import { getDashboardApi } from "../../api/dashboard.api";
 import { meApi } from "../../api/auth.api";
 import { getMyInvoicesApi } from "../../api/invoice.api";
+import { getAnnouncementsApi } from "../../api/announcement.api";
+
 const DashboardScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
     const [invoices, setInvoices] = useState<any[]>([]);
+    const [announcements, setAnnouncements] = useState<any[]>([]);
+
     const [dashboard, setDashboard] = useState<any>(null);
     const [me, setMe] = useState<any>(null);
     const [error, setError] = useState("");
@@ -31,15 +36,24 @@ const DashboardScreen = ({ navigation }: any) => {
     const load = useCallback(async () => {
         try {
             setError("");
-            const [dashJson, meJson, invjson] = await Promise.all([getDashboardApi(), meApi(), getMyInvoicesApi({ page: 1, limit: 5 })]);
+
+            const [dashJson, meJson, invjson, annJson] = await Promise.all([
+                getDashboardApi(),
+                meApi(),
+                getMyInvoicesApi({ page: 1, limit: 5 }),
+                getAnnouncementsApi({ page: 1, limit: 5, is_active: 1 }),
+            ]);
 
             setDashboard(dashJson?.data ?? null);
             setMe(meJson?.data?.user ?? meJson?.data ?? null);
+
+            // invoices bentuknya: data: { invoices: [...] }
             setInvoices(invjson?.data?.invoices ?? []);
+
+            // announcements bentuknya: data: { announcements: [...] }
+            setAnnouncements(annJson?.data?.announcements ?? []);
         } catch (e: any) {
-            setError(
-                e?.response?.data?.message || e?.message || "Gagal memuat dashboard",
-            );
+            setError(e?.response?.data?.message || e?.message || "Gagal memuat dashboard");
         }
     }, []);
 
@@ -69,18 +83,14 @@ const DashboardScreen = ({ navigation }: any) => {
             name,
             avatar: avatarUrl ? { uri: avatarUrl } : undefined,
 
-            // header butuh ini
             number: room?.number || "-",
             floor: room?.floor ?? "-",
 
-            // summary
             waterUsage: Number(usageObj?.water_used ?? 0),
             electricityUsage: Number(usageObj?.elec_used ?? 0),
 
-            // tagihan (fallback)
             price: Number(invoice?.total_amount ?? room?.price_monthly ?? 0),
 
-            // optional (kalau nanti dipakai PaymentDetail/PaymentScreen)
             monthlyRent: Number(room?.price_monthly ?? 0),
         };
     }, [dashboard, me]);
@@ -114,9 +124,7 @@ const DashboardScreen = ({ navigation }: any) => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 130 }}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
                 <DashboardHeader item={item} />
                 <DashboardSummary item={item} />
@@ -130,8 +138,10 @@ const DashboardScreen = ({ navigation }: any) => {
                         })
                     }
                 />
+
                 <DashboardPaymentHistory items={invoices} />
-                <DashboardAnnouncement />
+                <DashboardAnnouncement items={announcements} />
+
                 <DashboardQuickActions />
             </ScrollView>
         </SafeAreaView>
