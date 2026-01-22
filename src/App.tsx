@@ -14,7 +14,7 @@ import PaymentScreen from "./screen/dashboard/PaymentScreen";
 import DetailRoomScreen from "./screen/DetailRoomScreen";
 import UserProfileScreen from "./screen/dashboard/ProfileScreen";
 import EditProfileScreen from "./screen/EditProfileScreen";
-
+import MidtransProcessing from "./screen/dashboard/MidtransProcessing";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -56,6 +56,11 @@ const App = () => {
             name="Payment"
             component={PaymentScreen}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="MidtransProcessing"
+            component={MidtransProcessing}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="DetailRoom"

@@ -1,75 +1,105 @@
-import React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useMemo, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Ionicons from '@react-native-vector-icons/ionicons';
+import Ionicons from "@react-native-vector-icons/ionicons";
 import colors from "../../styles/colors";
 import paymentStyles from "../../styles/payment";
-import dashboardData from "../../data/dashboardData";
-const PaymentScreen = ({ navigation }: any) => {
-    // Ambil data statis berdasarkan ID tertentu
-    const data = dashboardData.find(item => item.id === '2');
+import { createMidtransPayment } from "../../api/payment.api";
 
-    // Tarif perhitungan
-    const waterRate = 5500;      // per m³
-    const electricityRate = 1699; // per kWh
-    const Waterfairusage = 40;
-    const Electricityfairusage = 20;
-    // Ambil nilai dasar (fallback ke 0 kalau data tidak ada)
-    const monthlyRent = data ? parseInt(data.price) : 0;
-    const waterUsage = data ? parseInt(data.waterUsage) : 0;
-    const electricityUsage = data ? parseInt(data.electricityUsage) : 0;
-    const fine = data ? parseInt(data.fine) : 0;
-    const discount = data ? parseInt(data.discount) : 0;
-    // Hitung tagihan air & listrik: hanya pemakaian lebih dari batas yang dikenakan biaya
-    // Air: batas 40 m3
-    // Listrik: batas 20 kWh
-    const waterUsageBill = waterUsage >= Waterfairusage ? waterUsage - Waterfairusage : 0;
-    const electricityUsageBill = electricityUsage >= Electricityfairusage ? electricityUsage - Electricityfairusage : 0;
+const PaymentScreen = ({ navigation, route }: any) => {
+    const { dashboard, me } = route.params || {};
+    const [loading, setLoading] = useState(false);
 
-    // Hitung biaya
-    const discountAmount = (monthlyRent + (waterUsageBill * waterRate) + (electricityUsageBill * electricityRate)) * (discount / 100);
-    const waterCost = waterUsageBill * waterRate;
-    const electricityCost = electricityUsageBill * electricityRate;
-    const totalCost = monthlyRent + waterCost + electricityCost - discountAmount + fine;
+    const room = dashboard?.room;
+    const usage = dashboard?.usage?.usage;
+    const invoice = dashboard?.invoice_current?.invoice;
 
-    // Formatter Rupiah
-    const formatter = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
+    const invoiceId = Number(invoice?.id || 0);
+
+    // Tarif sesuai backend brief kamu (kalau nanti ambil dari tariff_settings, tinggal mapping)
+    const waterRate = 5500;
+    const electricityRate = 1699;
+    const waterFree = 20;     // sesuai brief backend kamu: 20 m3
+    const elecFree = 50;      // sesuai brief backend kamu: 50 kWh
+
+    const monthlyRent = Number(invoice?.rent_amount ?? room?.price_monthly ?? 0);
+    const waterUsed = Number(invoice?.water_used ?? usage?.water_used ?? 0);
+    const elecUsed = Number(invoice?.elec_used ?? usage?.elec_used ?? 0);
+
+    const fine = Number(invoice?.fine_amount ?? 0);
+    const discountPercent = Number(invoice?.discount_percent ?? 0);
+
+    const calc = useMemo(() => {
+        const waterBillUnit = waterUsed > waterFree ? waterUsed - waterFree : 0;
+        const elecBillUnit = elecUsed > elecFree ? elecUsed - elecFree : 0;
+
+        // jika invoice sudah punya water_cost/elec_cost, pakai itu agar konsisten dengan backend
+        const waterCost = Number(invoice?.water_cost ?? Math.round(waterBillUnit * waterRate));
+        const elecCost = Number(invoice?.elec_cost ?? Math.round(elecBillUnit * electricityRate));
+
+        const subtotal = monthlyRent + waterCost + elecCost;
+        const discountAmount =
+            invoice?.discount_amount != null
+                ? Number(invoice.discount_amount)
+                : Math.round(subtotal * (discountPercent / 100));
+
+        const total =
+            invoice?.total_amount != null
+                ? Number(invoice.total_amount)
+                : subtotal - discountAmount + fine;
+
+        return { waterBillUnit, elecBillUnit, waterCost, elecCost, discountAmount, total };
+    }, [invoice, monthlyRent, waterUsed, elecUsed, fine, discountPercent]);
+
+    const formatter = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
     });
 
-    // Harga dalam format Rupiah
-    const formattedTotalCost = formatter.format(totalCost);
-    const formattedMonthlyRent = formatter.format(monthlyRent);
-    const formattedElectricityCost = formatter.format(electricityCost);
-    const formattedWaterCost = formatter.format(waterCost);
-    const formattedFine = formatter.format(fine);
-    const formattedDiscountAmount = formatter.format(discountAmount);
+    const handlePayNow = async () => {
+        if (!invoiceId) {
+            Alert.alert("Tagihan belum tersedia", "Invoice bulan ini belum dibuat.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const json = await createMidtransPayment(invoiceId);
+
+            // asumsi backend return: { data: { redirect_url, snap_token } }
+            const redirectUrl = json?.data?.redirect_url || json?.data?.redirectUrl || json?.redirect_url;
+            if (!redirectUrl) throw new Error("redirect_url tidak ditemukan dari response payment");
+
+            navigation.navigate("MidtransProcessing", { redirectUrl, invoiceId });
+        } catch (e: any) {
+            const msg = e?.response?.data?.message || e?.message || "Gagal membuat transaksi Midtrans";
+            Alert.alert("Pembayaran gagal", msg);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={paymentStyles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* TITLE */}
                 <View style={paymentStyles.titleBox}>
                     <Text style={paymentStyles.pageTitle}>Konfirmasi Pembayaran</Text>
-                    <Text style={paymentStyles.pageSubtitle}>
-                        Silakan cek kembali tagihan Anda
-                    </Text>
+                    <Text style={paymentStyles.pageSubtitle}>Silakan cek kembali tagihan Anda</Text>
                 </View>
-                {/* SUMMARY */}
+
                 <View style={paymentStyles.card}>
                     <View style={paymentStyles.rowBetween}>
-                        <Text style={paymentStyles.label}>Kamar </Text>
-                        <Text style={paymentStyles.value}>Kamar {data?.number}</Text>
+                        <Text style={paymentStyles.label}>Kamar</Text>
+                        <Text style={paymentStyles.value}>Kamar {room?.number ?? "-"}</Text>
                     </View>
                     <View style={paymentStyles.rowBetween}>
                         <Text style={paymentStyles.label}>Penyewa</Text>
-                        <Text style={paymentStyles.value}>{data?.name}</Text>
+                        <Text style={paymentStyles.value}>{me?.name ?? "-"}</Text>
                     </View>
                     <View style={paymentStyles.rowBetween}>
                         <Text style={paymentStyles.label}>Periode</Text>
-                        <Text style={paymentStyles.value}>{data?.period}</Text>
+                        <Text style={paymentStyles.value}>{invoice?.month ?? dashboard?.usage?.month ?? "-"}</Text>
                     </View>
 
                     <View style={paymentStyles.separator} />
@@ -79,31 +109,33 @@ const PaymentScreen = ({ navigation }: any) => {
                             <Ionicons name="home-outline" size={20} color={colors.deepMaroon} />
                             <Text style={paymentStyles.label}>Sewa Bulanan</Text>
                         </View>
-                        <Text style={paymentStyles.value}>{formattedMonthlyRent}</Text>
+                        <Text style={paymentStyles.value}>{formatter.format(monthlyRent)}</Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
                         <View style={paymentStyles.rowLeft}>
                             <Ionicons name="water-outline" size={20} color={colors.deepMaroon} />
-                            <Text style={paymentStyles.label}>Air ({waterUsageBill} m³)</Text>
+                            <Text style={paymentStyles.label}>Air ({calc.waterBillUnit} m³)</Text>
                         </View>
-                        <Text style={paymentStyles.value}>{formattedWaterCost}</Text>
+                        <Text style={paymentStyles.value}>{formatter.format(calc.waterCost)}</Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
                         <View style={paymentStyles.rowLeft}>
                             <Ionicons name="flash-outline" size={20} color={colors.deepMaroon} />
-                            <Text style={paymentStyles.label}>Listrik ({electricityUsageBill} kWh)</Text>
+                            <Text style={paymentStyles.label}>Listrik ({calc.elecBillUnit} kWh)</Text>
                         </View>
-                        <Text style={paymentStyles.value}>{formattedElectricityCost}</Text>
+                        <Text style={paymentStyles.value}>{formatter.format(calc.elecCost)}</Text>
                     </View>
+
                     <View style={paymentStyles.separator} />
+
                     <View style={paymentStyles.rowBetween}>
                         <View style={paymentStyles.rowLeft}>
                             <Ionicons name="pricetag-outline" size={20} color={colors.deepMaroon} />
-                            <Text style={paymentStyles.label}>Diskon {discount}%</Text>
+                            <Text style={paymentStyles.label}>Diskon {discountPercent}%</Text>
                         </View>
-                        <Text style={paymentStyles.value}>{formattedDiscountAmount}</Text>
+                        <Text style={paymentStyles.value}>{formatter.format(calc.discountAmount)}</Text>
                     </View>
 
                     <View style={paymentStyles.rowBetween}>
@@ -111,7 +143,7 @@ const PaymentScreen = ({ navigation }: any) => {
                             <Ionicons name="alert-circle-outline" size={20} color={colors.deepMaroon} />
                             <Text style={paymentStyles.label}>Denda</Text>
                         </View>
-                        <Text style={paymentStyles.value}>{formattedFine}</Text>
+                        <Text style={paymentStyles.value}>{formatter.format(fine)}</Text>
                     </View>
 
                     <View style={paymentStyles.separator} />
@@ -121,32 +153,29 @@ const PaymentScreen = ({ navigation }: any) => {
                             <Ionicons name="cash-outline" size={24} color={colors.deepMaroon} />
                             <Text style={paymentStyles.totalLabel}>Total Tagihan</Text>
                         </View>
-                        <Text style={paymentStyles.totalValue}>{formattedTotalCost}</Text>
+                        <Text style={paymentStyles.totalValue}>{formatter.format(calc.total)}</Text>
                     </View>
                 </View>
-                {/* PAYMENT METHOD */}
+
                 <Text style={paymentStyles.sectionTitle}>Metode Pembayaran</Text>
 
                 <TouchableOpacity style={paymentStyles.paymentMethod}>
                     <Ionicons name="card-outline" size={22} color={colors.deepMaroon} />
-                    <Text style={paymentStyles.paymentText}>Midtrans (Virtual Account / QR / E-Wallet)</Text>
+                    <Text style={paymentStyles.paymentText}>Midtrans (VA / QR / E-Wallet)</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={paymentStyles.paymentMethod}>
                     <Ionicons name="wallet-outline" size={22} color={colors.deepMaroon} />
                     <Text style={paymentStyles.paymentText}>Transfer Manual</Text>
                 </TouchableOpacity>
-                {/* BUTTON PAY */}
-                <TouchableOpacity
-                    style={paymentStyles.payButton}
-                    onPress={() => navigation.navigate("MidtransProcessing")}
-                >
+
+                <TouchableOpacity style={paymentStyles.payButton} onPress={handlePayNow} disabled={loading}>
                     <Text style={paymentStyles.payButtonText}>
-                        Bayar Sekarang
+                        {loading ? "Memproses..." : "Bayar Sekarang"}
                     </Text>
                 </TouchableOpacity>
             </ScrollView>
-        </SafeAreaView >
+        </SafeAreaView>
     );
 };
 

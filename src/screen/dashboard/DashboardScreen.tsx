@@ -1,5 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { ScrollView, ActivityIndicator, View, Text, RefreshControl } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+    ActivityIndicator,
+    RefreshControl,
+    ScrollView,
+    Text,
+    View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import dashboardStyles from "../../styles/dashboard";
@@ -22,30 +28,34 @@ const DashboardScreen = ({ navigation }: any) => {
     const [me, setMe] = useState<any>(null);
     const [error, setError] = useState("");
 
-    const fetchData = async () => {
+    const load = useCallback(async () => {
         try {
             setError("");
             const [dashJson, meJson] = await Promise.all([getDashboardApi(), meApi()]);
-            setDashboard(dashJson?.data);
-            setMe(meJson?.data?.user ?? meJson?.data);
+
+            setDashboard(dashJson?.data ?? null);
+            setMe(meJson?.data?.user ?? meJson?.data ?? null);
         } catch (e: any) {
-            setError(e?.response?.data?.message || e?.message || "Gagal memuat dashboard");
+            setError(
+                e?.response?.data?.message || e?.message || "Gagal memuat dashboard",
+            );
         }
-    };
+    }, []);
 
     useEffect(() => {
         (async () => {
             setLoading(true);
-            await fetchData();
+            await load();
             setLoading(false);
         })();
-    }, []);
+    }, [load]);
 
-    const onRefresh = async () => {
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await fetchData();
+        await load();
         setRefreshing(false);
-    };
+    }, [load]);
+
     const item = useMemo(() => {
         const room = dashboard?.room;
         const usageObj = dashboard?.usage?.usage;
@@ -57,10 +67,20 @@ const DashboardScreen = ({ navigation }: any) => {
         return {
             name,
             avatar: avatarUrl ? { uri: avatarUrl } : undefined,
+
+            // header butuh ini
+            number: room?.number || "-",
             floor: room?.floor ?? "-",
+
+            // summary
             waterUsage: Number(usageObj?.water_used ?? 0),
             electricityUsage: Number(usageObj?.elec_used ?? 0),
+
+            // tagihan (fallback)
             price: Number(invoice?.total_amount ?? room?.price_monthly ?? 0),
+
+            // optional (kalau nanti dipakai PaymentDetail/PaymentScreen)
+            monthlyRent: Number(room?.price_monthly ?? 0),
         };
     }, [dashboard, me]);
 
@@ -80,7 +100,9 @@ const DashboardScreen = ({ navigation }: any) => {
             <SafeAreaView style={dashboardStyles.container}>
                 <View style={{ padding: 16 }}>
                     <Text style={{ marginBottom: 10, color: "red" }}>{error}</Text>
-                    <Text onPress={fetchData} style={{ color: "blue" }}>Coba lagi</Text>
+                    <Text onPress={load} style={{ color: "blue" }}>
+                        Coba lagi
+                    </Text>
                 </View>
             </SafeAreaView>
         );
@@ -91,12 +113,23 @@ const DashboardScreen = ({ navigation }: any) => {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 130 }}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 <DashboardHeader item={item} />
                 <DashboardSummary item={item} />
 
-                <DashboardPaymentDetail onPayPress={() => navigation.navigate("Payment")} item={item} />
+                <DashboardPaymentDetail
+                    item={item}
+                    onPayPress={() =>
+                        navigation.navigate("Payment", {
+                            dashboard,
+                            me,
+                        })
+                    }
+                />
+
                 <DashboardPaymentHistory />
                 <DashboardAnnouncement />
                 <DashboardQuickActions />
