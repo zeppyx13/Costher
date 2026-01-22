@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Platform, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import colors from "../styles/colors";
 import loginStyles from "../styles/login";
@@ -9,9 +10,54 @@ import LoginLogo from "../components/Login/LoginLogo";
 import LoginTitle from "../components/Login/LoginTitle";
 import LoginInput from "../components/Login/LoginInput";
 import LoginButton from "../components/Login/LoginButton";
+import { loginApi } from "../api/auth.api";
+
 const LoginScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+
+    const handleLogin = async () => {
+        setErrorMsg("");
+
+        if (!email.trim() || !password) {
+            setErrorMsg("Email dan password wajib diisi.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const json = await loginApi(email.trim(), password);
+
+            // sesuaikan kalau struktur response kamu beda
+            const token = json?.data?.token;
+            if (!token) {
+                throw new Error("Token tidak ditemukan dari response login.");
+            }
+
+            await AsyncStorage.setItem("token", token);
+
+            // biar user tidak bisa back ke halaman login
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "Dashboard" }],
+            });
+        } catch (err: any) {
+            // kalau backend kamu pakai fail(res, msg...), biasanya ada err.response.data.message
+            const msg =
+                err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                err?.message ||
+                "Login gagal.";
+            setErrorMsg(msg);
+            Alert.alert("Login gagal", msg);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.appBackground }}>
@@ -26,13 +72,9 @@ const LoginScreen = ({ navigation }: any) => {
                     Title="Masuk ke Akun Anda"
                     Subtitle="Silakan login untuk melanjutkan"
                 />
-                <View style={{ gap: 16 }}>
-                    <LoginInput
-                        label="Email"
-                        value={email}
-                        onChange={setEmail}
-                    />
 
+                <View style={{ gap: 16 }}>
+                    <LoginInput label="Email" value={email} onChange={setEmail} />
                     <LoginInput
                         label="Password"
                         value={password}
@@ -40,35 +82,37 @@ const LoginScreen = ({ navigation }: any) => {
                         secure
                     />
                 </View>
-                <TouchableOpacity style={loginStyles.forgotContainer} onPress={() => navigation.navigate("ForgotPassword")}>
-                    <Text
-                        style={loginStyles.ForgotText}
-                    >
-                        Lupa Password?
-                    </Text>
-                </TouchableOpacity>
-                <LoginButton onPress={() => navigation.navigate("Dashboard")} />
 
-                <View
-                    style={loginStyles.registerContainer}
+                {!!errorMsg && (
+                    <Text style={{ marginTop: 12, color: "red" }}>{errorMsg}</Text>
+                )}
+
+                <TouchableOpacity
+                    style={loginStyles.forgotContainer}
+                    onPress={() => navigation.navigate("ForgotPassword")}
+                    disabled={loading}
                 >
+                    <Text style={loginStyles.ForgotText}>Lupa Password?</Text>
+                </TouchableOpacity>
 
-                    <Text
-                        style={loginStyles.registerText}
+                <LoginButton
+                    onPress={handleLogin}
+                    disabled={loading}
+                    title={loading ? "Loading..." : "Masuk"}
+                />
+
+                <View style={loginStyles.registerContainer}>
+                    <Text style={loginStyles.registerText}>Belum punya akun?</Text>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Register")}
+                        disabled={loading}
                     >
-                        Belum punya akun?
-                    </Text>
-
-                    <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                        <Text
-                            style={loginStyles.registerLink}
-                        >
-                            Daftar Sekarang
-                        </Text>
+                        <Text style={loginStyles.registerLink}>Daftar Sekarang</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
-        </SafeAreaView >
+        </SafeAreaView>
     );
 };
 
