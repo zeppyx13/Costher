@@ -8,7 +8,7 @@ const actions: { label: any; icon: any }[] = [
     { label: "Hubungi Pengelola", icon: "call-outline" },
     { label: "Lapor Keluhan", icon: "alert-circle-outline" },
     { label: "Aturan Kost", icon: "document-text-outline" },
-    { label: "Riwayat Pembayaran", icon: "receipt-outline" },
+    { label: "Rating Kost", icon: "star-outline" },
 ];
 
 const DashboardQuickActions = () => {
