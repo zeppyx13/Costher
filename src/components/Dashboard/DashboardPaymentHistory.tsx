@@ -28,8 +28,6 @@ function mapStatus(status: string) {
 
 function formatMonth(month: any) {
     if (!month) return "-";
-
-    // kalau format: "2024-08"
     if (typeof month === "string" && month.includes("-")) {
         const d = new Date(`${month}-01`);
         return new Intl.DateTimeFormat("id-ID", {
@@ -37,8 +35,6 @@ function formatMonth(month: any) {
             year: "numeric",
         }).format(d);
     }
-
-    // kalau format: 1–12 atau "08"
     const m = Number(month);
     if (m >= 1 && m <= 12) {
         return new Intl.DateTimeFormat("id-ID", { month: "long" }).format(
