@@ -16,11 +16,10 @@ const PaymentScreen = ({ navigation, route }: any) => {
 
     const invoiceId = Number(invoice?.id || 0);
 
-    // Tarif sesuai backend brief kamu (kalau nanti ambil dari tariff_settings, tinggal mapping)
     const waterRate = 5500;
     const electricityRate = 1699;
-    const waterFree = 20;     // sesuai brief backend kamu: 20 m3
-    const elecFree = 50;      // sesuai brief backend kamu: 50 kWh
+    const waterFree = 20;
+    const elecFree = 50;
 
     const monthlyRent = Number(invoice?.rent_amount ?? room?.price_monthly ?? 0);
     const waterUsed = Number(invoice?.water_used ?? usage?.water_used ?? 0);
@@ -32,8 +31,7 @@ const PaymentScreen = ({ navigation, route }: any) => {
     const calc = useMemo(() => {
         const waterBillUnit = waterUsed > waterFree ? waterUsed - waterFree : 0;
         const elecBillUnit = elecUsed > elecFree ? elecUsed - elecFree : 0;
-
-        // jika invoice sudah punya water_cost/elec_cost, pakai itu agar konsisten dengan backend
+        const roundedelecBillUnit = Math.round(elecBillUnit);
         const waterCost = Number(invoice?.water_cost ?? Math.round(waterBillUnit * waterRate));
         const elecCost = Number(invoice?.elec_cost ?? Math.round(elecBillUnit * electricityRate));
 
@@ -48,7 +46,7 @@ const PaymentScreen = ({ navigation, route }: any) => {
                 ? Number(invoice.total_amount)
                 : subtotal - discountAmount + fine;
 
-        return { waterBillUnit, elecBillUnit, waterCost, elecCost, discountAmount, total };
+        return { waterBillUnit, elecBillUnit, waterCost, elecCost, discountAmount, total, roundedelecBillUnit };
     }, [invoice, monthlyRent, waterUsed, elecUsed, fine, discountPercent]);
 
     const formatter = new Intl.NumberFormat("id-ID", {
@@ -66,8 +64,6 @@ const PaymentScreen = ({ navigation, route }: any) => {
         try {
             setLoading(true);
             const json = await createMidtransPayment(invoiceId);
-
-            // asumsi backend return: { data: { redirect_url, snap_token } }
             const redirectUrl = json?.data?.redirect_url || json?.data?.redirectUrl || json?.redirect_url;
             if (!redirectUrl) throw new Error("redirect_url tidak ditemukan dari response payment");
 
@@ -123,7 +119,7 @@ const PaymentScreen = ({ navigation, route }: any) => {
                     <View style={paymentStyles.rowBetween}>
                         <View style={paymentStyles.rowLeft}>
                             <Ionicons name="flash-outline" size={20} color={colors.deepMaroon} />
-                            <Text style={paymentStyles.label}>Listrik ({calc.elecBillUnit} kWh)</Text>
+                            <Text style={paymentStyles.label}>Listrik ({calc.roundedelecBillUnit} kWh)</Text>
                         </View>
                         <Text style={paymentStyles.value}>{formatter.format(calc.elecCost)}</Text>
                     </View>
