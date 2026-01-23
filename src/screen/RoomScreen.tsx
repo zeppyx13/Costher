@@ -18,7 +18,6 @@ function formatRupiah(n: number) {
     }).format(Number(n || 0));
 }
 
-// bentuk data yang dipakai UI lama (RoomCard kamu)
 type RoomUI = {
     id: string;
     number: string;
@@ -26,7 +25,7 @@ type RoomUI = {
     facilities: string[];
     description?: string;
     available: boolean;
-    image?: any; // {uri} atau require
+    image?: any;
     floor?: number;
     deposit?: number;
 };
@@ -67,8 +66,6 @@ const RoomsScreen = () => {
         setFilteredRooms(roomsRaw);
         setSortAsc(true);
     }, [roomsRaw]);
-
-    // SORT BY PRICE (price_monthly)
     const handleSort = () => {
         const sorted = [...filteredRooms].sort((a, b) =>
             sortAsc ? a.price_monthly - b.price_monthly : b.price_monthly - a.price_monthly
@@ -76,8 +73,6 @@ const RoomsScreen = () => {
         setFilteredRooms(sorted);
         setSortAsc(!sortAsc);
     };
-
-    // SORT BY NAME/NUMBER (A01, A02, ...)
     const handleNameSort = () => {
         const sorted = [...filteredRooms].sort((a, b) =>
             sortAsc
@@ -87,22 +82,16 @@ const RoomsScreen = () => {
         setFilteredRooms(sorted);
         setSortAsc(!sortAsc);
     };
-
-    // FILTER PRICE <= 2.500.000
     const handlePriceFilter = () => {
         resetFilter();
         const result = roomsRaw.filter((r) => Number(r.price_monthly) <= 2500000);
         setFilteredRooms(result);
     };
-
-    // FILTER "available" (karena fasilitas belum ada di API)
     const handleFacilityFilter = () => {
         resetFilter();
         const result = roomsRaw.filter((r) => Number(r.is_available) === 1);
         setFilteredRooms(result);
     };
-
-    // Mapping ke bentuk UI lama agar RoomCard tidak crash
     const uiRooms: RoomUI[] = useMemo(() => {
         const arr = Array.isArray(filteredRooms) ? filteredRooms : [];
         return arr.map((r) => ({
@@ -111,11 +100,9 @@ const RoomsScreen = () => {
             floor: r.floor,
             deposit: r.deposit,
             price: `${formatRupiah(r.price_monthly)} / bulan`,
-            facilities: [], // aman
+            facilities: [],
             description: r.description ?? "",
             available: Number(r.is_available) === 1,
-
-            // INI PENGGANTINYA
             image:
                 ROOM_IMAGE_MAP[r.main_image_url ?? ""] ??
                 require("../assets/images/costher.png"),

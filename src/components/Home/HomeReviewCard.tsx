@@ -26,7 +26,7 @@ const HomeReviewCard = ({ item }: any) => {
                 </View>
             </View>
 
-            <Text style={homeStyles.reviewText}>{item.review}</Text>
+            <Text style={homeStyles.reviewText}>{item.comment}</Text>
         </View>
     );
 };
