@@ -26,10 +26,35 @@ function mapStatus(status: string) {
     return { label: "Belum Lunas", icon: "alert-circle", ok: false };
 }
 
+function formatMonth(month: any) {
+    if (!month) return "-";
+
+    // kalau format: "2024-08"
+    if (typeof month === "string" && month.includes("-")) {
+        const d = new Date(`${month}-01`);
+        return new Intl.DateTimeFormat("id-ID", {
+            month: "long",
+            year: "numeric",
+        }).format(d);
+    }
+
+    // kalau format: 1–12 atau "08"
+    const m = Number(month);
+    if (m >= 1 && m <= 12) {
+        return new Intl.DateTimeFormat("id-ID", { month: "long" }).format(
+            new Date(2024, m - 1, 1)
+        );
+    }
+
+    return String(month);
+}
+
 const DashboardPaymentHistory = ({ items = [] }: any) => {
     const data = useMemo(() => {
         const arr = Array.isArray(items) ? items : [];
-        return [...arr].sort((a, b) => String(b.month).localeCompare(String(a.month))).slice(0, 5);
+        return [...arr]
+            .sort((a, b) => String(b.month).localeCompare(String(a.month)))
+            .slice(0, 5);
     }, [items]);
 
     return (
@@ -44,7 +69,7 @@ const DashboardPaymentHistory = ({ items = [] }: any) => {
                 data.map((inv: any, index: number) => {
                     const meta = mapStatus(inv?.status);
                     const amount = Number(inv?.total_amount ?? 0);
-                    const monthText = inv?.month || "-";
+                    const monthText = formatMonth(inv?.month);
 
                     return (
                         <View key={inv?.id ?? index}>
@@ -58,7 +83,9 @@ const DashboardPaymentHistory = ({ items = [] }: any) => {
                                 </View>
 
                                 <View style={{ flex: 1 }}>
-                                    <Text style={dashboardStyles.paymentMonth}>{monthText}</Text>
+                                    <Text style={dashboardStyles.paymentMonth}>
+                                        {monthText}
+                                    </Text>
                                     <Text style={dashboardStyles.paymentAmount}>
                                         {formatRupiah(amount)}
                                     </Text>
@@ -67,13 +94,17 @@ const DashboardPaymentHistory = ({ items = [] }: any) => {
                                 <View
                                     style={[
                                         dashboardStyles.paymentBadge,
-                                        meta.ok ? { backgroundColor: "#E8F8EF" } : { backgroundColor: "#FDECEA" },
+                                        meta.ok
+                                            ? { backgroundColor: "#E8F8EF" }
+                                            : { backgroundColor: "#FDECEA" },
                                     ]}
                                 >
                                     <Text
                                         style={[
                                             dashboardStyles.paymentBadgeText,
-                                            meta.ok ? { color: "#2ecc71" } : { color: colors.deepMaroon },
+                                            meta.ok
+                                                ? { color: "#2ecc71" }
+                                                : { color: colors.deepMaroon },
                                         ]}
                                     >
                                         {meta.label}
@@ -81,7 +112,9 @@ const DashboardPaymentHistory = ({ items = [] }: any) => {
                                 </View>
                             </View>
 
-                            {index !== data.length - 1 && <View style={dashboardStyles.divider} />}
+                            {index !== data.length - 1 && (
+                                <View style={dashboardStyles.divider} />
+                            )}
                         </View>
                     );
                 })
