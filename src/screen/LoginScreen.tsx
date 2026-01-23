@@ -31,22 +31,17 @@ const LoginScreen = ({ navigation }: any) => {
             setLoading(true);
 
             const json = await loginApi(email.trim(), password);
-
-            // sesuaikan kalau struktur response kamu beda
             const token = json?.data?.token;
             if (!token) {
                 throw new Error("Token tidak ditemukan dari response login.");
             }
 
             await AsyncStorage.setItem("token", token);
-
-            // biar user tidak bisa back ke halaman login
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Dashboard" }],
             });
         } catch (err: any) {
-            // kalau backend kamu pakai fail(res, msg...), biasanya ada err.response.data.message
             const msg =
                 err?.response?.data?.message ||
                 err?.response?.data?.error ||
