@@ -126,7 +126,7 @@ const DashboardScreen = ({ navigation }: any) => {
                 contentContainerStyle={{ paddingBottom: 130 }}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-                <DashboardHeader item={item} />
+                <DashboardHeader item={item} navigation={navigation} dashboard={dashboard} me={me} />
                 <DashboardSummary item={item} />
 
                 <DashboardPaymentDetail
