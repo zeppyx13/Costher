@@ -1,64 +1,126 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import RoomList from "../components/Room/RoomList";
 import RoomFilterBar from "../components/Room/RoomFilterBar";
 import colors from "../styles/colors";
-import rooms from "../data/rooms";
+import { ROOM_IMAGE_MAP } from "../data/roomImageMap";
+import { getRoomsApi, RoomApi } from "../api/rooms.api";
+
+function formatRupiah(n: number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(Number(n || 0));
+}
+
+// bentuk data yang dipakai UI lama (RoomCard kamu)
+type RoomUI = {
+    id: string;
+    number: string;
+    price: string;
+    facilities: string[];
+    description?: string;
+    available: boolean;
+    image?: any; // {uri} atau require
+    floor?: number;
+    deposit?: number;
+};
 
 const RoomsScreen = () => {
-    const [filteredRooms, setFilteredRooms] = useState(rooms);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    const [roomsRaw, setRoomsRaw] = useState<RoomApi[]>([]);
+    const [filteredRooms, setFilteredRooms] = useState<RoomApi[]>([]);
     const [sortAsc, setSortAsc] = useState(true);
 
-    const resetFilter = () => {
-        setFilteredRooms(rooms);
+    const load = useCallback(async () => {
+        try {
+            setError("");
+            setLoading(true);
+
+            const json = await getRoomsApi();
+            const list = json?.data?.rooms ?? [];
+
+            setRoomsRaw(list);
+            setFilteredRooms(list);
+            setSortAsc(true);
+        } catch (e: any) {
+            setError(e?.response?.data?.message || e?.message || "Gagal memuat kamar");
+            setRoomsRaw([]);
+            setFilteredRooms([]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    const resetFilter = useCallback(() => {
+        setFilteredRooms(roomsRaw);
         setSortAsc(true);
-    };
-    // SORT BY PRICE
+    }, [roomsRaw]);
+
+    // SORT BY PRICE (price_monthly)
     const handleSort = () => {
-        resetFilter();
-        const sorted = [...filteredRooms].sort((a, b) => {
-            const priceA = parseInt(a.price.replace(/\D/g, ""));
-            const priceB = parseInt(b.price.replace(/\D/g, ""));
-            return sortAsc ? priceA - priceB : priceB - priceA;
-        });
-
+        const sorted = [...filteredRooms].sort((a, b) =>
+            sortAsc ? a.price_monthly - b.price_monthly : b.price_monthly - a.price_monthly
+        );
         setFilteredRooms(sorted);
         setSortAsc(!sortAsc);
     };
-    // Sort by name (room number)
+
+    // SORT BY NAME/NUMBER (A01, A02, ...)
     const handleNameSort = () => {
-        resetFilter();
-        const sorted = [...filteredRooms].sort((a, b) => {
-            const numberA = parseInt(a.number);
-            const numberB = parseInt(b.number);
-            return sortAsc ? numberA - numberB : numberB - numberA;
-        });
-
+        const sorted = [...filteredRooms].sort((a, b) =>
+            sortAsc
+                ? String(a.number).localeCompare(String(b.number))
+                : String(b.number).localeCompare(String(a.number))
+        );
         setFilteredRooms(sorted);
         setSortAsc(!sortAsc);
     };
-    // FILTER PRICE 
+
+    // FILTER PRICE <= 2.500.000
     const handlePriceFilter = () => {
         resetFilter();
-        const result = rooms.filter(r => {
-            const price = parseInt(r.price.replace(/\D/g, ""));
-            return price <= 2500000;
-        });
-
+        const result = roomsRaw.filter((r) => Number(r.price_monthly) <= 2500000);
         setFilteredRooms(result);
     };
 
-    // FILTER FASILITAS
+    // FILTER "available" (karena fasilitas belum ada di API)
     const handleFacilityFilter = () => {
         resetFilter();
-        const result = rooms.filter(r =>
-            r.facilities.includes("IoT")
-        );
-
+        const result = roomsRaw.filter((r) => Number(r.is_available) === 1);
         setFilteredRooms(result);
     };
+
+    // Mapping ke bentuk UI lama agar RoomCard tidak crash
+    const uiRooms: RoomUI[] = useMemo(() => {
+        const arr = Array.isArray(filteredRooms) ? filteredRooms : [];
+        return arr.map((r) => ({
+            id: String(r.id),
+            number: r.number,
+            floor: r.floor,
+            deposit: r.deposit,
+            price: `${formatRupiah(r.price_monthly)} / bulan`,
+            facilities: [], // aman
+            description: r.description ?? "",
+            available: Number(r.is_available) === 1,
+
+            // INI PENGGANTINYA
+            image:
+                ROOM_IMAGE_MAP[r.main_image_url ?? ""] ??
+                require("../assets/images/costher.png"),
+        }));
+    }, [filteredRooms]);
 
     return (
         <SafeAreaView
@@ -79,7 +141,21 @@ const RoomsScreen = () => {
                 nameSort={handleNameSort}
             />
 
-            <RoomList data={filteredRooms} />
+            {loading ? (
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ActivityIndicator size="large" />
+                    <Text style={{ marginTop: 10 }}>Memuat kamar...</Text>
+                </View>
+            ) : error ? (
+                <View style={{ padding: 16 }}>
+                    <Text style={{ marginBottom: 10, color: "red" }}>{error}</Text>
+                    <Text onPress={load} style={{ color: "blue" }}>
+                        Coba lagi
+                    </Text>
+                </View>
+            ) : (
+                <RoomList data={uiRooms} />
+            )}
 
             <Navbar />
         </SafeAreaView>
