@@ -19,3 +19,17 @@ export async function meApi() {
     const res = await api.get("/api/auth/me");
     return res.data;
 }
+
+export async function sendOtpApi(email: string) {
+    const res = await api.post("/api/auth/forgot-password/otp", { email });
+    return res.data;
+}
+
+export async function resetPasswordOtpApi(payload: {
+    email: string;
+    otp: string;
+    password: string;
+}) {
+    const res = await api.post("/api/auth/forgot-password/otp/reset", payload);
+    return res.data;
+}
