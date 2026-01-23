@@ -30,6 +30,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
         return {
             name: me?.name || "-",
             email: me?.email || "-",
+            phone: me?.phone || "-",
             profilePicture: avatarUrl ? { uri: avatarUrl } : undefined,
 
             room: room?.number ? `Kamar ${room.number}` : "-",

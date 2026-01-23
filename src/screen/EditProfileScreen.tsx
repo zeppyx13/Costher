@@ -1,22 +1,50 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Ionicons from "@react-native-vector-icons/ionicons";
 
-import colors from "../styles/colors";
 import editProfileStyles from "../styles/editProfile";
-
 import EditProfileHeader from "../components/Profile/EditProfileHeader";
 import EditProfileInput from "../components/Profile/EditProfileInput";
 import EditProfileButton from "../components/Profile/EditProfileButton";
+
+import { updateMeApi } from "../api/user.api";
 
 const EditProfileScreen = ({ navigation, route }: any) => {
     const data = route.params?.data;
 
     const [name, setName] = useState(data?.name || "");
-    const [email, setEmail] = useState(data?.email || "");
     const [phone, setPhone] = useState(data?.phone || "");
-    const [password, setPassword] = useState("");
+    const email = data?.email || "";
+
+    const [loading, setLoading] = useState(false);
+
+    const handleSave = async () => {
+        try {
+            setLoading(true);
+
+            const payload: any = {
+                name: name.trim(),
+                phone: phone.trim(),
+            };
+
+            // biar tidak kirim string kosong
+            if (!payload.name) delete payload.name;
+            if (!payload.phone) delete payload.phone;
+
+            const json = await updateMeApi(payload);
+
+            Alert.alert("Sukses", json?.message || "Profil berhasil diperbarui");
+            navigation.goBack();
+        } catch (e: any) {
+            const msg =
+                e?.response?.data?.message ||
+                e?.message ||
+                "Gagal memperbarui profil";
+            Alert.alert("Gagal", msg);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={editProfileStyles.container}>
@@ -37,7 +65,7 @@ const EditProfileScreen = ({ navigation, route }: any) => {
                         label="Email"
                         value={email}
                         keyboardType="email-address"
-                        onChange={setEmail}
+                        editable={false}
                     />
 
                     <EditProfileInput
@@ -46,20 +74,12 @@ const EditProfileScreen = ({ navigation, route }: any) => {
                         keyboardType="phone-pad"
                         onChange={setPhone}
                     />
-
-                    <EditProfileInput
-                        label="Password Baru (Opsional)"
-                        value={password}
-                        onChange={setPassword}
-                        secure
-                    />
                 </View>
 
                 <EditProfileButton
-                    onPress={() => {
-                        console.log("Data saved:", { name, email, phone, password });
-                        navigation.goBack();
-                    }}
+                    onPress={handleSave}
+                    disabled={loading}
+                    title={loading ? "Menyimpan..." : "Simpan"}
                 />
             </ScrollView>
         </SafeAreaView>
