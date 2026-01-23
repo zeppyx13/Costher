@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Dimensions } from "react-native";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import dashboardStyles from "../../styles/dashboard";
 import colors from "../../styles/colors";
-
+import { getweatherApi } from "../../api/weather.api";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const DashboardSummary = ({ item }: any) => {
@@ -13,13 +13,8 @@ const DashboardSummary = ({ item }: any) => {
     useEffect(() => {
         const fetchWeather = async () => {
             try {
-                const API_KEY = "your_openweathermap_api_key_here";
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}&units=metric&lang=id&q=Denpasar`
-                );
-
-                const data = await response.json();
-                setWeather(data);
+                const weatherJson = await getweatherApi();
+                setWeather(weatherJson?.data ?? null);
             } catch (e) {
                 setWeather(null);
                 console.log("Weather Fetch Error:", e);
