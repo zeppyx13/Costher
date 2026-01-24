@@ -30,7 +30,7 @@ type RoomUI = {
 
 const HomeRecommendationList = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
-    const [rooms, setRooms] = useState<any[]>([]); // any[] karena response rooms sudah ada facilities/review_avg/review_count
+    const [rooms, setRooms] = useState<any[]>([]);
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -56,8 +56,6 @@ const HomeRecommendationList = ({ navigation }: any) => {
 
     const recommendedRooms: RoomUI[] = useMemo(() => {
         const arr = Array.isArray(rooms) ? rooms : [];
-
-        // hanya yang tersedia
         const available = arr.filter((r) => Number(r?.is_available) === 1);
 
         const mapped: RoomUI[] = available.map((r) => {
@@ -82,14 +80,12 @@ const HomeRecommendationList = ({ navigation }: any) => {
                 facilities: facilityNames,
             };
         });
-
-        // rekomendasi: rating desc, kalau sama pakai total review desc
         return mapped
             .sort((a, b) => {
                 if (b.rating !== a.rating) return b.rating - a.rating;
                 return b.totalReviews - a.totalReviews;
             })
-            .slice(0, 3);
+            .slice(0, 5);
     }, [rooms]);
 
     if (loading) {

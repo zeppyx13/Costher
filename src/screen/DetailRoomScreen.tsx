@@ -23,7 +23,7 @@ const DetailRoomScreen = ({ route, navigation }: any) => {
                 <RoomDetailFacilities facilities={room.facilities} />
                 <RoomDetailDescription description={room.description} />
                 <RoomDetailBookButton room={room} navigation={navigation} />
-                <RoomDetailReviews id={room.number} />
+                <RoomDetailReviews roomId={room.id} />
                 <View style={{ height: 40 }} />
             </ScrollView>
         </SafeAreaView>
