@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, View, ActivityIndicator } from "react-native";
 
 import HomeRecommendationCard from "./HomeRecommendationCard";
-import reviews from "../../data/reviews";
 
 import { getRoomsApi, RoomApi } from "../../api/rooms.api";
 import { ROOM_IMAGE_MAP } from "../../data/roomImageMap";
@@ -15,9 +14,23 @@ function formatRupiah(n: number) {
     }).format(Number(n || 0));
 }
 
+type RoomUI = {
+    id: string;
+    number: string;
+    price: string;
+    available: boolean;
+    image: any;
+    rating: number;
+    totalReviews: number;
+    description: string;
+    floor: number;
+    deposit: number;
+    facilities: string[];
+};
+
 const HomeRecommendationList = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
-    const [rooms, setRooms] = useState<RoomApi[]>([]);
+    const [rooms, setRooms] = useState<any[]>([]); // any[] karena response rooms sudah ada facilities/review_avg/review_count
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -26,10 +39,14 @@ const HomeRecommendationList = ({ navigation }: any) => {
                 setError("");
                 setLoading(true);
 
-                const json = await getRoomsApi();
+                const json = await getRoomsApi({ page: 1, limit: 50 });
                 setRooms(json?.data?.rooms ?? []);
             } catch (e: any) {
-                setError(e?.response?.data?.message || e?.message || "Gagal memuat rekomendasi");
+                setError(
+                    e?.response?.data?.message ||
+                    e?.message ||
+                    "Gagal memuat rekomendasi"
+                );
                 setRooms([]);
             } finally {
                 setLoading(false);
@@ -37,34 +54,42 @@ const HomeRecommendationList = ({ navigation }: any) => {
         })();
     }, []);
 
-    const roomsWithRating = useMemo(() => {
-        const availableRooms = (Array.isArray(rooms) ? rooms : []).filter(
-            (r) => Number(r.is_available) === 1
-        );
-        const enriched = availableRooms.map((room) => {
-            const roomReviews = reviews.filter((rev) => rev.kamar === room.number);
-            const avg =
-                roomReviews.length > 0
-                    ? roomReviews.reduce((acc, r) => acc + r.rating, 0) / roomReviews.length
-                    : 0;
+    const recommendedRooms: RoomUI[] = useMemo(() => {
+        const arr = Array.isArray(rooms) ? rooms : [];
+
+        // hanya yang tersedia
+        const available = arr.filter((r) => Number(r?.is_available) === 1);
+
+        const mapped: RoomUI[] = available.map((r) => {
+            const facilitiesArr = Array.isArray(r?.facilities) ? r.facilities : [];
+            const facilityNames = facilitiesArr
+                .map((f: any) => f?.name)
+                .filter(Boolean);
 
             return {
-                id: String(room.id),
-                number: room.number,
-                price: `${formatRupiah(room.price_monthly)} / bulan`,
+                id: String(r.id),
+                number: r.number,
+                price: `${formatRupiah(r.price_monthly)} / bulan`,
                 available: true,
                 image:
-                    ROOM_IMAGE_MAP[room.main_image_url || ""] ??
+                    ROOM_IMAGE_MAP[r.main_image_url || ""] ??
                     require("../../assets/images/costher.png"),
-                rating: Number(avg.toFixed(1)),
-                totalReviews: roomReviews.length,
-                description: room.description ?? "",
-                floor: room.floor,
-                deposit: room.deposit,
-                facilities: [],
+                rating: Number(r.review_avg ?? 0),
+                totalReviews: Number(r.review_count ?? 0),
+                description: r.description ?? "",
+                floor: Number(r.floor ?? 0),
+                deposit: Number(r.deposit ?? 0),
+                facilities: facilityNames,
             };
         });
-        return enriched.sort((a, b) => b.rating - a.rating).slice(0, 3);
+
+        // rekomendasi: rating desc, kalau sama pakai total review desc
+        return mapped
+            .sort((a, b) => {
+                if (b.rating !== a.rating) return b.rating - a.rating;
+                return b.totalReviews - a.totalReviews;
+            })
+            .slice(0, 3);
     }, [rooms]);
 
     if (loading) {
@@ -89,7 +114,7 @@ const HomeRecommendationList = ({ navigation }: any) => {
             showsHorizontalScrollIndicator={false}
             style={{ marginBottom: 10 }}
         >
-            {roomsWithRating.map((room) => (
+            {recommendedRooms.map((room) => (
                 <HomeRecommendationCard
                     key={room.id}
                     room={room}
