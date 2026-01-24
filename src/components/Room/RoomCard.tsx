@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import roomStyles from "../../styles/room";
 import { useNavigation } from "@react-navigation/native";
-import reviews from "../../data/reviews";
 import Ionicons from "@react-native-vector-icons/ionicons";
 
 const RoomCard = ({ item }: any) => {
@@ -11,27 +10,30 @@ const RoomCard = ({ item }: any) => {
 
     const facilities = Array.isArray(item?.facilities) ? item.facilities : [];
 
-    const roomReviews = useMemo(
-        () => reviews.filter((r) => r.kamar === item?.number),
-        [item?.number]
-    );
-
-    const averageRating =
-        roomReviews.reduce((acc, r) => acc + r.rating, 0) /
-        (roomReviews.length || 1);
+    const rating = Number(item?.rating ?? 0);
+    const totalReviews = Number(item?.totalReviews ?? 0);
 
     const imgSource =
         item?.image ?? require("../../assets/images/costher.png");
 
     return (
         <View style={roomStyles.cardContainer}>
-            <Image source={imgSource} style={roomStyles.cardImage} resizeMode="cover" />
+            <Image
+                source={imgSource}
+                style={roomStyles.cardImage}
+                resizeMode="cover"
+            />
 
             <View style={roomStyles.cardContent}>
-                <Text style={roomStyles.roomNumber}>Kamar {item?.number ?? "-"}</Text>
+                <Text style={roomStyles.roomNumber}>
+                    Kamar {item?.number ?? "-"}
+                </Text>
 
-                <Text style={roomStyles.roomPrice}>{item?.price ?? "-"}</Text>
+                <Text style={roomStyles.roomPrice}>
+                    {item?.price ?? "-"}
+                </Text>
 
+                {/* ⭐ Rating dari API */}
                 <View style={roomStyles.ratingRow}>
                     <Ionicons
                         name="star"
@@ -39,17 +41,25 @@ const RoomCard = ({ item }: any) => {
                         color="#E8B400"
                         style={roomStyles.ratingStar}
                     />
-                    <Text style={roomStyles.ratingNumber}>{averageRating.toFixed(1)}</Text>
+                    <Text style={roomStyles.ratingNumber}>
+                        {rating > 0 ? rating.toFixed(1) : "0.0"}
+                        {totalReviews > 0 ? ` (${totalReviews})` : ""}
+                    </Text>
                 </View>
 
+                {/* 🏷️ Facilities */}
                 <View style={roomStyles.facilityContainer}>
                     {facilities.map((f: string, i: number) => (
-                        <View key={i} style={roomStyles.facilityBadge}>
+                        <View
+                            key={`${item?.id}-fac-${i}`}
+                            style={roomStyles.facilityBadge}
+                        >
                             <Text style={roomStyles.facilityText}>{f}</Text>
                         </View>
                     ))}
                 </View>
 
+                {/* 📌 Status */}
                 <Text
                     style={[
                         roomStyles.statusText,
@@ -59,6 +69,7 @@ const RoomCard = ({ item }: any) => {
                     {item?.available ? "Tersedia" : "Sudah Terisi"}
                 </Text>
 
+                {/* 🔘 Action */}
                 <TouchableOpacity
                     disabled={!item?.available}
                     style={[
@@ -77,11 +88,15 @@ const RoomCard = ({ item }: any) => {
                 >
                     <Text
                         style={{
-                            color: item?.available ? colors.elegantGold : "#aaa",
+                            color: item?.available
+                                ? colors.elegantGold
+                                : "#aaa",
                             fontFamily: "Poppins-SemiBold",
                         }}
                     >
-                        {item?.available ? "Booking Sekarang" : "Tidak Tersedia"}
+                        {item?.available
+                            ? "Booking Sekarang"
+                            : "Tidak Tersedia"}
                     </Text>
                 </TouchableOpacity>
             </View>

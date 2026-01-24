@@ -28,7 +28,11 @@ type RoomUI = {
     image?: any;
     floor?: number;
     deposit?: number;
+
+    rating?: number;
+    totalReviews?: number;
 };
+
 
 const RoomsScreen = () => {
     const [loading, setLoading] = useState(true);
@@ -94,20 +98,26 @@ const RoomsScreen = () => {
     };
     const uiRooms: RoomUI[] = useMemo(() => {
         const arr = Array.isArray(filteredRooms) ? filteredRooms : [];
+
         return arr.map((r) => ({
             id: String(r.id),
             number: r.number,
             floor: r.floor,
             deposit: r.deposit,
             price: `${formatRupiah(r.price_monthly)} / bulan`,
-            facilities: [],
+            facilities: Array.isArray((r as any).facilities)
+                ? (r as any).facilities.map((f: any) => f.name)
+                : [],
             description: r.description ?? "",
             available: Number(r.is_available) === 1,
             image:
                 ROOM_IMAGE_MAP[r.main_image_url ?? ""] ??
                 require("../assets/images/costher.png"),
+            rating: Number((r as any).review_avg ?? 0),
+            totalReviews: Number((r as any).review_count ?? 0),
         }));
     }, [filteredRooms]);
+
 
     return (
         <SafeAreaView

@@ -20,7 +20,7 @@ export async function getRoomsApi(params?: {
     search?: string;
     is_available?: 0 | 1;
 }) {
-    const res = await api.get("/api/rooms", { params });
+    const res = await api.get("/api/rooms/all", { params });
     const json = res.data;
 
     const rooms =
