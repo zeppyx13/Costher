@@ -23,7 +23,7 @@ import { meApi } from "../../api/auth.api";
 import { getMyInvoicesApi } from "../../api/invoice.api";
 import { getAnnouncementsApi } from "../../api/announcement.api";
 import Ionicons from "@react-native-vector-icons/ionicons";
-
+import { useNavigation } from "@react-navigation/native";
 const DashboardScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -118,6 +118,17 @@ const DashboardScreen = ({ navigation }: any) => {
                         </View>
 
                         <Text style={profileStyles.logoutText}>Keluar dari Akun</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={profileStyles.logoutButton}
+                        activeOpacity={0.7}
+                        onPress={() => navigation.navigate("DeleteAccount")}
+                    >
+                        <View style={profileStyles.logoutIconWrapper}>
+                            <Ionicons name="trash-outline" size={20} color={colors.elegantGold} />
+                        </View>
+
+                        <Text style={profileStyles.logoutText}>Hapus Akun</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

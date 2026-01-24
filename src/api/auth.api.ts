@@ -33,3 +33,16 @@ export async function resetPasswordOtpApi(payload: {
     const res = await api.post("/api/auth/forgot-password/otp/reset", payload);
     return res.data;
 }
+
+export async function sendDeleteAccountOtpApi(email: string) {
+    const res = await api.post("/api/auth/delete-account/otp", { email });
+    return res.data;
+}
+
+export async function confirmDeleteAccountApi(payload: {
+    email: string;
+    otp: string;
+}) {
+    const res = await api.post("/api/auth/delete-account/confirm", payload);
+    return res.data;
+}

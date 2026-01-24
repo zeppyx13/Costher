@@ -15,6 +15,7 @@ import DetailRoomScreen from "./screen/DetailRoomScreen";
 import UserProfileScreen from "./screen/dashboard/ProfileScreen";
 import EditProfileScreen from "./screen/EditProfileScreen";
 import MidtransProcessing from "./screen/dashboard/MidtransProcessing";
+import DeleteAccountScreen from "./screen/DeleteAccountScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -75,6 +76,11 @@ const App = () => {
           <Stack.Screen
             name="EditProfile"
             component={EditProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DeleteAccount"
+            component={DeleteAccountScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
