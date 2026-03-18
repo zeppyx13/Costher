@@ -23,7 +23,8 @@ import { meApi } from "../../api/auth.api";
 import { getMyInvoicesApi } from "../../api/invoice.api";
 import { getAnnouncementsApi } from "../../api/announcement.api";
 import Ionicons from "@react-native-vector-icons/ionicons";
-import { useNavigation } from "@react-navigation/native";
+import { useRoomTelemetry } from "../../api/useRoomTelemetry";
+
 const DashboardScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -45,6 +46,7 @@ const DashboardScreen = ({ navigation }: any) => {
                 getMyInvoicesApi({ page: 1, limit: 5 }),
                 getAnnouncementsApi({ page: 1, limit: 5, is_active: 1 }),
             ]);
+
             setDashboard(dashJson?.data ?? null);
             setMe(meJson?.data?.user ?? meJson?.data ?? null);
             setInvoices(invjson?.data?.invoices ?? []);
@@ -79,6 +81,7 @@ const DashboardScreen = ({ navigation }: any) => {
         return {
             name,
             avatar: avatarUrl ? { uri: avatarUrl } : undefined,
+            roomId: room?.id,
 
             number: room?.number || "-",
             floor: room?.floor ?? "-",
@@ -87,10 +90,11 @@ const DashboardScreen = ({ navigation }: any) => {
             electricityUsage: Number(usageObj?.elec_used ?? 0),
 
             price: Number(invoice?.total_amount ?? room?.price_monthly ?? 0),
-
             monthlyRent: Number(room?.price_monthly ?? 0),
         };
     }, [dashboard, me]);
+
+    const { liveTelemetry, isSocketConnected } = useRoomTelemetry(item.roomId);
 
     if (loading) {
         return (
@@ -108,6 +112,7 @@ const DashboardScreen = ({ navigation }: any) => {
             <SafeAreaView style={dashboardStyles.container}>
                 <View style={{ padding: 16 }}>
                     <Text style={{ marginBottom: 10, color: "red" }}>{error}</Text>
+
                     <TouchableOpacity
                         style={profileStyles.logoutButton}
                         activeOpacity={0.7}
@@ -116,9 +121,9 @@ const DashboardScreen = ({ navigation }: any) => {
                         <View style={profileStyles.logoutIconWrapper}>
                             <Ionicons name="log-out-outline" size={20} color={colors.elegantGold} />
                         </View>
-
                         <Text style={profileStyles.logoutText}>Keluar dari Akun</Text>
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         style={profileStyles.logoutButton}
                         activeOpacity={0.7}
@@ -127,7 +132,6 @@ const DashboardScreen = ({ navigation }: any) => {
                         <View style={profileStyles.logoutIconWrapper}>
                             <Ionicons name="trash-outline" size={20} color={colors.elegantGold} />
                         </View>
-
                         <Text style={profileStyles.logoutText}>Hapus Akun</Text>
                     </TouchableOpacity>
                 </View>
@@ -143,7 +147,12 @@ const DashboardScreen = ({ navigation }: any) => {
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
                 <DashboardHeader item={item} navigation={navigation} dashboard={dashboard} me={me} />
-                <DashboardSummary item={item} />
+
+                <DashboardSummary
+                    item={item}
+                    liveTelemetry={liveTelemetry}
+                    isSocketConnected={isSocketConnected}
+                />
 
                 <DashboardPaymentDetail
                     item={item}
@@ -157,7 +166,6 @@ const DashboardScreen = ({ navigation }: any) => {
 
                 <DashboardPaymentHistory items={invoices} />
                 <DashboardAnnouncement items={announcements} />
-
                 <DashboardQuickActions />
             </ScrollView>
         </SafeAreaView>
