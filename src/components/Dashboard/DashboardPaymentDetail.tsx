@@ -7,18 +7,19 @@ import colors from "../../styles/colors";
 const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
     const waterRate = 5500;
     const electricityRate = 1699;
-    const waterFree = 40;
-    const elecFree = 20;
+
+    const waterFree = 0;
+    const elecFree = 0;
 
     const fine = Number(item?.fine ?? 0);
     const discountPercent = Number(item?.discount ?? 0);
 
-    // monthlyRent: di dashboard item.price kamu pakai untuk tagihan,
-    // tapi untuk detail pembayaran sewa sebaiknya pakai price_monthly.
-    // Karena kamu belum kirim itu ke item, kita fallback ke item.price.
     const monthlyRent = Number(item?.monthlyRent ?? item?.price ?? 0);
 
-    const waterUsed = Number(item?.waterUsage ?? 0);
+    const waterUsedRaw = Number(item?.waterUsage ?? 0);
+
+    const waterUsed = waterUsedRaw / 1000;
+
     const elecUsed = Number(item?.electricityUsage ?? 0);
 
     const calc = useMemo(() => {
@@ -32,7 +33,14 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
         const discountAmount = Math.round(subtotal * (discountPercent / 100));
         const total = subtotal - discountAmount + fine;
 
-        return { waterUsageBill, elecUsageBill, waterCost, elecCost, discountAmount, total };
+        return {
+            waterUsageBill,
+            elecUsageBill,
+            waterCost,
+            elecCost,
+            discountAmount,
+            total
+        };
     }, [waterUsed, elecUsed, monthlyRent, discountPercent, fine]);
 
     const formatter = new Intl.NumberFormat("id-ID", {
@@ -45,53 +53,79 @@ const DashboardPaymentDetail = ({ onPayPress, item }: any) => {
         <View style={dashboardStyles.paymentBox}>
             <Text style={dashboardStyles.sectionTitle}>Detail Pembayaran</Text>
 
+            {/* AIR */}
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="water" size={22} color={colors.deepMaroon} />
                 </View>
-                <Text style={dashboardStyles.paymentLabel}>Tagihan Air {calc.waterUsageBill} m³</Text>
-                <Text style={dashboardStyles.paymentValue}>{formatter.format(calc.waterCost)}</Text>
+                <Text style={dashboardStyles.paymentLabel}>
+                    Tagihan Air {calc.waterUsageBill.toFixed(3)} m³
+                </Text>
+                <Text style={dashboardStyles.paymentValue}>
+                    {formatter.format(calc.waterCost)}
+                </Text>
             </View>
 
+            {/* LISTRIK */}
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="flash" size={22} color={colors.deepMaroon} />
                 </View>
-                <Text style={dashboardStyles.paymentLabel}>Tagihan Listrik {calc.elecUsageBill} kWh</Text>
-                <Text style={dashboardStyles.paymentValue}>{formatter.format(calc.elecCost)}</Text>
+                <Text style={dashboardStyles.paymentLabel}>
+                    Tagihan Listrik {calc.elecUsageBill} kWh
+                </Text>
+                <Text style={dashboardStyles.paymentValue}>
+                    {formatter.format(calc.elecCost)}
+                </Text>
             </View>
 
+            {/* SEWA */}
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="home" size={22} color={colors.deepMaroon} />
                 </View>
                 <Text style={dashboardStyles.paymentLabel}>Kost Bulanan</Text>
-                <Text style={dashboardStyles.paymentValue}>{formatter.format(monthlyRent)}</Text>
+                <Text style={dashboardStyles.paymentValue}>
+                    {formatter.format(monthlyRent)}
+                </Text>
             </View>
 
+            {/* DISKON */}
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="pricetag" size={22} color={colors.deepMaroon} />
                 </View>
-                <Text style={dashboardStyles.paymentLabel}>Diskon {discountPercent}%</Text>
-                <Text style={dashboardStyles.paymentValue}>{formatter.format(calc.discountAmount)}</Text>
+                <Text style={dashboardStyles.paymentLabel}>
+                    Diskon {discountPercent}%
+                </Text>
+                <Text style={dashboardStyles.paymentValue}>
+                    {formatter.format(calc.discountAmount)}
+                </Text>
             </View>
 
+            {/* DENDA */}
             <View style={dashboardStyles.paymentRow}>
                 <View style={dashboardStyles.iconCircle}>
                     <Ionicons name="alert" size={22} color={colors.deepMaroon} />
                 </View>
                 <Text style={dashboardStyles.paymentLabel}>Denda</Text>
-                <Text style={dashboardStyles.paymentValue}>{formatter.format(fine)}</Text>
+                <Text style={dashboardStyles.paymentValue}>
+                    {formatter.format(fine)}
+                </Text>
             </View>
 
+            {/* TOTAL */}
             <View style={dashboardStyles.paymentTotalRow}>
                 <Text style={dashboardStyles.totalLabel}>Total Pembayaran</Text>
-                <Text style={dashboardStyles.totalValue}>{formatter.format(calc.total)}</Text>
+                <Text style={dashboardStyles.totalValue}>
+                    {formatter.format(calc.total)}
+                </Text>
             </View>
 
             <TouchableOpacity style={dashboardStyles.payButton} onPress={onPayPress}>
-                <Text style={dashboardStyles.payButtonText}>Detail Pembayaran</Text>
+                <Text style={dashboardStyles.payButtonText}>
+                    Detail Pembayaran
+                </Text>
             </TouchableOpacity>
         </View>
     );

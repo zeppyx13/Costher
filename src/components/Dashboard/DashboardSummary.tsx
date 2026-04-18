@@ -152,7 +152,7 @@ const DashboardSummary = ({
                     {weather ? (
                         <>
                             <Text style={dashboardStyles.cardValueLarge}>
-                                {weather?.main?.feels_like ?? 0}°C
+                                {weather?.main?.temp ?? 0}°C
                             </Text>
                             <Text
                                 style={{
