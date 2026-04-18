@@ -46,7 +46,7 @@ const DashboardSummary = ({
         if (typeof liveTelemetry?.water_total_liter === "number") {
             return (liveTelemetry.water_total_liter / 1000).toFixed(3);
         }
-        return Number(item.waterUsage ?? 0).toFixed(3);
+        return Number((item.waterUsage ?? 0) / 1000).toFixed(3);
     }, [liveTelemetry, item.waterUsage]);
 
     const electricityUsageDisplay = useMemo(() => {
