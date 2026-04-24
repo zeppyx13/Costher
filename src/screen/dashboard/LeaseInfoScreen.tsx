@@ -74,7 +74,6 @@ export default function LeaseInfoScreen({ navigation, route }: any) {
                     <Text style={s.cardTitle}>Informasi Kamar</Text>
                     <InfoRow icon="home" label="Nomor Kamar" value={room?.number ? `Kamar ${room.number}` : "-"} />
                     <InfoRow icon="layers" label="Lantai" value={room?.floor ? `Lantai ${room.floor}` : "-"} />
-                    <InfoRow icon="resize" label="Ukuran" value={room?.size ? `${room.size} m²` : "-"} />
                     <InfoRow icon="cash-outline" label="Harga Sewa" value={fmt.format(Number(room?.price_monthly ?? 0))} />
                 </View>
 
@@ -83,8 +82,9 @@ export default function LeaseInfoScreen({ navigation, route }: any) {
                     <Text style={s.cardTitle}>Detail Kontrak</Text>
                     <InfoRow icon="calendar" label="Tanggal Mulai" value={fmtDate(lease?.start_date)} />
                     <InfoRow icon="calendar-outline" label="Tanggal Berakhir" value={fmtDate(lease?.end_date)} />
-                    <InfoRow icon="location" label="Nama Kost" value={lease?.kost_name} />
-                    <InfoRow icon="map" label="Alamat" value={lease?.kost_address} />
+                    <InfoRow icon="calendar" label="Tanggal Mulai" value={fmtDate(lease?.start_date)} />
+                    <InfoRow icon="calendar-outline" label="Tanggal Berakhir" value={fmtDate(lease?.end_date)} />
+                    <InfoRow icon="document-text-outline" label="Catatan" value={lease?.note ?? "-"} />
                 </View>
 
                 {/* Peringatan sisa hari */}

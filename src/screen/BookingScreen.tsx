@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import {
-    Alert, ScrollView, StyleSheet, Text,
-    TextInput, TouchableOpacity, View,
+    Alert, Platform, ScrollView, StyleSheet, Text,
+    TouchableOpacity, View, TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@react-native-vector-icons/ionicons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../styles/colors";
 import { api } from "../lib/api";
 
@@ -12,30 +13,30 @@ const fmt = new Intl.NumberFormat("id-ID", {
     style: "currency", currency: "IDR", minimumFractionDigits: 0,
 });
 
+const toDateString = (d: Date) => d.toISOString().split("T")[0];
+
 export default function BookingScreen({ navigation, route }: any) {
     const { room } = route.params;
 
-    const today = new Date().toISOString().split("T")[0];
-    const [startDate, setStartDate] = useState(today);
+    const [startDate, setStartDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false);
     const [durationMonth, setDuration] = useState("1");
     const [note, setNote] = useState("");
     const [submitting, setSubmitting] = useState(false);
 
     const calcEndDate = () => {
-        if (!startDate) return "-";
         const d = new Date(startDate);
         d.setMonth(d.getMonth() + Number(durationMonth || 1));
-        return d.toISOString().split("T")[0];
+        return toDateString(d);
     };
 
     const handleSubmit = async () => {
-        if (!startDate) return Alert.alert("Error", "Tanggal mulai wajib diisi.");
         if (!durationMonth || Number(durationMonth) < 1)
             return Alert.alert("Error", "Durasi minimal 1 bulan.");
 
         Alert.alert(
             "Konfirmasi Booking",
-            `Kamar ${room.number}\nMulai: ${startDate}\nBerakhir: ${calcEndDate()}\nHarga: ${fmt.format(room.price_monthly)}/bulan`,
+            `Kamar ${room.number}\nMulai: ${toDateString(startDate)}\nBerakhir: ${calcEndDate()}\nHarga: ${fmt.format(room.price_monthly)}/bulan`,
             [
                 { text: "Batal", style: "cancel" },
                 {
@@ -45,7 +46,7 @@ export default function BookingScreen({ navigation, route }: any) {
                             setSubmitting(true);
                             await api.post("/api/tenants/booking", {
                                 room_id: Number(room.id),
-                                start_date: startDate,
+                                start_date: toDateString(startDate),
                                 end_date: calcEndDate(),
                                 note: note.trim() || null,
                             });
@@ -95,15 +96,30 @@ export default function BookingScreen({ navigation, route }: any) {
 
                 {/* Form */}
                 <View style={s.card}>
+                    {/* Tanggal Mulai */}
                     <Text style={s.label}>Tanggal Mulai Sewa</Text>
-                    <TextInput
-                        style={s.input}
-                        value={startDate}
-                        onChangeText={setStartDate}
-                        placeholder="YYYY-MM-DD"
-                        placeholderTextColor="#aaa"
-                    />
+                    <TouchableOpacity
+                        style={s.dateBtn}
+                        onPress={() => setShowPicker(true)}
+                    >
+                        <Ionicons name="calendar-outline" size={18} color={colors.deepMaroon} />
+                        <Text style={s.dateBtnText}>{toDateString(startDate)}</Text>
+                    </TouchableOpacity>
 
+                    {showPicker && (
+                        <DateTimePicker
+                            value={startDate}
+                            mode="date"
+                            display={Platform.OS === "ios" ? "spinner" : "default"}
+                            minimumDate={new Date()}
+                            onChange={(_, selected) => {
+                                setShowPicker(Platform.OS === "ios");
+                                if (selected) setStartDate(selected);
+                            }}
+                        />
+                    )}
+
+                    {/* Durasi */}
                     <Text style={s.label}>Durasi Sewa (bulan)</Text>
                     <TextInput
                         style={s.input}
@@ -114,6 +130,7 @@ export default function BookingScreen({ navigation, route }: any) {
                         placeholderTextColor="#aaa"
                     />
 
+                    {/* Tanggal Berakhir */}
                     <Text style={s.label}>Tanggal Berakhir (otomatis)</Text>
                     <View style={[s.input, s.inputDisabled]}>
                         <Text style={{ fontFamily: "Inter-Regular", fontSize: 14, color: "#666" }}>
@@ -121,6 +138,7 @@ export default function BookingScreen({ navigation, route }: any) {
                         </Text>
                     </View>
 
+                    {/* Catatan */}
                     <Text style={s.label}>Catatan (opsional)</Text>
                     <TextInput
                         style={[s.input, s.inputMulti]}
@@ -186,6 +204,8 @@ const s = StyleSheet.create({
     roomCardSub: { fontFamily: "Inter-Regular", fontSize: 12, color: "rgba(255,255,255,0.7)", marginTop: 4 },
     card: { backgroundColor: "#fff", borderRadius: 16, padding: 16, marginBottom: 14, elevation: 1 },
     label: { fontFamily: "Inter-Medium", fontSize: 13, color: "#555", marginBottom: 6 },
+    dateBtn: { flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "#F5F5F5", borderRadius: 12, padding: 14, marginBottom: 14 },
+    dateBtnText: { fontFamily: "Inter-Regular", fontSize: 14, color: "#2F2F2F" },
     input: { backgroundColor: "#F5F5F5", borderRadius: 12, padding: 14, fontFamily: "Inter-Regular", fontSize: 14, color: "#2F2F2F", marginBottom: 14 },
     inputDisabled: { justifyContent: "center" },
     inputMulti: { height: 80 },
