@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705668883632",
+    "project_id": "coasther",
+    "storage_bucket": "coasther.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705668883632:android:a6d9e071070e85c42f8775",
+        "android_client_info": {
+          "package_name": "com.costher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDU7ddOpuNtSnxy0-BLMUX77l9AHwZQ4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
