@@ -15,9 +15,10 @@ type Action = {
 type Props = {
     navigation: any;
     roomId?: number;
+    dashboard?: any;
 };
 
-const DashboardQuickActions = ({ navigation, roomId }: Props) => {
+const DashboardQuickActions = ({ navigation, roomId, dashboard }: Props) => {
     const actions: Action[] = [
         {
             label: "AI Insight",
@@ -57,6 +58,18 @@ const DashboardQuickActions = ({ navigation, roomId }: Props) => {
             icon: "call-outline",
             color: "#16a34a",
             onPress: () => Linking.openURL("tel:+628123456789"),
+        },
+        {
+            label: "Meter IoT",
+            icon: "hardware-chip-outline",
+            color: "#0891b2",
+            onPress: () => navigation.navigate("MeterReadings"),
+        },
+        {
+            label: "Info Kontrak",
+            icon: "document-text-outline",
+            color: "#7c3aed",
+            onPress: () => navigation.navigate("LeaseInfo", { dashboard }),
         },
     ];
 

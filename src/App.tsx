@@ -21,6 +21,8 @@ import InvoiceHistoryScreen from "./components/Dashboard/InvoiceHistoryScreen";
 import ReviewScreen from "./components/Dashboard/ReviewScreen";
 import AnnouncementScreen from "./components/Dashboard/AnnouncementScreen";
 import AIInsightScreen from "./screen/dashboard/AIInsightScreen";
+import MeterReadingsScreen from "./screen/dashboard/MeterReadingsScreen";
+import LeaseInfoScreen from "./screen/dashboard/LeaseInfoScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -97,6 +99,8 @@ const App = () => {
           <Stack.Screen name="InvoiceHistory" component={InvoiceHistoryScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Review" component={ReviewScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Announcement" component={AnnouncementScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="MeterReadings" component={MeterReadingsScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="LeaseInfo" component={LeaseInfoScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

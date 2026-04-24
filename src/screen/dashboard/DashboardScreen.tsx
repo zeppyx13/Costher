@@ -172,7 +172,7 @@ const DashboardScreen = ({ navigation }: any) => {
 
                 <DashboardPaymentHistory items={invoices} />
                 <DashboardAnnouncement items={announcements} />
-                <DashboardQuickActions navigation={navigation} roomId={item.roomId} />
+                <DashboardQuickActions navigation={navigation} roomId={item.roomId} dashboard={dashboard} />
             </ScrollView>
         </SafeAreaView>
     );
