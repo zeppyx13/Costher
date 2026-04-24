@@ -5,6 +5,7 @@ import homeStyles from "../../styles/home";
 import facilities from "../../data/facilities";
 
 const iconMap: any = {
+    "IoT": "hardware-chip-outline",
     "AC": "snow-outline",
     "WiFi 100Mbps": "wifi-outline",
     "CCTV 24 Jam": "videocam-outline",

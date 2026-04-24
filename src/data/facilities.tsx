@@ -1,4 +1,5 @@
 const facilities = [
+    "IoT",
     "AC",
     "WiFi 100Mbps",
     "CCTV 24 Jam",
