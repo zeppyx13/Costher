@@ -15,8 +15,12 @@ import DetailRoomScreen from "./screen/DetailRoomScreen";
 import UserProfileScreen from "./screen/dashboard/ProfileScreen";
 import EditProfileScreen from "./screen/EditProfileScreen";
 import MidtransProcessing from "./screen/dashboard/MidtransProcessing";
-import AIInsightScreen from "./screen/dashboard/AIInsightScreen";
 import DeleteAccountScreen from "./screen/DeleteAccountScreen";
+import ComplaintScreen from "./components/Dashboard/ComplaintScreen";
+import InvoiceHistoryScreen from "./components/Dashboard/InvoiceHistoryScreen";
+import ReviewScreen from "./components/Dashboard/ReviewScreen";
+import AnnouncementScreen from "./components/Dashboard/AnnouncementScreen";
+import AIInsightScreen from "./screen/dashboard/AIInsightScreen";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -89,6 +93,10 @@ const App = () => {
             component={AIInsightScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="Complaint" component={ComplaintScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="InvoiceHistory" component={InvoiceHistoryScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Review" component={ReviewScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Announcement" component={AnnouncementScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
