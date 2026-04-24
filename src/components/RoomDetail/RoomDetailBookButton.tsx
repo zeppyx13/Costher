@@ -10,10 +10,10 @@ const RoomDetailBookButton = ({ room, navigation }: any) => {
                 roomDetailStyles.bookButton,
                 !room.available && { backgroundColor: "#ccc" },
             ]}
-            onPress={() => navigation.navigate("Payment", { room })}
+            onPress={() => navigation.navigate("Booking", { room })}
         >
             <Text style={roomDetailStyles.bookButtonText}>
-                {room.available ? room.price : "Tidak Tersedia"}
+                {room.available ? room.price : "Tidak Tersedia"}r
             </Text>
         </TouchableOpacity>
     );

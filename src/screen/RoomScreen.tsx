@@ -28,7 +28,7 @@ type RoomUI = {
     image?: any;
     floor?: number;
     deposit?: number;
-
+    price_monthly: number;
     rating?: number;
     totalReviews?: number;
 };
@@ -115,6 +115,7 @@ const RoomsScreen = () => {
                 require("../assets/images/costher.png"),
             rating: Number((r as any).review_avg ?? 0),
             totalReviews: Number((r as any).review_count ?? 0),
+            price_monthly: Number(r.price_monthly),
         }));
     }, [filteredRooms]);
 

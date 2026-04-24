@@ -133,32 +133,53 @@ const DashboardScreen = ({ navigation }: any) => {
         );
     }
 
-    if (error) {
+    if (error || !dashboard?.lease) {
         return (
             <SafeAreaView style={dashboardStyles.container}>
-                <View style={{ padding: 16 }}>
-                    <Text style={{ marginBottom: 10, color: "red" }}>{error}</Text>
-
+                <View style={{
+                    flex: 1, justifyContent: "center",
+                    alignItems: "center", padding: 24,
+                }}>
+                    <Ionicons name="home-outline" size={64} color="#ccc" />
+                    <Text style={{
+                        fontFamily: "Poppins-SemiBold", fontSize: 18,
+                        color: "#2F2F2F", marginTop: 16, textAlign: "center",
+                    }}>
+                        Belum Ada Kamar Aktif
+                    </Text>
+                    <Text style={{
+                        fontFamily: "Inter-Regular", fontSize: 14,
+                        color: "#666", textAlign: "center", marginTop: 8, lineHeight: 22,
+                    }}>
+                        Kamu belum memiliki kamar aktif. Booking kamar sekarang untuk mulai menggunakan Coasther.
+                    </Text>
                     <TouchableOpacity
-                        style={profileStyles.logoutButton}
-                        activeOpacity={0.7}
-                        onPress={handleLogout}
+                        style={{
+                            backgroundColor: colors.deepMaroon,
+                            paddingHorizontal: 32, paddingVertical: 14,
+                            borderRadius: 14, marginTop: 24,
+                            flexDirection: "row", alignItems: "center", gap: 8,
+                        }}
+                        onPress={() => navigation.navigate("Room")}
                     >
-                        <View style={profileStyles.logoutIconWrapper}>
-                            <Ionicons name="log-out-outline" size={20} color={colors.elegantGold} />
-                        </View>
-                        <Text style={profileStyles.logoutText}>Keluar dari Akun</Text>
+                        <Ionicons name="search" size={18} color={colors.elegantGold} />
+                        <Text style={{
+                            fontFamily: "Poppins-SemiBold",
+                            fontSize: 15, color: colors.elegantGold,
+                        }}>
+                            Cari Kamar
+                        </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={profileStyles.logoutButton}
-                        activeOpacity={0.7}
-                        onPress={() => navigation.navigate("DeleteAccount")}
+                        style={{ marginTop: 16 }}
+                        onPress={() => navigation.navigate("Login")}
                     >
-                        <View style={profileStyles.logoutIconWrapper}>
-                            <Ionicons name="trash-outline" size={20} color={colors.elegantGold} />
-                        </View>
-                        <Text style={profileStyles.logoutText}>Hapus Akun</Text>
+                        <Text style={{
+                            fontFamily: "Inter-Medium", fontSize: 13, color: "#999",
+                        }}>
+                            Bukan akun kamu? Logout
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

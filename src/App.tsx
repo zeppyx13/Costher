@@ -24,6 +24,7 @@ import AnnouncementScreen from "./components/Dashboard/AnnouncementScreen";
 import AIInsightScreen from "./screen/dashboard/AIInsightScreen";
 import MeterReadingsScreen from "./screen/dashboard/MeterReadingsScreen";
 import LeaseInfoScreen from "./screen/dashboard/LeaseInfoScreen";
+import BookingScreen from "./screen/BookingScreen";
 
 import {
   requestNotificationPermission,
@@ -91,6 +92,7 @@ const App = () => {
           <Stack.Screen name="Announcement" component={AnnouncementScreen} options={{ headerShown: false }} />
           <Stack.Screen name="MeterReadings" component={MeterReadingsScreen} options={{ headerShown: false }} />
           <Stack.Screen name="LeaseInfo" component={LeaseInfoScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Booking" component={BookingScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
