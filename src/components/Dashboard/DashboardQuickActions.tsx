@@ -30,22 +30,16 @@ const DashboardQuickActions = ({ navigation, roomId, dashboard }: Props) => {
             },
         },
         {
+            label: "Meter IoT",
+            icon: "hardware-chip-outline",
+            color: "#0891b2",
+            onPress: () => navigation.navigate("MeterReadings"),
+        },
+        {
             label: "Lapor Keluhan",
             icon: "alert-circle-outline",
             color: "#dc2626",
             onPress: () => navigation.navigate("Complaint"),
-        },
-        {
-            label: "Rating Kost",
-            icon: "star-outline",
-            color: "#d97706",
-            onPress: () => navigation.navigate("Review"),
-        },
-        {
-            label: "Riwayat Tagihan",
-            icon: "receipt-outline",
-            color: colors.deepMaroon,
-            onPress: () => navigation.navigate("InvoiceHistory"),
         },
         {
             label: "Pengumuman",
@@ -54,22 +48,28 @@ const DashboardQuickActions = ({ navigation, roomId, dashboard }: Props) => {
             onPress: () => navigation.navigate("Announcement"),
         },
         {
-            label: "Hubungi Pengelola",
-            icon: "call-outline",
-            color: "#16a34a",
-            onPress: () => Linking.openURL("tel:+628123456789"),
-        },
-        {
-            label: "Meter IoT",
-            icon: "hardware-chip-outline",
-            color: "#0891b2",
-            onPress: () => navigation.navigate("MeterReadings"),
+            label: "Riwayat Tagihan",
+            icon: "receipt-outline",
+            color: colors.deepMaroon,
+            onPress: () => navigation.navigate("InvoiceHistory"),
         },
         {
             label: "Info Kontrak",
             icon: "document-text-outline",
             color: "#7c3aed",
             onPress: () => navigation.navigate("LeaseInfo", { dashboard }),
+        },
+        {
+            label: "Hubungi Pengelola",
+            icon: "call-outline",
+            color: "#16a34a",
+            onPress: () => Linking.openURL("tel:+628123456789"),
+        },
+        {
+            label: "Rating Kost",
+            icon: "star-outline",
+            color: "#d97706",
+            onPress: () => navigation.navigate("Review"),
         },
     ];
 
