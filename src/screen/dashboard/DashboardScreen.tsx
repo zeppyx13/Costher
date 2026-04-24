@@ -24,6 +24,7 @@ import { getMyInvoicesApi } from "../../api/invoice.api";
 import { getAnnouncementsApi } from "../../api/announcement.api";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import { useRoomTelemetry } from "../../api/useRoomTelemetry";
+import { getTariffApi } from "../../api/tariff.api";
 
 const DashboardScreen = ({ navigation }: any) => {
     const [loading, setLoading] = useState(true);
@@ -31,6 +32,7 @@ const DashboardScreen = ({ navigation }: any) => {
 
     const [invoices, setInvoices] = useState<any[]>([]);
     const [announcements, setAnnouncements] = useState<any[]>([]);
+    const [tariff, setTariff] = useState<any>(null);
 
     const [dashboard, setDashboard] = useState<any>(null);
     const [me, setMe] = useState<any>(null);
@@ -40,13 +42,14 @@ const DashboardScreen = ({ navigation }: any) => {
         try {
             setError("");
 
-            const [dashJson, meJson, invjson, annJson] = await Promise.all([
+            const [dashJson, meJson, invjson, annJson, tariffJson] = await Promise.all([
                 getDashboardApi(),
                 meApi(),
                 getMyInvoicesApi({ page: 1, limit: 5 }),
                 getAnnouncementsApi({ page: 1, limit: 5, is_active: 1 }),
+                getTariffApi(),
             ]);
-
+            setTariff(tariffJson ?? null);
             setDashboard(dashJson?.data ?? null);
             setMe(meJson?.data?.user ?? meJson?.data ?? null);
             setInvoices(invjson?.data?.invoices ?? []);
@@ -156,10 +159,13 @@ const DashboardScreen = ({ navigation }: any) => {
 
                 <DashboardPaymentDetail
                     item={item}
+                    invoice={dashboard?.invoice_current?.invoice ?? null}
+                    tariff={tariff}
                     onPayPress={() =>
                         navigation.navigate("Payment", {
                             dashboard,
                             me,
+                            tariff,
                         })
                     }
                 />
