@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
+    Alert,
     RefreshControl,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import dashboardStyles from "../../styles/dashboard";
@@ -99,6 +101,27 @@ const DashboardScreen = ({ navigation }: any) => {
 
     const { liveTelemetry, isSocketConnected } = useRoomTelemetry(item.roomId);
 
+    const handleLogout = () => {
+        Alert.alert(
+            "Keluar dari Akun",
+            "Apakah kamu yakin ingin logout?",
+            [
+                { text: "Batal", style: "cancel" },
+                {
+                    text: "Ya, Keluar",
+                    style: "destructive",
+                    onPress: async () => {
+                        await AsyncStorage.removeItem("token");
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: "Home" }],
+                        });
+                    },
+                },
+            ]
+        );
+    };
+
     if (loading) {
         return (
             <SafeAreaView style={dashboardStyles.container}>
@@ -119,7 +142,7 @@ const DashboardScreen = ({ navigation }: any) => {
                     <TouchableOpacity
                         style={profileStyles.logoutButton}
                         activeOpacity={0.7}
-                        onPress={() => navigation.navigate("Home")}
+                        onPress={handleLogout}
                     >
                         <View style={profileStyles.logoutIconWrapper}>
                             <Ionicons name="log-out-outline" size={20} color={colors.elegantGold} />
