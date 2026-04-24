@@ -33,6 +33,7 @@ import {
   setupForegroundNotification,
 } from "./lib/notification";
 import { api } from "./lib/api";
+import { navigationRef, navigate } from "./lib/navigationRef";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,14 +54,28 @@ const App = () => {
     const unsubscribeForeground = setupForegroundNotification();
 
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log("[FCM] Opened from background:", remoteMessage.data);
+      const type = remoteMessage.data?.type;
+      if (type === "complaint") {
+        navigate("Complaint");
+      } else if (type === "payment") {
+        navigate("InvoiceHistory");
+      } else if (type === "announcement") {
+        navigate("Announcement");
+      }
     });
 
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          console.log("[FCM] Opened from quit:", remoteMessage.data);
+          const type = remoteMessage.data?.type;
+          if (type === "complaint") {
+            navigate("Complaint");
+          } else if (type === "payment") {
+            navigate("InvoiceHistory");
+          } else if (type === "announcement") {
+            navigate("Announcement");
+          }
         }
       });
 
@@ -71,7 +86,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: true }}>
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Room" component={RoomsScreen} options={{ headerShown: false }} />

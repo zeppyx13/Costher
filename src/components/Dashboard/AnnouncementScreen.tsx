@@ -79,8 +79,8 @@ export default function AnnouncementScreen({ navigation }: any) {
                                             size={18} color="#999"
                                         />
                                     </View>
-                                    {isOpen && item.content && (
-                                        <Text style={s.cardContent}>{item.content}</Text>
+                                    {isOpen && item.body && (
+                                        <Text style={s.cardContent}>{item.body}</Text>
                                     )}
                                 </TouchableOpacity>
                             );
