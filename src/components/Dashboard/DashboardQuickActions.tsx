@@ -1,30 +1,93 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import Ionicons from '@react-native-vector-icons/ionicons';
+import { View, Text, TouchableOpacity, Linking, Alert } from "react-native";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import dashboardStyles from "../../styles/dashboard";
 import colors from "../../styles/colors";
 
-const actions: { label: any; icon: any }[] = [
-    { label: "Hubungi Pengelola", icon: "call-outline" },
-    { label: "Lapor Keluhan", icon: "alert-circle-outline" },
-    { label: "Aturan Kost", icon: "document-text-outline" },
-    { label: "Rating Kost", icon: "star-outline" },
-];
+type Action = {
+    label: string;
+    icon: string;
+    color?: string;
+    onPress: () => void;
+    badge?: string;
+};
 
-const DashboardQuickActions = () => {
+type Props = {
+    navigation: any;
+    roomId?: number;
+};
+
+const DashboardQuickActions = ({ navigation, roomId }: Props) => {
+    const actions: Action[] = [
+        {
+            label: "AI Insight",
+            icon: "sparkles",
+            color: "#7c3aed",
+            onPress: () => {
+                if (!roomId) return Alert.alert("Info", "Data kamar belum tersedia.");
+                navigation.navigate("AIInsight", { roomId });
+            },
+        },
+        {
+            label: "Lapor Keluhan",
+            icon: "alert-circle-outline",
+            color: "#dc2626",
+            onPress: () => navigation.navigate("Complaint"),
+        },
+        {
+            label: "Rating Kost",
+            icon: "star-outline",
+            color: "#d97706",
+            onPress: () => navigation.navigate("Review"),
+        },
+        {
+            label: "Riwayat Tagihan",
+            icon: "receipt-outline",
+            color: colors.deepMaroon,
+            onPress: () => navigation.navigate("InvoiceHistory"),
+        },
+        {
+            label: "Pengumuman",
+            icon: "megaphone-outline",
+            color: "#0369a1",
+            onPress: () => navigation.navigate("Announcement"),
+        },
+        {
+            label: "Hubungi Pengelola",
+            icon: "call-outline",
+            color: "#16a34a",
+            onPress: () => Linking.openURL("tel:+628123456789"),
+        },
+    ];
+
     return (
         <View style={dashboardStyles.quickBox}>
             <Text style={dashboardStyles.sectionTitle}>Quick Actions</Text>
 
             <View style={dashboardStyles.quickGrid}>
                 {actions.map((item, i) => (
-                    <TouchableOpacity key={i} style={dashboardStyles.quickCard}>
-                        <Ionicons
-                            name={item.icon}
-                            size={26}
-                            color={colors.deepMaroon}
-                            style={{ marginBottom: 6 }}
-                        />
+                    <TouchableOpacity
+                        key={i}
+                        style={dashboardStyles.quickCard}
+                        onPress={item.onPress}
+                        activeOpacity={0.7}
+                    >
+                        {/* Icon circle */}
+                        <View style={{
+                            width: 46,
+                            height: 46,
+                            borderRadius: 23,
+                            backgroundColor: `${item.color}15`,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginBottom: 8,
+                        }}>
+                            <Ionicons
+                                name={item.icon as any}
+                                size={22}
+                                color={item.color ?? colors.deepMaroon}
+                            />
+                        </View>
                         <Text style={dashboardStyles.quickText}>{item.label}</Text>
                     </TouchableOpacity>
                 ))}
