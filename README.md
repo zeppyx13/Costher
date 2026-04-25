@@ -109,4 +109,4 @@ DeleteAccount → Hapus akun via OTP<br>
 
 ## Lisensi
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GPL v3 License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
