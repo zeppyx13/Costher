@@ -55,6 +55,27 @@ const PaymentScreen = ({ navigation, route }: any) => {
         minimumFractionDigits: 0,
     });
 
+    if (!invoice || !invoice.id) {
+        return (
+            <SafeAreaView style={paymentStyles.container}>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 20 }}>
+                    <Ionicons name="receipt-outline" size={80} color={colors.deepMaroon} style={{ opacity: 0.3, marginBottom: 20 }} />
+                    <Text style={[paymentStyles.pageTitle, { textAlign: "center" }]}>Belum Ada Tagihan</Text>
+                    <Text style={[paymentStyles.pageSubtitle, { textAlign: "center", marginTop: 8, fontSize: 14 }]}>
+                        Tagihan Anda digenerate secara otomatis setiap awal bulan. Silakan cek kembali beberapa saat lagi atau hubungi pengelola.
+                    </Text>
+                    
+                    <TouchableOpacity 
+                        style={[paymentStyles.payButton, { width: "100%", marginTop: 30 }]} 
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Text style={paymentStyles.payButtonText}>Kembali ke Dashboard</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
+        );
+    }
+
     const handlePayNow = async () => {
         if (!invoiceId) {
             Alert.alert("Tagihan belum tersedia", "Invoice bulan ini belum dibuat.");
