@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import {
     Alert, Platform, ScrollView, StyleSheet, Text,
-    TouchableOpacity, View, TextInput,
+    TouchableOpacity, View, TextInput, ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../styles/colors";
 import { api } from "../lib/api";
+import { useAuth } from "../api/auth.api";
 
 const fmt = new Intl.NumberFormat("id-ID", {
     style: "currency", currency: "IDR", minimumFractionDigits: 0,
@@ -17,6 +18,7 @@ const toDateString = (d: Date) => d.toISOString().split("T")[0];
 
 export default function BookingScreen({ navigation, route }: any) {
     const { room } = route.params;
+    const { me, loading: authLoading } = useAuth();
 
     const [startDate, setStartDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
@@ -29,6 +31,50 @@ export default function BookingScreen({ navigation, route }: any) {
         d.setMonth(d.getMonth() + Number(durationMonth || 1));
         return toDateString(d);
     };
+
+    if (authLoading) {
+        return (
+            <SafeAreaView style={[s.container, { justifyContent: "center", alignItems: "center" }]}>
+                <ActivityIndicator size="large" color={colors.deepMaroon} />
+                <Text style={{ marginTop: 10, fontFamily: "Inter-Medium" }}>Memvalidasi status...</Text>
+            </SafeAreaView>
+        );
+    }
+
+    if (me?.lease_status === "active") {
+        return (
+            <SafeAreaView style={s.container}>
+                <View style={s.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
+                        <Ionicons name="arrow-back" size={22} color={colors.deepMaroon} />
+                    </TouchableOpacity>
+                    <Text style={s.headerTitle}>Status Booking</Text>
+                </View>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 24 }}>
+                    <Ionicons name="alert-circle" size={80} color={colors.deepMaroon} style={{ opacity: 0.2 }} />
+                    <Text style={{
+                        fontFamily: "Poppins-SemiBold", fontSize: 18, color: "#2F2F2F",
+                        textAlign: "center", marginTop: 16
+                    }}>
+                        Kamu sudah memiliki kamar aktif
+                    </Text>
+                    <Text style={{
+                        fontFamily: "Inter-Regular", fontSize: 14, color: "#666",
+                        textAlign: "center", marginTop: 8, lineHeight: 22
+                    }}>
+                        Kamu saat ini terdaftar di Kamar {me.room_number || "-"}. 
+                        Tidak dapat melakukan pemesanan baru selama masih memiliki lease aktif.
+                    </Text>
+                    <TouchableOpacity
+                        style={[s.submitBtn, { width: "100%", marginTop: 32 }]}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <Text style={s.submitText}>Kembali</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
+        );
+    }
 
     const handleSubmit = async () => {
         if (!durationMonth || Number(durationMonth) < 1)

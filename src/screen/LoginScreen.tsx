@@ -12,7 +12,8 @@ import LoginInput from "../components/Login/LoginInput";
 import LoginButton from "../components/Login/LoginButton";
 import { loginApi } from "../api/auth.api";
 
-const LoginScreen = ({ navigation }: any) => {
+const LoginScreen = ({ navigation, route }: any) => {
+    const { redirectTo, roomData } = route.params || {};
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -37,10 +38,15 @@ const LoginScreen = ({ navigation }: any) => {
             }
 
             await AsyncStorage.setItem("token", token);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Dashboard" }],
-            });
+
+            if (redirectTo === "Booking") {
+                navigation.replace("Booking", { room: roomData });
+            } else {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Dashboard" }],
+                });
+            }
         } catch (err: any) {
             const msg =
                 err?.response?.data?.message ||
