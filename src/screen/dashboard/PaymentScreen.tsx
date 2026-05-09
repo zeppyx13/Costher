@@ -7,19 +7,19 @@ import paymentStyles from "../../styles/payment";
 import { createMidtransPayment } from "../../api/payment.api";
 
 const PaymentScreen = ({ navigation, route }: any) => {
-    const { dashboard, me, tariff } = route.params || {};
+    const { dashboard, me, tariff, invoice: paramInvoice } = route.params || {};
     const [loading, setLoading] = useState(false);
 
     const room = dashboard?.room;
     const usage = dashboard?.usage?.usage;
-    const invoice = dashboard?.invoice_current?.invoice;
+    const invoice = paramInvoice || dashboard?.invoice_current?.invoice;
 
     const invoiceId = Number(invoice?.id || 0);
 
-    const waterRate = tariff?.water_rate;
-    const electricityRate = tariff?.electricity_rate;
-    const waterFree = tariff?.water_free_quota;
-    const elecFree = tariff?.electricity_free_quota;
+    const waterRate = tariff?.water_rate ?? 5500;
+    const electricityRate = tariff?.electricity_rate ?? 1699;
+    const waterFree = tariff?.water_free_quota ?? 0;
+    const elecFree = tariff?.electricity_free_quota ?? 0;
 
     const monthlyRent = Number(invoice?.rent_amount ?? room?.price_monthly ?? 0);
     const waterUsed = Number(invoice?.water_used ?? usage?.water_used ?? 0);

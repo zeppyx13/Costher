@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    ActivityIndicator, RefreshControl, ScrollView,
+    ActivityIndicator, Alert, RefreshControl, ScrollView,
     StyleSheet, Text, TouchableOpacity, View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -43,6 +43,20 @@ export default function InvoiceHistoryScreen({ navigation }: any) {
     const onRefresh = useCallback(async () => {
         setRefreshing(true); await load(); setRefreshing(false);
     }, [load]);
+
+    const handlePress = (inv: any) => {
+        if (inv.status === "paid") {
+            Alert.alert("Info", "Tagihan ini sudah lunas");
+            return;
+        }
+
+        navigation.navigate("Payment", {
+            invoice: inv,
+            me: null,
+            dashboard: null,
+            tariff: null,
+        });
+    };
 
     const filters = [
         { label: "Semua", value: undefined },
@@ -92,7 +106,7 @@ export default function InvoiceHistoryScreen({ navigation }: any) {
                         invoices.map((inv) => {
                             const st = statusConfig[inv.status] ?? statusConfig.unpaid;
                             return (
-                                <View key={inv.id} style={s.card}>
+                                <TouchableOpacity key={inv.id} style={s.card} activeOpacity={0.7} onPress={() => handlePress(inv)}>
                                     <View style={s.cardLeft}>
                                         <View style={[s.iconCircle, { backgroundColor: st.bg }]}>
                                             <Ionicons name={st.icon as any} size={20} color={st.color} />
@@ -112,7 +126,7 @@ export default function InvoiceHistoryScreen({ navigation }: any) {
                                             <Text style={[s.badgeText, { color: st.color }]}>{st.label}</Text>
                                         </View>
                                     </View>
-                                </View>
+                                </TouchableOpacity>
                             );
                         })
                     )}

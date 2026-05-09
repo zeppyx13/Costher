@@ -99,6 +99,14 @@ const DashboardScreen = ({ navigation }: any) => {
         };
     }, [dashboard, me]);
 
+    const activeInvoice = useMemo(() => {
+        const current = dashboard?.invoice_current?.invoice;
+        if (current) return current;
+
+        // Fallback: ambil invoice pertama dari array invoices yang statusnya "overdue" atau "unpaid"
+        return invoices.find((inv: any) => inv.status === "overdue" || inv.status === "unpaid") || null;
+    }, [dashboard, invoices]);
+
     const { liveTelemetry, isSocketConnected } = useRoomTelemetry(item.roomId);
 
     const handleLogout = () => {
@@ -203,13 +211,14 @@ const DashboardScreen = ({ navigation }: any) => {
 
                 <DashboardPaymentDetail
                     item={item}
-                    invoice={dashboard?.invoice_current?.invoice ?? null}
+                    invoice={activeInvoice}
                     tariff={tariff}
                     onPayPress={() =>
                         navigation.navigate("Payment", {
                             dashboard,
                             me,
                             tariff,
+                            invoice: activeInvoice,
                         })
                     }
                 />
