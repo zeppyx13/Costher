@@ -60,7 +60,7 @@ const DashboardPaymentDetail = ({ onPayPress, item, invoice, tariff }: any) => {
                 <View style={{ paddingVertical: 10, alignItems: "center" }}>
                     <Ionicons name="receipt-outline" size={48} color={colors.deepMaroon} style={{ opacity: 0.3, marginBottom: 10 }} />
                     <Text style={{ fontFamily: "Inter-Medium", color: "#666", textAlign: "center", fontSize: 13 }}>
-                        Belum ada tagihan aktif untuk bulan ini.{"\n"}Tagihan akan muncul otomatis setiap awal bulan.
+                        Tidak ada tagihan aktif.{"\n"}Semua tagihan kamu sudah lunas.
                     </Text>
                 </View>
             ) : (

@@ -74,38 +74,35 @@ const DashboardScreen = ({ navigation }: any) => {
         await load();
         setRefreshing(false);
     }, [load]);
+const activeInvoice = useMemo(() => {
+    const current = dashboard?.invoice_current?.invoice;
+    if (current && current.status !== "paid" && current.status !== "cancelled") return current;
 
-    const item = useMemo(() => {
-        const room = dashboard?.room;
-        const usageObj = dashboard?.usage?.usage;
-        const invoice = dashboard?.invoice_current?.invoice;
+    return invoices.find((inv: any) => inv.status === "overdue" || inv.status === "unpaid") || null;
+}, [dashboard, invoices]);
 
-        const name = me?.name || "Tenant";
-        const avatarUrl = me?.avatar_url || null;
+const item = useMemo(() => {
+    const room = dashboard?.room;
+    const usageObj = dashboard?.usage?.usage;
 
-        return {
-            name,
-            avatar: avatarUrl ? { uri: avatarUrl } : undefined,
-            roomId: room?.id,
+    const name = me?.name || "Tenant";
+    const avatarUrl = me?.avatar_url || null;
 
-            number: room?.number || "-",
-            floor: room?.floor ?? "-",
+    return {
+        name,
+        avatar: avatarUrl ? { uri: avatarUrl } : undefined,
+        roomId: room?.id,
 
-            waterUsage: Number(usageObj?.water_used ?? 0),
-            electricityUsage: Number(usageObj?.elec_used ?? 0),
+        number: room?.number || "-",
+        floor: room?.floor ?? "-",
 
-            price: Number(invoice?.total_amount ?? room?.price_monthly ?? 0),
-            monthlyRent: Number(room?.price_monthly ?? 0),
-        };
-    }, [dashboard, me]);
+        waterUsage: Number(usageObj?.water_used ?? 0),
+        electricityUsage: Number(usageObj?.elec_used ?? 0),
 
-    const activeInvoice = useMemo(() => {
-        const current = dashboard?.invoice_current?.invoice;
-        if (current) return current;
-
-        // Fallback: ambil invoice pertama dari array invoices yang statusnya "overdue" atau "unpaid"
-        return invoices.find((inv: any) => inv.status === "overdue" || inv.status === "unpaid") || null;
-    }, [dashboard, invoices]);
+        price: Number(activeInvoice?.total_amount ?? 0),
+        monthlyRent: Number(room?.price_monthly ?? 0),
+    };
+}, [dashboard, me, activeInvoice]);
 
     const { liveTelemetry, isSocketConnected } = useRoomTelemetry(item.roomId);
 
