@@ -10,9 +10,11 @@ const PaymentScreen = ({ navigation, route }: any) => {
     const { dashboard, me, tariff, invoice: paramInvoice } = route.params || {};
     const [loading, setLoading] = useState(false);
 
-    const room = dashboard?.room;
-    const usage = dashboard?.usage?.usage;
     const invoice = paramInvoice || dashboard?.invoice_current?.invoice;
+    const room = dashboard?.room;
+    const roomNumber = room?.number ?? invoice?.room_number ?? "-";
+    const tenantName = me?.name ?? invoice?.tenant_name ?? "-";
+    const usage = dashboard?.usage?.usage;
 
     const invoiceId = Number(invoice?.id || 0);
 
@@ -22,7 +24,8 @@ const PaymentScreen = ({ navigation, route }: any) => {
     const elecFree = tariff?.electricity_free_quota ?? 0;
 
     const monthlyRent = Number(invoice?.rent_amount ?? room?.price_monthly ?? 0);
-    const waterUsed = Number(invoice?.water_used ?? usage?.water_used ?? 0);
+    const waterUsedl = Number(invoice?.water_used ?? usage?.water_used ?? 0);
+    const waterUsed = waterUsedl / 1000;
     const elecUsed = Number(invoice?.elec_used ?? usage?.elec_used ?? 0);
 
     const fine = Number(invoice?.fine_amount ?? 0);
@@ -64,9 +67,9 @@ const PaymentScreen = ({ navigation, route }: any) => {
                     <Text style={[paymentStyles.pageSubtitle, { textAlign: "center", marginTop: 8, fontSize: 14 }]}>
                         Tagihan Anda digenerate secara otomatis setiap awal bulan. Silakan cek kembali beberapa saat lagi atau hubungi pengelola.
                     </Text>
-                    
-                    <TouchableOpacity 
-                        style={[paymentStyles.payButton, { width: "100%", marginTop: 30 }]} 
+
+                    <TouchableOpacity
+                        style={[paymentStyles.payButton, { width: "100%", marginTop: 30 }]}
                         onPress={() => navigation.goBack()}
                     >
                         <Text style={paymentStyles.payButtonText}>Kembali ke Dashboard</Text>
@@ -108,11 +111,11 @@ const PaymentScreen = ({ navigation, route }: any) => {
                 <View style={paymentStyles.card}>
                     <View style={paymentStyles.rowBetween}>
                         <Text style={paymentStyles.label}>Kamar</Text>
-                        <Text style={paymentStyles.value}>Kamar {room?.number ?? "-"}</Text>
+                        <Text style={paymentStyles.value}>Kamar {roomNumber}</Text>
                     </View>
                     <View style={paymentStyles.rowBetween}>
                         <Text style={paymentStyles.label}>Penyewa</Text>
-                        <Text style={paymentStyles.value}>{me?.name ?? "-"}</Text>
+                        <Text style={paymentStyles.value}>{tenantName}</Text>
                     </View>
                     <View style={paymentStyles.rowBetween}>
                         <Text style={paymentStyles.label}>Periode</Text>
